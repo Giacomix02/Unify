@@ -1,0 +1,1 @@
+Here there will be all the views of the application
