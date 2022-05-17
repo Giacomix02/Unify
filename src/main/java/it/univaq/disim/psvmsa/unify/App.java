@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
 
 public class App extends Application {
 
@@ -17,6 +18,7 @@ public class App extends Application {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/root.fxml"));
 		Parent root = loader.load();
 		Scene scene = new Scene(root);
+		stage.getIcons().add(new Image(getClass().getResource("/ui/images/logo.png").toString()));
 		stage.setScene(scene);
 		stage.show();
 

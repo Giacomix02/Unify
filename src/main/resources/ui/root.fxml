@@ -162,13 +162,13 @@
                      <children>
                         <HBox prefHeight="40.0" prefWidth="456.0" spacing="20.0" styleClass="header-input-wrapper">
                            <children>
-                              <TextField prefHeight="40.0" prefWidth="378.0" promptText="Search songs, artists ..." style="-fx-border-color: transparent;" HBox.hgrow="ALWAYS">
+                              <TextField prefHeight="40.0" prefWidth="378.0" promptText="Search songs, artists ..." style="-fx-border-color: transparent; -fx-background-color: transparent transparent;" HBox.hgrow="ALWAYS">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
                               </TextField>
 
-                           </children>
+                                       </children>
                            <padding>
                               <Insets left="20.0" right="7.0" />
                            </padding>
