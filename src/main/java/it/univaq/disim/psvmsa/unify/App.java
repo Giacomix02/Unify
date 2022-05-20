@@ -3,6 +3,7 @@ package it.univaq.disim.psvmsa.unify;
 import it.univaq.disim.psvmsa.unify.view.ViewNavigation;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
 
 public class App extends Application {
 
