@@ -1,12 +1,12 @@
 package it.univaq.disim.psvmsa.unify;
 
+import it.univaq.disim.psvmsa.unify.view.ViewNavigation;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class App extends Application {
+
+	private Stage stage;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -14,12 +14,11 @@ public class App extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/ui/root.fxml"));
-		Parent root = loader.load();
-		Scene scene = new Scene(root);
-		stage.setScene(scene);
+		this.stage = stage;
+		ViewNavigation viewNavigation = ViewNavigation.getInstance();
+		viewNavigation.setStage(stage);
+		viewNavigation.showLogin();
 		stage.show();
-
 	}
 
 }
