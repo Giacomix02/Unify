@@ -1,3 +1,9 @@
+@font-face {
+    font-family: "Orienta";
+    src: url('assets/Orienta/Orienta-Regular.ttf');
+}
+
+
 *{
     bg-color: #0A0F14;
     layer-1:  #161721;
@@ -5,11 +11,37 @@
     main-text: white;
     accent: #F14458;
     -fx-text-fill: main-text;
+    -fx-font-family: 'Orienta';
 }
+
+Separator{
+    -fx-background: transparent;
+    -fx-border-color:transparent;
+    -fx-background-color: transparent;
+    -fx-text-fill: transparent;
+}
+
+TextField,PasswordField{
+    -fx-text-fill: black;
+}
+
 
 .icon{
     -fx-text-fill: accent;
 }
+
+
+.login-pane{
+    -fx-background-color: layer-1;
+    -fx-border-radius: 10px;
+    -fx-text-fill: black;
+}
+
+.button{
+    -fx-background-color: accent;
+}
+
+
 .side-menu{
     -fx-background-color:  layer-1;
 

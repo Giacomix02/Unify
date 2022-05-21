@@ -19,6 +19,7 @@ public class App extends Application {
 		ViewNavigation viewNavigation = ViewNavigation.getInstance();
 		viewNavigation.setStage(stage);
 		viewNavigation.showLogin();
+		stage.getIcons().add(new Image(getClass().getResource("/ui/images/logo.png").toString()));
 		stage.show();
 	}
 
