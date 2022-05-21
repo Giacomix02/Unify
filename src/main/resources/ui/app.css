@@ -9,20 +9,18 @@
     layer-1:  #161721;
     layer-2: #232431;
     main-text: white;
+    dark-text: black;
+    secondary-text: #E4E4E4;
+    tertiary-text: #B3B3B3;
     accent: #F14458;
+    accent-hover: #F25668;
     -fx-text-fill: main-text;
     -fx-font-family: 'Orienta';
 }
 
-Separator{
-    -fx-background: transparent;
-    -fx-border-color:transparent;
-    -fx-background-color: transparent;
-    -fx-text-fill: transparent;
-}
 
-TextField,PasswordField{
-    -fx-text-fill: black;
+TextField, PasswordField{
+    -fx-text-fill: dark-text;
 }
 
 
@@ -37,27 +35,36 @@ TextField,PasswordField{
     -fx-text-fill: black;
 }
 
-.button{
+.custom-button{
     -fx-background-color: accent;
+    -fx-padding: 5 20;
+    -fx-min-width: 100;
+    -fx-font-size: 14;
+    -fx-background-radius: 7;
+    -fx-cursor: pointer;
 }
-
+.button:hover{
+    -fx-background-color: accent-hover;
+}
 
 .side-menu{
     -fx-background-color:  layer-1;
-
+}
+.side-menu-title{
+    -fx-text-fill: tertiary-text;
 }
 .header-input-wrapper{
     -fx-background-radius: 100px; 
     padding: 10px;
     -fx-background-color: layer-1;
-
 }
 .header-textfield{
     -fx-border-fill: transparent;
     -fx-faint-focus-color: transparent;
     -fx-focus-color: transparent;
 }
-.main-content{
+
+.main-content, .main-content-wrapper{
     -fx-background: bg-color;
     -fx-background-color: bg-color;
 }
@@ -70,12 +77,19 @@ TextField,PasswordField{
     -fx-background-radius: 6px;
     -fx-border-radius: 6px;
 }
-.menu-link-active{
+.menu-link Label{
+    -fx-font-size: 16;
+    -fx-padding: 10 10 10 0;
+}
+
+.menu-link-active {
     -fx-background-color: layer-2;
 }
 .menu-link-accent{
+    -fx-background-radius: 6 0 0 6;
+}
+.menu-link-active > .menu-link-accent{
     -fx-background-color: accent;
-    -fx-background-radius: 2px;
 }
 .login-style {
     -fx-background-color: black;
