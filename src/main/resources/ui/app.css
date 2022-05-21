@@ -77,3 +77,6 @@ TextField,PasswordField{
     -fx-background-color: accent;
     -fx-background-radius: 2px;
 }
+.login-style {
+    -fx-background-color: black;
+}
