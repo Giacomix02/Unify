@@ -11,7 +11,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class LayoutController implements Initializable {
-    private Pages currentPage = Pages.ALBUMS;
+    private Pages currentPage = Pages.HOME;
     private MenuLink MENU_LINKS[] = {
         new MenuLink("Artists", Pages.ARTISTS, "/ui/images/icons/person.png"),
         new MenuLink("Albums", Pages.ALBUMS, "/ui/images/icons/compact-disc.png"),

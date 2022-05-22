@@ -29,7 +29,7 @@ public class LoginController implements Initializable {
         ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
         try{
             viewDispatcher.loggedIn();
-            viewDispatcher.navigateTo(Pages.ALBUMS);
+            viewDispatcher.navigateTo(Pages.HOME);
         }catch(ViewDispatcherException e){
             System.out.println(e.getMessage());
             logLabel.setText("Error logging in");
