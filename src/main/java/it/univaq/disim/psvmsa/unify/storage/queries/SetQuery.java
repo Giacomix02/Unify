@@ -1,16 +1,23 @@
 package it.univaq.disim.psvmsa.unify.storage.queries;
 
 
-import it.univaq.disim.psvmsa.unify.storage.queries.Query;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class SetQuery extends Query {
-    public SetQuery(String table, List<Object> data){
+public class SetQuery extends Query<String> {
+    public SetQuery(String table){
+        super(table, new ArrayList<String>());
+    }
+    public SetQuery(String table, List<String> data){
         super(table, data);
     }
 
-    public String toString(){
+    public SetQuery add(String value){
+        getData().add(value);
+        return this;
+    }
+    public String serialize(){
         return super.getData().toString();
     }
 }

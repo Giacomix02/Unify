@@ -3,19 +3,21 @@ package it.univaq.disim.psvmsa.unify.storage.queries;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Query {
-    private List<Object> data = new ArrayList<Object>();
+public abstract class Query<T extends Object> {
+    private List<T> data;
     private String table;
 
-    public Query(String table, List<Object> data){
+    public Query(String table, List<T> data){
         this.table = table;
         this.data = data;
     }
-
-    public List<Object> getData(){
+    public String[] asStringArray(){
+        return (String[]) data.toArray();
+    }
+    public List<T> getData(){
         return data;
     }
-    public void setData(List<Object> data){
+    public void setData(List<T> data){
         this.data = data;
     }
     public String getTable(){
@@ -24,5 +26,5 @@ public abstract class Query {
     public void setTable(String table){
         this.table = table;
     }
-    abstract public String toString();
+    abstract public String serialize();
 }

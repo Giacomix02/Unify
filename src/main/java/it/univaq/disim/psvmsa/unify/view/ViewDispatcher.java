@@ -4,7 +4,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 
@@ -23,9 +22,9 @@ public class ViewDispatcher {
 
     public void loggedIn() throws ViewDispatcherException {
         validateStage();
-        Parent LayoutPage = loadView("/ui/views/layout.fxml");
-        layout = (ScrollPane) LayoutPage.lookup("#layoutRoot");
-        stage.setScene(new Scene(LayoutPage));
+        Parent layoutPage = loadView("/ui/views/layout.fxml");
+        layout = (ScrollPane) layoutPage.lookup("#layoutRoot");
+        stage.setScene(new Scene(layoutPage));
     }
 
     public void showLogin() throws ViewDispatcherException {
