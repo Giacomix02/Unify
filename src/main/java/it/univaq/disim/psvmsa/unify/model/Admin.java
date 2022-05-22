@@ -2,7 +2,7 @@ package it.univaq.disim.psvmsa.unify.model;
 
 public class Admin extends User {
 
-    public Admin(String username, String password, int id) {
+    public Admin(String username, String password, Integer id) {
         super(username, password, id);
     }
 

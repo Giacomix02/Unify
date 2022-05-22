@@ -9,11 +9,11 @@ import java.util.List;
 public class User {
     private String username;
     private String password;
-    private int id;
+    private Integer id;
     private List<Playlist> playlists = new ArrayList<Playlist>();
 
-    public User(String username, String password, int id) {
-        this(username,password);
+    public User(String username, String password, Integer id) {
+        this(username, password);
         this.id = id;
 
     }
@@ -24,24 +24,23 @@ public class User {
     }
 
 
-
-    public String getUsername(){
+    public String getUsername() {
         return this.username;
     }
 
-    public String getPassword(){
+    public String getPassword() {
         return this.password;
     }
 
-    public int getId(){
+    public int getId() {
         return this.id;
     }
 
-    public List<Playlist> getPlaylists(){
+    public List<Playlist> getPlaylists() {
         return this.playlists;
     }
 
-    public void setPlaylists(List<Playlist> playlists){
+    public void setPlaylists(List<Playlist> playlists) {
         this.playlists = playlists;
     }
 
