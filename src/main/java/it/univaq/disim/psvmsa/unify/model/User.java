@@ -1,8 +1,6 @@
 package it.univaq.disim.psvmsa.unify.model;
 
 
-import it.univaq.disim.psvmsa.unify.storage.UserStorage;
-
 import java.util.ArrayList;
 import java.util.List;
 

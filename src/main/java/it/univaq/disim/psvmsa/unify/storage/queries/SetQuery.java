@@ -2,6 +2,8 @@ package it.univaq.disim.psvmsa.unify.storage.queries;
 
 
 
+import it.univaq.disim.psvmsa.unify.storage.schema.SchemaInterface;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +15,8 @@ public class SetQuery extends Query<String> {
         super(table, data);
     }
 
-    public SetQuery add(String value){
-        getData().add(value);
+    public SetQuery add(SchemaInterface prop, String value){
+        getData().set(prop.getRowIndex(), value);
         return this;
     }
     public String serialize(){

@@ -2,7 +2,6 @@ package it.univaq.disim.psvmsa.unify.storage;
 
 import it.univaq.disim.psvmsa.unify.model.User;
 import it.univaq.disim.psvmsa.unify.storage.kinds.StorageKindInterface;
-import it.univaq.disim.psvmsa.unify.storage.queries.SetQuery;
 import it.univaq.disim.psvmsa.unify.storage.schema.UserSchema;
 
 public class UserStorage implements StorageInterface<User>{

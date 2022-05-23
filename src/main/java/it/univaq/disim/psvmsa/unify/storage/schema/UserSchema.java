@@ -1,6 +1,6 @@
 package it.univaq.disim.psvmsa.unify.storage.schema;
 
-public enum UserSchema {
+public enum UserSchema implements SchemaInterface{
         //TODO not sure if it's the best idea to give the row ID in the schema, maybe should be left to the
         //UserStorage class, or not be given at all.
         USER_ID(0),

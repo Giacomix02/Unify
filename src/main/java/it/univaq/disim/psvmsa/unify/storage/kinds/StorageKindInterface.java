@@ -1,20 +1,20 @@
 package it.univaq.disim.psvmsa.unify.storage.kinds;
 
-import it.univaq.disim.psvmsa.unify.storage.exceptions.KeyAlreadyExistsException;
-import it.univaq.disim.psvmsa.unify.storage.exceptions.KeyNotExistsException;
+import it.univaq.disim.psvmsa.unify.storage.KeyAlreadyExistsException;
+import it.univaq.disim.psvmsa.unify.storage.KeyNotExistsException;
 import it.univaq.disim.psvmsa.unify.storage.queries.GetQuery;
 import it.univaq.disim.psvmsa.unify.storage.queries.SetQuery;
 
 public interface StorageKindInterface {
 
-    public void add(String key, SetQuery value) throws KeyAlreadyExistsException;
+    void addOne(int queryColumn, String key, SetQuery value) throws KeyAlreadyExistsException;
 
-    public void update(String key, SetQuery value) throws KeyNotExistsException;
+    void updateOne(int queryColumn, String key, SetQuery value) throws KeyNotExistsException;
 
-    public GetQuery get(String key);
+    GetQuery getOne(int queryColumn, String key);
 
-    public void remove(String key);
+    GetQuery[] getMany(int queryColumn, String key);
 
-    public void clear();
+    void removeOne(int queryColumn,String key);
 
 }
