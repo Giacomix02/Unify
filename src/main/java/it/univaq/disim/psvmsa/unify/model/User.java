@@ -51,4 +51,7 @@ public class User {
     }
 
 
+    public String toString() {
+        return String.format("User{username='%s', password='%s', id=%d}", this.username, this.password, this.id);
+    }
 }

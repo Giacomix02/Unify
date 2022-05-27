@@ -5,13 +5,15 @@ import it.univaq.disim.psvmsa.unify.storage.KeyNotExistsException;
 import it.univaq.disim.psvmsa.unify.storage.queries.GetQuery;
 import it.univaq.disim.psvmsa.unify.storage.queries.SetQuery;
 
+import java.util.List;
+
 public class Files implements StorageKindInterface {
     private String fileName;
 
     public Files(String fileName) {
         this.fileName = fileName;
     }
-    public int addOne(int idColumn, SetQuery value) throws KeyAlreadyExistsException {
+    public int addOne(int idColumn, SetQuery value) {
         return 1;
     }
 
@@ -23,7 +25,7 @@ public class Files implements StorageKindInterface {
         return null;
     }
 
-    public GetQuery[] getMany(int queryColumn, int key) {
+    public List<GetQuery> getMany(int queryColumn, int key) {
         return null;
     }
 

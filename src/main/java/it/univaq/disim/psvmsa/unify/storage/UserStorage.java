@@ -12,7 +12,7 @@ public class UserStorage {
         private final String USER_TABLE = "users";
         private static StorageKindInterface storage = new Memory("users");
 
-        public int add(User user) throws KeyAlreadyExistsException{
+        public int add(User user){
                 SetQuery query = new SetQuery(this.USER_TABLE);
                 query
                         .set(UserSchema.USER_PASSWORD, user.getPassword())
@@ -26,8 +26,7 @@ public class UserStorage {
                         .set(UserSchema.USER_ID, user.getUsername())
                         .set(UserSchema.USER_PASSWORD, user.getPassword())
                         .set(UserSchema.USER_NAME, user.getUsername());
-                Integer id = user.getId();
-                storage.updateOne(UserSchema.USER_ID.getRow(),id , query);
+                storage.updateOne(UserSchema.USER_ID.getRow(),user.getId() , query);
         }
 
         public User getById(Integer id){
@@ -36,6 +35,7 @@ public class UserStorage {
 
         public User getByProp(UserSchema prop, Integer key) {
                 GetQuery data = storage.getOne(prop.getRow(), key);
+                if(data == null) return null;
                 return new User(
                         data.getColumnAsString(UserSchema.USER_NAME),
                         data.getColumnAsString(UserSchema.USER_PASSWORD),

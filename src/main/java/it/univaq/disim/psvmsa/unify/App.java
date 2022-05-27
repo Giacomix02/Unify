@@ -22,6 +22,7 @@ public class App extends Application {
 		viewDispatcher.loggedIn();
 		stage.getIcons().add(new Image(getClass().getResource("/ui/images/logo.png").toString()));
 		stage.show();
+		
 	}
 
 }

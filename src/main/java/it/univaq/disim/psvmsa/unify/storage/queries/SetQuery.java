@@ -15,10 +15,12 @@ public class SetQuery extends Query<String> {
         super(table, data);
     }
     public SetQuery set(SchemaInterface prop, String value){
+        ensureSize(prop.getRow());
         getData().set(prop.getRow(), value);
         return this;
     }
     public SetQuery set(int prop, String value){
+        ensureSize(prop);
         getData().set(prop, value);
         return this;
     }

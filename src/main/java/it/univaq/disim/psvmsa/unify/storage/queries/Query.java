@@ -26,5 +26,10 @@ public abstract class Query<T extends Object> {
     public void setTable(String table){
         this.table = table;
     }
+    public void ensureSize(int required){
+        for (int i = data.size(); i < required + 1; i++)
+            data.add(null);
+    }
     abstract public String serialize();
+
 }
