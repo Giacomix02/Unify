@@ -2,15 +2,10 @@ package it.univaq.disim.psvmsa.unify.business;
 
 import it.univaq.disim.psvmsa.unify.model.User;
 
-public class UserService {
+public interface UserService {
 
-    public User getUser(String username) {
-        return null;
-    }
-    public User createUser() {
-        return null;
-    }
-    public void authenticate() throws IncorrectCredentialsException {
+    User getById(Integer id);
+    void create(User user);
+    boolean validate(String username, String password);
 
-    }
 }

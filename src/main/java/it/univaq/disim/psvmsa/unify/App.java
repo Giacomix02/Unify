@@ -18,8 +18,8 @@ public class App extends Application {
 		this.stage = stage;
 		ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
 		viewDispatcher.setStage(stage);
-		//viewDispatcher.showLogin();
-		viewDispatcher.loggedIn();
+		viewDispatcher.showLogin();
+		//viewDispatcher.loggedIn();
 		stage.getIcons().add(new Image(getClass().getResource("/ui/images/logo.png").toString()));
 		stage.show();
 		
