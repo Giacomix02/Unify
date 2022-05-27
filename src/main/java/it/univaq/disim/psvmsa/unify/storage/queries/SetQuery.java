@@ -15,8 +15,8 @@ public class SetQuery extends Query<String> {
         super(table, data);
     }
 
-    public SetQuery add(SchemaInterface prop, String value){
-        getData().set(prop.getRowIndex(), value);
+    public SetQuery set(SchemaInterface prop, String value){
+        getData().set(prop.getRow(), value);
         return this;
     }
     public String serialize(){

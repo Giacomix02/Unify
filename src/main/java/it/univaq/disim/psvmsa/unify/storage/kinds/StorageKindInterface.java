@@ -7,7 +7,7 @@ import it.univaq.disim.psvmsa.unify.storage.queries.SetQuery;
 
 public interface StorageKindInterface {
 
-    void addOne(int queryColumn, String key, SetQuery value) throws KeyAlreadyExistsException;
+    int addOne(int idColumn, SetQuery value) throws KeyAlreadyExistsException;
 
     void updateOne(int queryColumn, String key, SetQuery value) throws KeyNotExistsException;
 

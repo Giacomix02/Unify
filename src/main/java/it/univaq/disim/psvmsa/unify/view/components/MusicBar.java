@@ -13,6 +13,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class MusicBar extends HBox {
+    //TODO maybe make this into a controller and make a static method that creates the music bar and
+    //returns the FXML loader to the caller, so that we can get both the component and it's controller
     private Image playImage = new Image("ui/images/icons/play.png");
     private Image pauseImage = new Image("ui/images/icons/pause.png");
     private Label songName;

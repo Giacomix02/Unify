@@ -12,8 +12,8 @@ public class Memory implements StorageKindInterface{
                 this.tableName = tableName;
         }
 
-        public void addOne(int queryColumn, String key, SetQuery value) throws KeyAlreadyExistsException {
-
+        public int addOne(int idColumn, SetQuery value) throws KeyAlreadyExistsException {
+                return 1;
         }
 
         public void updateOne(int queryColumn, String key, SetQuery value) throws KeyNotExistsException {

@@ -13,7 +13,7 @@ public enum UserSchema implements SchemaInterface{
             this.row = row;
         }
 
-        public int getRowIndex() {
+        public int getRow() {
             return row;
         }
 
