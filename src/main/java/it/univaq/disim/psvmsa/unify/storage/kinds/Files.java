@@ -15,19 +15,19 @@ public class Files implements StorageKindInterface {
         return 1;
     }
 
-    public void updateOne(int queryColumn, String key, SetQuery value) throws KeyNotExistsException {
+    public void updateOne(int queryColumn, int key, SetQuery value) throws KeyNotExistsException {
 
     }
 
-    public GetQuery getOne(int queryColumn, String key) {
+    public GetQuery getOne(int queryColumn, int key) {
         return null;
     }
 
-    public GetQuery[] getMany(int queryColumn, String key) {
+    public GetQuery[] getMany(int queryColumn, int key) {
         return null;
     }
 
-    public void removeOne(int queryColumn, String key) {
+    public void removeOne(int queryColumn, int key) {
 
     }
 }

@@ -14,9 +14,12 @@ public class SetQuery extends Query<String> {
     public SetQuery(String table, List<String> data){
         super(table, data);
     }
-
     public SetQuery set(SchemaInterface prop, String value){
         getData().set(prop.getRow(), value);
+        return this;
+    }
+    public SetQuery set(int prop, String value){
+        getData().set(prop, value);
         return this;
     }
     public String serialize(){

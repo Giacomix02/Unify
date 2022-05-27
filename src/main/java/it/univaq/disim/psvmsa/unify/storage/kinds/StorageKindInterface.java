@@ -9,12 +9,12 @@ public interface StorageKindInterface {
 
     int addOne(int idColumn, SetQuery value) throws KeyAlreadyExistsException;
 
-    void updateOne(int queryColumn, String key, SetQuery value) throws KeyNotExistsException;
+    void updateOne(int queryColumn, int key, SetQuery value) throws KeyNotExistsException;
 
-    GetQuery getOne(int queryColumn, String key);
+    GetQuery getOne(int queryColumn, int key);
 
-    GetQuery[] getMany(int queryColumn, String key);
+    GetQuery[] getMany(int queryColumn, int key);
 
-    void removeOne(int queryColumn,String key);
+    void removeOne(int queryColumn,int key);
 
 }

@@ -2,10 +2,15 @@ package it.univaq.disim.psvmsa.unify.storage.queries;
 
 import it.univaq.disim.psvmsa.unify.storage.schema.SchemaInterface;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GetQuery extends Query<String> {
 
+
+    public GetQuery(String table) {
+        this(table, new ArrayList<>());
+    }
     public GetQuery(String table, List<String> data) {
         super(table, data);
     }
