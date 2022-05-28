@@ -1,4 +1,8 @@
 package it.univaq.disim.psvmsa.unify.controller;
+import it.univaq.disim.psvmsa.unify.business.BusinessException;
+import it.univaq.disim.psvmsa.unify.business.UserService;
+import it.univaq.disim.psvmsa.unify.business.impl.RAMUserServiceImpl;
+import it.univaq.disim.psvmsa.unify.model.User;
 import it.univaq.disim.psvmsa.unify.view.Pages;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcherException;
@@ -28,11 +32,15 @@ public class LoginController implements Initializable {
     private void login() {
         ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
         try{
+            UserService userService = new RAMUserServiceImpl();
+            User user = userService.validate(username.getText(),password.getText());
             viewDispatcher.loggedIn();
             viewDispatcher.navigateTo(Pages.HOME);
         }catch(ViewDispatcherException e){
             System.out.println(e.getMessage());
             logLabel.setText("Error logging in");
+        }catch (BusinessException businessException){
+            logLabel.setText(businessException.getMessage());
         }
     }
 }

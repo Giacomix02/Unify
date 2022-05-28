@@ -1,16 +1,20 @@
 package it.univaq.disim.psvmsa.unify.business;
+
 import it.univaq.disim.psvmsa.unify.model.User;
 
 public interface UserService {
 
     User getById(Integer id);
 
-    User validate(String username, String password) throws UserServiceException;
+    User getByUsername(String username);
 
-    void delete(User user);
+    User validate(String username, String password) throws BusinessException;
 
-    void update(User user);
 
-    void create(User user);
+    void delete(User user) throws BusinessException;
+
+    void update(User user) throws BusinessException;
+
+    void create(User user) throws BusinessException;
 
 }
