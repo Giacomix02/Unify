@@ -7,7 +7,6 @@ public interface UserService {
 
     User validate(String username, String password) throws UserServiceException;
 
-
     void delete(User user);
 
     void update(User user);

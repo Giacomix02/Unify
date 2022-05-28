@@ -6,9 +6,9 @@ public interface SongService {
 
     Song getById(Integer id);
 
-    void delete(Song song);
+    void delete(Song song) throws BusinessException;
 
-    void update(Song song);
+    void update(Song song) throws BusinessException;
 
     void add(Song song);
 }

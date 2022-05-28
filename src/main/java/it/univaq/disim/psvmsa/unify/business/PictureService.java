@@ -10,9 +10,9 @@ public interface PictureService {
 
     void create (Picture picture);
 
-    void update (Picture picture);
+    void update (Picture picture) throws BusinessException;
 
-    void delete (Picture picture);
+    void delete (Picture picture) throws BusinessException;
 
 
 }
