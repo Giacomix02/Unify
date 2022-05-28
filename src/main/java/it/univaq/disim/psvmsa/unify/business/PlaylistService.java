@@ -9,7 +9,7 @@ import java.util.List;
 public interface PlaylistService {
         List<Playlist> getPlaylistsByUser(User user);
         Playlist getPlaylistById(Integer id);
-        int createPlaylist(String name, User user);
+        int createPlaylist(Playlist playlist);
         void deletePlaylist(Playlist playlist);
-        void updatePlaylist(Playlist playlist);
+        void updatePlaylist(Playlist playlist) throws BusinessException;
 }

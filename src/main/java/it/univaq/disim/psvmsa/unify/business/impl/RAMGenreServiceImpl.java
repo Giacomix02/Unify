@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RAMGenreServiceImpl implements GenreService {
-    static List<Genre> genres = new ArrayList<>();
-    static Integer id = 0;
+    private static List<Genre> genres = new ArrayList<>();
+    private static Integer id = 0;
 
     @Override
     public List<Genre> getAllGenres() {
@@ -18,9 +18,9 @@ public class RAMGenreServiceImpl implements GenreService {
 
     @Override
     public Genre getGenreById(Integer id) {
-        for (Genre g : genres) {
-            if (g.getId().equals(id)) {
-                return g;
+        for (Genre genre : genres) {
+            if (genre.getId().equals(id)) {
+                return genre;
             }
         }
         return null;
@@ -33,8 +33,10 @@ public class RAMGenreServiceImpl implements GenreService {
     }
 
     @Override
-    public boolean deleteGenre(Genre genre) {
-        return false;
+    public void deleteGenre(Genre genre) throws BusinessException {
+        int index = findIndexById(genre.getId());
+        if (index < 0) throw new BusinessException("Genre not found");
+        genres.remove(index);
     }
 
     @Override
