@@ -8,6 +8,7 @@ import it.univaq.disim.psvmsa.unify.view.components.MusicBar;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
@@ -18,10 +19,10 @@ public class LayoutController implements Initializable, DataInitializable<User> 
     private Pages currentPage = Pages.HOME;
     private User user;
     private MenuLink MENU_LINKS[] = {
-        new MenuLink("Artists", Pages.ARTISTS, "/ui/images/icons/person.png"),
-        new MenuLink("Albums", Pages.ALBUMS, "/ui/images/icons/compact-disc.png"),
-        new MenuLink("Songs", Pages.SONGS, "/ui/images/icons/note.png") ,
-        new MenuLink("Genres", Pages.GENRES, "/ui/images/icons/tag.png")
+        new MenuLink("Artists", Pages.ARTISTS, new Image("/ui/images/icons/person.png")),
+        new MenuLink("Albums", Pages.ALBUMS, new Image("/ui/images/icons/compact-disc.png")),
+        new MenuLink("Songs", Pages.SONGS, new Image("/ui/images/icons/note.png")) ,
+        new MenuLink("Genres", Pages.GENRES, new Image("/ui/images/icons/tag.png"))
     };
 
     private MusicBar musicBar;
@@ -59,17 +60,14 @@ public class LayoutController implements Initializable, DataInitializable<User> 
         navigationMenu.getChildren().clear();
         for(MenuLink menuLink : MENU_LINKS){
             navigationMenu.getChildren().add(menuLink);
-            menuLink.setOnMouseClicked(event -> {
-                setCurrentPage(menuLink.getHref());
-            });
+            menuLink.setOnMouseClicked(event -> setCurrentPage(menuLink.getPage()));
         }
     }
 
     private void setCurrentPage(Pages page){
-        if(page == currentPage) return; //might have to remove this later if we want to reset the page
         currentPage = page;
         for(MenuLink menuLink : MENU_LINKS){
-            menuLink.setActive(menuLink.getHref() == currentPage);
+            menuLink.setActive(menuLink.getPage() == currentPage);
         }
         try{
             ViewDispatcher.getInstance().navigateTo(page);

@@ -11,19 +11,19 @@ import javafx.scene.layout.HBox;
 
 public class MenuLink extends HBox {
     private String menuText;
-    private Pages href;
+    private Pages page;
     private HBox actionBox;
     private Label label;
-    private ImageView image;
-    private String imageURL;
+    private ImageView imageView;
+    private Image image;
     private boolean isActive = false;
 
-    public MenuLink(String text, Pages href, String imageURL) {
+    public MenuLink(String text, Pages page, Image image) {
         super();
         this.menuText = text;
-        this.href = href;
-        this.imageURL = imageURL;
-        this.init();
+        this.page = page;
+        this.image = image;
+        this.initialize();
     }
 
     public void setActive(boolean active) {
@@ -35,12 +35,12 @@ public class MenuLink extends HBox {
         }
     }
 
-    private void init() {
+    private void initialize() {
         this.getStyleClass().add("menu-link");
         this.setCursor(Cursor.HAND);
-        this.image = new ImageView(this.imageURL);
-        this.image.setFitWidth(20);
-        this.image.setFitHeight(20);
+        this.imageView = new ImageView(this.image);
+        this.imageView.setFitWidth(20);
+        this.imageView.setFitHeight(20);
         this.label = new Label(this.menuText);
         this.actionBox = new HBox();
         this.setSpacing(10);
@@ -49,11 +49,11 @@ public class MenuLink extends HBox {
         this.actionBox.getStyleClass().add("menu-link-accent");
         actionBox.setMinWidth(8);
         actionBox.setMaxWidth(8);
-        this.getChildren().addAll(this.actionBox, this.image, this.label);
+        this.getChildren().addAll(this.actionBox, this.imageView, this.label);
     }
 
-    public Pages getHref() {
-        return this.href;
+    public Pages getPage() {
+        return this.page;
     }
 
 }
