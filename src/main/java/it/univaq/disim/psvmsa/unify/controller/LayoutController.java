@@ -1,6 +1,7 @@
 package it.univaq.disim.psvmsa.unify.controller;
 import it.univaq.disim.psvmsa.unify.model.User;
 import it.univaq.disim.psvmsa.unify.view.Pages;
+import it.univaq.disim.psvmsa.unify.view.View;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcherException;
 import it.univaq.disim.psvmsa.unify.view.components.MenuLink;
@@ -8,6 +9,7 @@ import it.univaq.disim.psvmsa.unify.view.components.MusicBar;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -34,6 +36,9 @@ public class LayoutController implements Initializable, DataInitializable<User> 
     @FXML
     private Label usernameLabel;
 
+    private View currentView;
+    @FXML
+    private ScrollPane layoutRoot;
     @FXML
     private void gotoHome(){
         setCurrentPage(Pages.HOME);
@@ -64,6 +69,11 @@ public class LayoutController implements Initializable, DataInitializable<User> 
         }
     }
 
+    public void setCurrentView(View view){
+        this.currentView = view;
+        layoutRoot.setContent(view.getView());
+        System.out.println(view instanceof DataInitializable);
+    }
     private void setCurrentPage(Pages page){
         currentPage = page;
         for(MenuLink menuLink : MENU_LINKS){

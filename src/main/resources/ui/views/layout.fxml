@@ -164,7 +164,7 @@
 
          </bottom>
          <center>
-            <ScrollPane id="layoutRoot" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" styleClass="main-content-wrapper" BorderPane.alignment="CENTER">
+            <ScrollPane id="layoutRoot" fx:id="layoutRoot" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" styleClass="main-content-wrapper" BorderPane.alignment="CENTER">
                <padding>
                   <Insets left="12.0" right="12.0" />
                </padding></ScrollPane>

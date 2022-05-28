@@ -1,5 +1,6 @@
 package it.univaq.disim.psvmsa.unify.view;
 
+import it.univaq.disim.psvmsa.unify.controller.LayoutController;
 import it.univaq.disim.psvmsa.unify.model.User;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,7 +11,7 @@ import javafx.stage.Stage;
 
 public class ViewDispatcher {
     private Stage stage;
-    private ScrollPane layout;
+    private LayoutController layout;
     private static ViewDispatcher instance = new ViewDispatcher();
 
     static public ViewDispatcher getInstance(){
@@ -26,7 +27,7 @@ public class ViewDispatcher {
         View<User> layoutPage = loadView("/ui/views/layout.fxml");
         Parent layoutView = layoutPage.getView();
         layoutPage.getController().initializeData(user);
-        layout = (ScrollPane) layoutView.lookup("#layoutRoot");
+        this.layout = (LayoutController) layoutPage.getController();
         stage.setScene(new Scene(layoutView));
         navigateTo(Pages.HOME);
     }
@@ -39,12 +40,13 @@ public class ViewDispatcher {
         validateStage();
         View<T> viewToLoad = loadView("/ui/views/" + page.toString() + ".fxml");
         viewToLoad.getController().initializeData(data);
-        layout.setContent(viewToLoad.getView());
+        layout.setCurrentView(viewToLoad);
+
     }
     public void navigateTo(Pages page) throws ViewDispatcherException {
         validateStage();
         View viewToLoad = loadView("/ui/views/" + page.toString() + ".fxml");
-        layout.setContent(viewToLoad.getView());
+        layout.setCurrentView(viewToLoad);
     }
     private void validateStage() throws ViewDispatcherException {
         if(stage == null){
