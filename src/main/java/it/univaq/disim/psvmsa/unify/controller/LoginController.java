@@ -15,7 +15,7 @@ import javafx.scene.control.TextField;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class LoginController implements Initializable {
+public class LoginController implements Initializable, DataInitializable{
     @FXML
     private Label logLabel;
     @FXML
@@ -34,7 +34,7 @@ public class LoginController implements Initializable {
         try{
             UserService userService = new RAMUserServiceImpl();
             User user = userService.validate(username.getText(),password.getText());
-            viewDispatcher.loggedIn();
+            viewDispatcher.loggedIn(user);
             viewDispatcher.navigateTo(Pages.HOME);
         }catch(ViewDispatcherException e){
             System.out.println(e.getMessage());

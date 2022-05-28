@@ -1,5 +1,6 @@
 package it.univaq.disim.psvmsa.unify.view;
 
+import it.univaq.disim.psvmsa.unify.model.User;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -20,32 +21,42 @@ public class ViewDispatcher {
         this.stage = stage;
     }
 
-    public void loggedIn() throws ViewDispatcherException {
+    public void loggedIn(User user) throws ViewDispatcherException {
         validateStage();
-        Parent layoutPage = loadView("/ui/views/layout.fxml");
-        layout = (ScrollPane) layoutPage.lookup("#layoutRoot");
-        stage.setScene(new Scene(layoutPage));
+        View<User> layoutPage = loadView("/ui/views/layout.fxml");
+        Parent layoutView = layoutPage.getView();
+        layoutPage.getController().initializeData(user);
+        layout = (ScrollPane) layoutView.lookup("#layoutRoot");
+        stage.setScene(new Scene(layoutView));
+        navigateTo(Pages.HOME);
     }
 
     public void showLogin() throws ViewDispatcherException {
-        Parent LoginPage = loadView("/ui/views/login.fxml");
-        stage.setScene(new Scene(LoginPage));
+        View loginPage = loadView("/ui/views/login.fxml");
+        stage.setScene(new Scene(loginPage.getView()));
+    }
+    public <T> void navigateTo(Pages page, T data) throws ViewDispatcherException {
+        validateStage();
+        View<T> viewToLoad = loadView("/ui/views/" + page.toString() + ".fxml");
+        viewToLoad.getController().initializeData(data);
+        layout.setContent(viewToLoad.getView());
     }
     public void navigateTo(Pages page) throws ViewDispatcherException {
         validateStage();
-        Parent pageToLoad = loadView("/ui/views/" + page.toString() + ".fxml");
-        layout.setContent(pageToLoad);
+        View viewToLoad = loadView("/ui/views/" + page.toString() + ".fxml");
+        layout.setContent(viewToLoad.getView());
     }
-
     private void validateStage() throws ViewDispatcherException {
         if(stage == null){
             throw new ViewDispatcherException("Stage not set");
         }
     }
-    private Parent loadView(String path) throws ViewDispatcherException {
+
+    private <T> View<T> loadView(String path) throws ViewDispatcherException {
         try{
-            System.out.println("Loading view: " + path);
-            return FXMLLoader.load(getClass().getResource(path));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
+            Parent view = loader.load();
+            return new View<>(view,loader.getController());
         }catch(Exception e){
             throw new ViewDispatcherException(e.getMessage());
         }

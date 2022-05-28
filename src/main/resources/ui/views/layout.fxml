@@ -134,7 +134,29 @@
                         </HBox>
                      </children>
                   </HBox>
-                  <HBox prefHeight="40.0" prefWidth="156.0" style="-fx-background-color: #161721; -fx-background-radius: 10;" />
+                  <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="156.0" style="-fx-background-color: #161721; -fx-background-radius: 10;">
+                     <children>
+                        <Label fx:id="usernameLabel" text="Username">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin>
+                        </Label>
+                        <HBox HBox.hgrow="ALWAYS" />
+                        <ImageView fitHeight="20.0" fitWidth="20.0" onMousePressed="#logout" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/icons/logout.png" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </ImageView>
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="15.0" right="10.0" top="5.0" />
+                     </padding></HBox>
                </children>
             </HBox>
          </top>
@@ -142,7 +164,10 @@
 
          </bottom>
          <center>
-            <ScrollPane id="layoutRoot" prefHeight="200.0" prefWidth="200.0" styleClass="main-content-wrapper" BorderPane.alignment="CENTER" />
+            <ScrollPane id="layoutRoot" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" styleClass="main-content-wrapper" BorderPane.alignment="CENTER">
+               <padding>
+                  <Insets left="12.0" right="12.0" />
+               </padding></ScrollPane>
          </center>
       </BorderPane>
    </children>

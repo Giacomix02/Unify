@@ -3,6 +3,7 @@ package it.univaq.disim.psvmsa.unify.business.impl;
 import it.univaq.disim.psvmsa.unify.business.BusinessException;
 import it.univaq.disim.psvmsa.unify.business.UserService;
 import it.univaq.disim.psvmsa.unify.business.UserServiceException;
+import it.univaq.disim.psvmsa.unify.model.Admin;
 import it.univaq.disim.psvmsa.unify.model.User;
 
 import java.util.ArrayList;
@@ -13,6 +14,17 @@ public class RAMUserServiceImpl implements UserService {
     static List<User> users = new ArrayList<>();
 
     static Integer id = 0;
+
+    public void addMock() {
+        User adminUser = new Admin("admin","admin");
+        User user = new User("user","user");
+        try{
+            this.create(user);
+            this.create(adminUser);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public User getById(Integer id) {
