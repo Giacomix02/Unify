@@ -20,10 +20,12 @@ import java.util.ResourceBundle;
 public class LayoutController implements Initializable, DataInitializable<User>  {
     private Pages currentPage = Pages.HOME;
     private User user;
-    private static final String ARTIST_IMAGE = "/ui/images/icons/person.png";
-    private static final String ALBUM_IMAGE = "/ui/images/icons/compact-disc.png";
-    private static final String SONG_IMAGE = "/ui/images/icons/note.png";
-    private static final String GENRE_IMAGE = "/ui/images/icons/tag.png";
+
+    private static  final String IMAGE_PATH = "/ui/images/icons/";
+    private static final String ARTIST_IMAGE = IMAGE_PATH+"person.png";
+    private static final String ALBUM_IMAGE = IMAGE_PATH+"compact-disc.png";
+    private static final String SONG_IMAGE = IMAGE_PATH+"note.png";
+    private static final String GENRE_IMAGE = IMAGE_PATH+"tag.png";
 
     private MenuLink MENU_LINKS[] = {
         new MenuLink("Artists", Pages.ARTISTS, new Image(ARTIST_IMAGE)),
