@@ -20,15 +20,20 @@ import java.util.ResourceBundle;
 public class LayoutController implements Initializable, DataInitializable<User>  {
     private Pages currentPage = Pages.HOME;
     private User user;
+    private static final String ARTIST_IMAGE = "/ui/images/icons/person.png";
+    private static final String ALBUM_IMAGE = "/ui/images/icons/compact-disc.png";
+    private static final String SONG_IMAGE = "/ui/images/icons/note.png";
+    private static final String GENRE_IMAGE = "/ui/images/icons/tag.png";
+
     private MenuLink MENU_LINKS[] = {
-        new MenuLink("Artists", Pages.ARTISTS, new Image("/ui/images/icons/person.png")),
-        new MenuLink("Albums", Pages.ALBUMS, new Image("/ui/images/icons/compact-disc.png")),
-        new MenuLink("Songs", Pages.SONGS, new Image("/ui/images/icons/note.png")) ,
-        new MenuLink("Genres", Pages.GENRES, new Image("/ui/images/icons/tag.png"))
+        new MenuLink("Artists", Pages.ARTISTS, new Image(ARTIST_IMAGE)),
+        new MenuLink("Albums", Pages.ALBUMS, new Image(ALBUM_IMAGE)),
+        new MenuLink("Songs", Pages.SONGS, new Image(SONG_IMAGE)) ,
+        new MenuLink("Genres", Pages.GENRES, new Image(GENRE_IMAGE))
     };
 
-    private MusicBar musicBar;
 
+    private MusicBar musicBar;
     @FXML
     private BorderPane borderPane;
     @FXML
@@ -72,17 +77,18 @@ public class LayoutController implements Initializable, DataInitializable<User> 
     public void setCurrentView(View view){
         this.currentView = view;
         layoutRoot.setContent(view.getView());
-        System.out.println(view instanceof DataInitializable);
+        System.out.println(view.getController() instanceof Searchable);
     }
+
     private void setCurrentPage(Pages page){
         currentPage = page;
-        for(MenuLink menuLink : MENU_LINKS){
-            menuLink.setActive(menuLink.getPage() == currentPage);
-        }
         try{
             ViewDispatcher.getInstance().navigateTo(page);
         }catch(ViewDispatcherException e){
             System.out.println(e.getMessage());
+        }
+        for(MenuLink menuLink : MENU_LINKS){
+            menuLink.setActive(menuLink.getPage() == currentPage);
         }
     }
 }

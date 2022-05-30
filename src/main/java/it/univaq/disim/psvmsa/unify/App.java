@@ -10,8 +10,7 @@ import java.io.File;
 
 public class App extends Application {
 	private Stage stage;
-	private static final String UNIFY_ICON = File.separator+"ui"+ File.separator+"images"
-												+File.separator+"logo.png";
+	private static final String UNIFY_ICON = "/ui/images/logo.png";
 
 	public static void main(String[] args) {
 		launch(args);
@@ -23,7 +22,6 @@ public class App extends Application {
 		ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
 		viewDispatcher.setStage(stage);
 		viewDispatcher.showLogin();
-		//User testUser = new User("admin", "admin");
 		//viewDispatcher.loggedIn(testUser);
 		RAMUserServiceImpl userService = new RAMUserServiceImpl();
 		userService.addMock();
