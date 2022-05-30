@@ -1,4 +1,4 @@
-package it.univaq.disim.psvmsa.unify.business.impl;
+package it.univaq.disim.psvmsa.unify.business.impl.ram;
 
 import it.univaq.disim.psvmsa.unify.business.BusinessException;
 import it.univaq.disim.psvmsa.unify.business.PlaylistService;

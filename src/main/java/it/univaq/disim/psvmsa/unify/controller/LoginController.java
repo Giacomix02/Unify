@@ -1,7 +1,7 @@
 package it.univaq.disim.psvmsa.unify.controller;
 import it.univaq.disim.psvmsa.unify.business.BusinessException;
 import it.univaq.disim.psvmsa.unify.business.UserService;
-import it.univaq.disim.psvmsa.unify.business.impl.RAMUserServiceImpl;
+import it.univaq.disim.psvmsa.unify.business.impl.ram.RAMUserServiceImpl;
 import it.univaq.disim.psvmsa.unify.model.User;
 import it.univaq.disim.psvmsa.unify.view.Pages;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
