@@ -6,7 +6,6 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 
-import java.io.File;
 
 public class App extends Application {
 	private Stage stage;
@@ -27,7 +26,6 @@ public class App extends Application {
 		userService.addMock();
 		stage.getIcons().add(new Image(getClass().getResource(UNIFY_ICON).toString()));
 		stage.show();
-		
 	}
 
 }
