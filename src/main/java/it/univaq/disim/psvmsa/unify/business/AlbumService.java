@@ -2,7 +2,9 @@ package it.univaq.disim.psvmsa.unify.business;
 
 import it.univaq.disim.psvmsa.unify.model.Album;
 
+
 public interface AlbumService {
+
 
     Album getById(Integer id);
 

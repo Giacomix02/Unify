@@ -10,8 +10,8 @@ public interface ArtistService {
 
     void create (Artist artist);
 
-    void update (Artist artist);
+    void update (Artist artist) throws BusinessException;
 
-    void delete (Artist artist);
+    void delete (Artist artist) throws BusinessException;
 
 }
