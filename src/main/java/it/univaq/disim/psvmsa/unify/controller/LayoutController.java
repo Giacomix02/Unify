@@ -21,7 +21,7 @@ public class LayoutController implements Initializable, DataInitializable<User> 
     private Pages currentPage = Pages.HOME;
     private User user;
 
-    private static  final String IMAGE_PATH = "/ui/images/icons/";
+    private static final String IMAGE_PATH = "/ui/images/icons/";
     private static final String ARTIST_IMAGE = IMAGE_PATH+"person.png";
     private static final String ALBUM_IMAGE = IMAGE_PATH+"compact-disc.png";
     private static final String SONG_IMAGE = IMAGE_PATH+"note.png";

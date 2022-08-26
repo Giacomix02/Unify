@@ -1,5 +1,6 @@
 package it.univaq.disim.psvmsa.unify.controller;
 import it.univaq.disim.psvmsa.unify.business.BusinessException;
+import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.business.UserService;
 import it.univaq.disim.psvmsa.unify.business.impl.ram.RAMUserServiceImpl;
 import it.univaq.disim.psvmsa.unify.model.User;
@@ -22,6 +23,11 @@ public class LoginController implements Initializable, DataInitializable{
     private TextField username;
     @FXML
     private PasswordField password;
+    UserService userService;
+    public LoginController(){
+        UnifyServiceFactory factoryInstance = UnifyServiceFactory.getInstance();
+        this.userService = factoryInstance.getUserService();
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -32,8 +38,7 @@ public class LoginController implements Initializable, DataInitializable{
     private void login() {
         ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
         try{
-            UserService userService = new RAMUserServiceImpl();
-            User user = userService.validate(username.getText(),password.getText());
+            User user = this.userService.validate(username.getText(),password.getText());
             viewDispatcher.loggedIn(user);
             viewDispatcher.navigateTo(Pages.HOME);
         }catch(ViewDispatcherException e){
