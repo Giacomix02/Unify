@@ -9,8 +9,8 @@ import java.util.List;
 
 public class RAMSongServiceImpl implements SongService {
 
-    static List<Song> songs = new ArrayList<Song>();
-    static Integer id = 0;
+    private List<Song> songs = new ArrayList<Song>();
+    private Integer id = 0;
 
     @Override
     public Song getById(Integer id) {

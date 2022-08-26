@@ -10,8 +10,8 @@ import java.util.List;
 
 
 public class RAMPlaylistServiceImpl implements PlaylistService {
-    static List<Playlist> playlists = new ArrayList<>();
-    static Integer id = 0;
+    private List<Playlist> playlists = new ArrayList<>();
+    private Integer id = 0;
 
     @Override
     public List<Playlist> getPlaylistsByUser(User user) {

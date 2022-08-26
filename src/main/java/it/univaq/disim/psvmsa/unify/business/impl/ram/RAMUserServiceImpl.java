@@ -11,9 +11,9 @@ import java.util.List;
 
 public class RAMUserServiceImpl implements UserService {
 
-    static List<User> users = new ArrayList<>();
+    private List<User> users = new ArrayList<>();
 
-    static Integer id = 0;
+    private Integer id = 0;
 
     public void addMock() {
         User adminUser = new Admin("admin","admin");

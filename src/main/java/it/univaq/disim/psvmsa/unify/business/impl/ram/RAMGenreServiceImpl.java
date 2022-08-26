@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RAMGenreServiceImpl implements GenreService {
-    private static List<Genre> genres = new ArrayList<>();
-    private static Integer id = 0;
+    private List<Genre> genres = new ArrayList<>();
+    private Integer id = 0;
 
     @Override
     public List<Genre> getAllGenres() {

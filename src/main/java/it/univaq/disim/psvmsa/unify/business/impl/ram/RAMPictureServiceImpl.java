@@ -9,8 +9,8 @@ import java.util.List;
 
 public class RAMPictureServiceImpl implements PictureService {
 
-    static List<Picture> pictures = new ArrayList<>();
-    static Integer id = 0;
+    private List<Picture> pictures = new ArrayList<>();
+    private Integer id = 0;
 
     @Override
     public Picture getById(Integer id) {
