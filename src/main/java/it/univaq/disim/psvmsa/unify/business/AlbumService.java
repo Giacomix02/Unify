@@ -12,6 +12,6 @@ public interface AlbumService {
 
     void update (Album album);
 
-    void delete (Album album);
+    void delete (Album album) throws BusinessException;
 
 }
