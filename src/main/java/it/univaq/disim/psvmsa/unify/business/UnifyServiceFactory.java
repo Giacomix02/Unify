@@ -1,28 +1,20 @@
 package it.univaq.disim.psvmsa.unify.business;
 
 import it.univaq.disim.psvmsa.unify.business.AlbumService;
+import it.univaq.disim.psvmsa.unify.business.impl.ram.RAMUnifyServiceFactory;
 
 public abstract class UnifyServiceFactory {
 
-    private AlbumService albumService;
-
-    private ArtistService artistService;
-
-    private GenreService genreService;
-
-    private PictureService pictureService;
-
-    private SongService songService;
-
-    private UserService userService;
-
-    private static UnifyServiceFactory instance;
+    private static UnifyServiceFactory instance = new RAMUnifyServiceFactory();
+    //private static UnifyServiceFactory instance = new FileUnifyServiceFactory();
 
     public abstract AlbumService getAlbumService();
 
     public abstract ArtistService getArtistService();
 
     public abstract GenreService getGenreService();
+
+    public abstract PlaylistService getPlaylistService();
 
     public abstract PictureService getPictureService();
 

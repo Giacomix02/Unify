@@ -9,7 +9,7 @@ import it.univaq.disim.psvmsa.unify.model.User;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RAMUserServiceImpl implements UserService {
+public class RAMUserServiceImpl implements UserService   {
 
     private List<User> users = new ArrayList<>();
 
