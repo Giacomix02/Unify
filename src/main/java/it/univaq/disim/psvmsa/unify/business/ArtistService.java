@@ -8,10 +8,10 @@ public interface ArtistService {
 
     void deleteById(Integer id);
 
-    void create (Artist artist);
+    void add(Artist artist);
 
-    void update (Artist artist);
+    void update (Artist artist) throws BusinessException;
 
-    void delete (Artist artist);
+    void delete (Artist artist) throws BusinessException;
 
 }

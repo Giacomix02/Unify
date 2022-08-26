@@ -14,22 +14,22 @@ public class FilePlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
-    public Playlist getPlaylistById(Integer id) {
+    public Playlist getById(Integer id) {
         return null;
     }
 
     @Override
-    public int createPlaylist(Playlist playlist) {
+    public int add(Playlist playlist) {
         return 0;
     }
 
     @Override
-    public void deletePlaylist(Playlist playlist) {
+    public void delete(Playlist playlist) {
 
     }
 
     @Override
-    public void updatePlaylist(Playlist playlist) throws BusinessException {
+    public void update(Playlist playlist) throws BusinessException {
 
     }
 }

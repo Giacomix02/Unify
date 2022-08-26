@@ -17,7 +17,7 @@ public class RAMGenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Genre getGenreById(Integer id) {
+    public Genre getById(Integer id) {
         for (Genre genre : genres) {
             if (genre.getId().equals(id)) {
                 return genre;
@@ -27,20 +27,20 @@ public class RAMGenreServiceImpl implements GenreService {
     }
 
     @Override
-    public void createGenre(Genre genre) {
+    public void add(Genre genre) {
         genre.setId(++id);
         genres.add(genre);
     }
 
     @Override
-    public void deleteGenre(Genre genre) throws BusinessException {
+    public void delete(Genre genre) throws BusinessException {
         int index = findIndexById(genre.getId());
         if (index < 0) throw new BusinessException("Genre not found");
         genres.remove(index);
     }
 
     @Override
-    public void updateGenre(Genre genre) throws BusinessException {
+    public void update(Genre genre) throws BusinessException {
         int index = findIndexById(genre.getId());
         if(index < 0) throw new BusinessException("Genre not found");
         genres.set(index, genre);

@@ -13,22 +13,22 @@ public class FileGenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Genre getGenreById(Integer id) {
+    public Genre getById(Integer id) {
         return null;
     }
 
     @Override
-    public void createGenre(Genre genre) {
+    public void add(Genre genre) {
 
     }
 
     @Override
-    public void deleteGenre(Genre genre) throws BusinessException {
+    public void delete(Genre genre) throws BusinessException {
 
     }
 
     @Override
-    public void updateGenre(Genre genre) throws BusinessException {
+    public void update(Genre genre) throws BusinessException {
 
     }
 }

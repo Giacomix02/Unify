@@ -16,7 +16,7 @@ public class FilePictureServiceImpl implements PictureService {
     }
 
     @Override
-    public void create(Picture picture) {
+    public void add(Picture picture) {
 
     }
 

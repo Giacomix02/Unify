@@ -8,7 +8,7 @@ public interface PictureService {
 
     void deleteById (Integer id);
 
-    void create (Picture picture);
+    void add(Picture picture);
 
     void update (Picture picture) throws BusinessException;
 

@@ -2,7 +2,6 @@ package it.univaq.disim.psvmsa.unify.business.impl.ram;
 
 import it.univaq.disim.psvmsa.unify.business.BusinessException;
 import it.univaq.disim.psvmsa.unify.business.UserService;
-import it.univaq.disim.psvmsa.unify.business.UserServiceException;
 import it.univaq.disim.psvmsa.unify.model.Admin;
 import it.univaq.disim.psvmsa.unify.model.User;
 
@@ -19,8 +18,8 @@ public class RAMUserServiceImpl implements UserService   {
         User adminUser = new Admin("admin","admin");
         User user = new User("user","user");
         try{
-            this.create(user);
-            this.create(adminUser);
+            this.add(user);
+            this.add(adminUser);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -59,7 +58,7 @@ public class RAMUserServiceImpl implements UserService   {
     }
 
     @Override
-    public void create(User user) throws BusinessException {
+    public void add(User user) throws BusinessException {
         if (getByUsername(user.getUsername()) != null) throw new BusinessException("User already exists");
         user.setId(++id);
         users.add(user);

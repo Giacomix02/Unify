@@ -28,4 +28,19 @@ public class Album {
     public void setId(Integer id) {
         this.id = id;
     }
+
+
+    // experimental functions
+    public boolean equals(Object o ){
+        if(o instanceof Album){
+            Album album = (Album)o;
+            return name.equals(album.name) && id.equals(album.id);
+        }
+        return false;
+    }
+
+    public void setFrom(Album album){
+        this.name = album.name;
+        this.id = album.id;
+    }
 }

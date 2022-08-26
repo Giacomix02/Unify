@@ -25,7 +25,7 @@ public class RAMPlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
-    public Playlist getPlaylistById(Integer id) {
+    public Playlist getById(Integer id) {
         for (Playlist playlist : playlists) {
             if (playlist.getId().equals(id)) {
                 return playlist;
@@ -35,21 +35,21 @@ public class RAMPlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
-    public int createPlaylist(Playlist playlist) {
+    public int add(Playlist playlist) {
         playlist.setId(++id);
         playlists.add(playlist);
         return 0;
     }
 
     @Override
-    public void deletePlaylist(Playlist playlist) {
+    public void delete(Playlist playlist) {
         int index = findIndexById(playlist.getId());
         if (index < 0) return;
         playlists.remove(index);
     }
 
     @Override
-    public void updatePlaylist(Playlist playlist) throws BusinessException {
+    public void update(Playlist playlist) throws BusinessException {
         int index = findIndexById(playlist.getId());
         if (index < 0) throw new BusinessException("Playlist not found");
         playlists.set(index, playlist);

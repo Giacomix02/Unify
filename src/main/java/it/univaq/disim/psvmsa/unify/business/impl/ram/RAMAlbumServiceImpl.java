@@ -15,24 +15,29 @@ public class RAMAlbumServiceImpl implements AlbumService {
 
     @Override
     public Album getById(Integer id){
-
+        for(Album album : albums){
+            if(album.getId().equals(id)) return album;
+        }
+        return null;
     }
 
     @Override
-    public void create (Album album){
+    public void add(Album album){
         this.albums.add(album);
         album.setId(++id);
     }
 
     @Override
-    public void update(Album album) {
-
+    public void update(Album album) throws  BusinessException {
+        Album existing = getById(album.getId());
+        if(existing==null) throw new BusinessException("Album not found");
+        existing.setFrom(album);    //experimental function
     }
 
     @Override
     public void delete(Album album) throws BusinessException {
-        if (albums.contains(album)) {
-            albums.remove(album);
+        if (this.albums.contains(album)) {
+            this.albums.remove(album);
         } else {
             throw new BusinessException("Album not found");
         }
