@@ -2,6 +2,7 @@ package it.univaq.disim.psvmsa.unify.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class Playlist {
@@ -84,5 +85,19 @@ public class Playlist {
         this.user = user;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Playlist)) return false;
+        Playlist playlist = (Playlist) o;
+        return Objects.equals(user, playlist.user) &&
+                Objects.equals(name, playlist.name) &&
+                Objects.equals(id, playlist.id) &&
+                Objects.equals(songs, playlist.songs);
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(user, name, id, songs);
+    }
 
 }

@@ -6,59 +6,42 @@ import it.univaq.disim.psvmsa.unify.model.Playlist;
 import it.univaq.disim.psvmsa.unify.model.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 public class RAMPlaylistServiceImpl implements PlaylistService {
-    private List<Playlist> playlists = new ArrayList<>();
+    private Map<Integer, Playlist> playlists = new HashMap<>();
     private Integer id = 0;
 
-    @Override
     public List<Playlist> getPlaylistsByUser(User user) {
-        List<Playlist> userPlaylists = new ArrayList<>();
-        for (Playlist p : playlists) {
-            if (p.getUser().getId().equals(user.getId())) {
-                userPlaylists.add(p);
-            }
-        }
-        return userPlaylists;
+        return playlists
+                .values()
+                .stream()
+                .filter(playlist -> playlist.getUser().equals(user))
+                .collect(Collectors.toList());
     }
 
-    @Override
     public Playlist getById(Integer id) {
-        for (Playlist playlist : playlists) {
-            if (playlist.getId().equals(id)) {
-                return playlist;
-            }
-        }
-        return null;
+        return playlists.get(id);
     }
 
-    @Override
     public int add(Playlist playlist) {
         playlist.setId(++id);
-        playlists.add(playlist);
-        return 0;
+        playlists.put(playlist.getId(), playlist);
+        return id;
+    }
+    public void delete(Playlist playlist) throws BusinessException{
+        Playlist existing = this.getById(playlist.getId());
+        if(existing == null) throw new BusinessException("Playlist not found");
+        playlists.remove(existing.getId());
     }
 
-    @Override
-    public void delete(Playlist playlist) {
-        int index = findIndexById(playlist.getId());
-        if (index < 0) return;
-        playlists.remove(index);
-    }
-
-    @Override
     public void update(Playlist playlist) throws BusinessException {
-        int index = findIndexById(playlist.getId());
-        if (index < 0) throw new BusinessException("Playlist not found");
-        playlists.set(index, playlist);
-    }
-
-    private int findIndexById(Integer id) {
-        for (int i = 0; i < playlists.size(); i++) {
-            if (playlists.get(i).getId().equals(id)) return i;
-        }
-        return -1;
+        Playlist existing = this.getById(playlist.getId());
+        if(existing == null) throw new BusinessException("Playlist not found");
+        playlists.put(existing.getId(), playlist);
     }
 }

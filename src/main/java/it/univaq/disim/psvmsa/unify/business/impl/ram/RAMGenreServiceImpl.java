@@ -5,51 +5,40 @@ import it.univaq.disim.psvmsa.unify.business.GenreService;
 import it.univaq.disim.psvmsa.unify.model.Genre;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class RAMGenreServiceImpl implements GenreService {
-    private List<Genre> genres = new ArrayList<>();
+    private Map<Integer, Genre> genres = new HashMap<>();
     private Integer id = 0;
 
     @Override
     public List<Genre> getAllGenres() {
-        return genres;
+        return new ArrayList<>(genres.values());
     }
 
-    @Override
     public Genre getById(Integer id) {
-        for (Genre genre : genres) {
-            if (genre.getId().equals(id)) {
-                return genre;
-            }
-        }
-        return null;
+        return genres.get(id);
     }
 
-    @Override
     public int add(Genre genre) {
         genre.setId(++id);
-        genres.add(genre);
+        genres.put(genre.getId(), genre);
         return genre.getId();
     }
 
-    @Override
     public void delete(Genre genre) throws BusinessException {
-        int index = findIndexById(genre.getId());
-        if (index < 0) throw new BusinessException("Genre not found");
-        genres.remove(index);
+        Genre existing = this.getById(genre.getId());
+        if(existing == null) throw new BusinessException("Genre not found");
+        genres.remove(existing.getId());
     }
 
-    @Override
     public void update(Genre genre) throws BusinessException {
-        int index = findIndexById(genre.getId());
-        if(index < 0) throw new BusinessException("Genre not found");
-        genres.set(index, genre);
+        Genre existing = this.getById(genre.getId());
+        if(existing == null) throw new BusinessException("Genre not found");
+        genres.put(existing.getId(), genre);
     }
-    private int findIndexById(Integer id) {
-        for (int i = 0; i < genres.size(); i++) {
-            if (genres.get(i).getId().equals(id)) return i;
-        }
-        return -1;
-    }
+
 }
