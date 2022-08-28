@@ -21,7 +21,7 @@ public class FileSongServiceImpl implements SongService {
     }
 
     @Override
-    public void add(Song song) {
-
+    public int add(Song song) {
+        return 0;
     }
 }

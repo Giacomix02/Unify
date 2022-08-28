@@ -31,7 +31,7 @@ public class FileUserServiceImpl implements UserService {
     }
 
     @Override
-    public void add(User user) throws BusinessException {
-
+    public int add(User user) throws BusinessException {
+        return 0;
     }
 }

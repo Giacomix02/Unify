@@ -18,8 +18,8 @@ public class FileGenreServiceImpl implements GenreService {
     }
 
     @Override
-    public void add(Genre genre) {
-
+    public int add(Genre genre) {
+        return 0;
     }
 
     @Override

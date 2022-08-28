@@ -70,7 +70,7 @@
                         <Insets bottom="10.0" top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <Button mnemonicParsing="false" onAction="#login" styleClass="custom-button" text="Login">
+                  <Button mnemonicParsing="false" onAction="#login" styleClass="custom-button" text="Login" fx:id="loginButton">
                      <cursor>
                         <Cursor fx:constant="WAIT" />
                      </cursor>

@@ -9,6 +9,7 @@ import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcherException;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -23,6 +24,9 @@ public class LoginController implements Initializable, DataInitializable{
     private TextField username;
     @FXML
     private PasswordField password;
+
+    @FXML
+    private Button loginButton;
     UserService userService;
     public LoginController(){
         UnifyServiceFactory factoryInstance = UnifyServiceFactory.getInstance();
@@ -31,7 +35,13 @@ public class LoginController implements Initializable, DataInitializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        this.loginButton
+                .disableProperty()
+                .bind(username
+                        .textProperty()
+                        .isEmpty()
+                        .or(password.textProperty().isEmpty())
+                );
     }
 
     @FXML
