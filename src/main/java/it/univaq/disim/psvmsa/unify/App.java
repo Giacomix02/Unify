@@ -10,11 +10,9 @@ import javafx.scene.image.Image;
 public class App extends Application {
 	private Stage stage;
 	private static final String UNIFY_ICON = "/ui/images/logo.png";
-
 	public static void main(String[] args) {
 		launch(args);
 	}
-
 	@Override
 	public void start(Stage stage) throws Exception {
 		this.stage = stage;
@@ -22,10 +20,7 @@ public class App extends Application {
 		viewDispatcher.setStage(stage);
 		viewDispatcher.showLogin();
 		//viewDispatcher.loggedIn(testUser);
-		RAMUserServiceImpl userService = new RAMUserServiceImpl();
-		userService.addMock();
 		stage.getIcons().add(new Image(getClass().getResource(UNIFY_ICON).toString()));
 		stage.show();
 	}
-
 }

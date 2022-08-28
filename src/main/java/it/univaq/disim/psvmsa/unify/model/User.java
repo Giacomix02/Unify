@@ -1,8 +1,7 @@
 package it.univaq.disim.psvmsa.unify.model;
 
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class User {
     private String username;
@@ -56,5 +55,21 @@ public class User {
 
     public String toString() {
         return String.format("User{username='%s', password='%s', id=%d}", this.username, this.password, this.id);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return Objects.equals(username,user.username) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(id, user.id) &&
+                Objects.equals(playlists, user.playlists);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username, password, id, playlists);
     }
 }
