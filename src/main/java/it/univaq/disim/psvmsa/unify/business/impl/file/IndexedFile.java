@@ -18,7 +18,7 @@ public class IndexedFile {
             this.values = values;
             this.separator = separator;
         }
-        static Row fromText(String line, String separator){
+        static Row fromText( String separator, String line){
             Row row = new Row(separator);
             row.values = List.of(line.split(separator));
             return row;
@@ -77,10 +77,7 @@ public class IndexedFile {
     }
 
     public Row findRowById(int id){
-        return rows.stream()
-                .filter(r -> r.getIntAt(0) == id)
-                .findFirst()
-                .orElse(null);
+        return findRow(row -> row.getIntAt(0)==id);
     }
 
     public void deleteRow(int id) throws BusinessException {
