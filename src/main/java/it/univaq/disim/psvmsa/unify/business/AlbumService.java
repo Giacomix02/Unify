@@ -10,7 +10,7 @@ public interface AlbumService {
 
     void deleteById (Integer id) throws BusinessException;
 
-    void add(Album album);
+    int add(Album album);
 
     void update (Album album) throws BusinessException;
 

@@ -8,7 +8,7 @@ public interface GenreService {
 
     List<Genre> getAllGenres();
     Genre getById(Integer id);
-    void add(Genre genre);
+    int add(Genre genre);
     void delete(Genre genre) throws  BusinessException;
     void update(Genre genre) throws BusinessException;
 }

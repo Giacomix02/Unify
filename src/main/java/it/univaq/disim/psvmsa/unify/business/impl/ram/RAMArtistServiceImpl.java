@@ -28,9 +28,10 @@ public class RAMArtistServiceImpl implements ArtistService {
     }
 
     @Override
-    public void add(Artist artist) {
+    public int add(Artist artist) {
         artist.setId(++id);
         artists.put(artist.getId(),artist);
+        return artist.getId();
     }
 
     @Override

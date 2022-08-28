@@ -32,9 +32,10 @@ public class RAMPictureServiceImpl implements PictureService {
     }
 
     @Override
-    public void add(Picture picture) {
+    public int add(Picture picture) {
         picture.setId(++id);
         pictures.add(picture);
+        return picture.getId();
     }
 
     @Override

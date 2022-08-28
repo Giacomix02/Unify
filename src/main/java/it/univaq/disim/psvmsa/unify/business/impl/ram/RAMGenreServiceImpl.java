@@ -27,9 +27,10 @@ public class RAMGenreServiceImpl implements GenreService {
     }
 
     @Override
-    public void add(Genre genre) {
+    public int add(Genre genre) {
         genre.setId(++id);
         genres.add(genre);
+        return genre.getId();
     }
 
     @Override

@@ -23,9 +23,10 @@ public class RAMSongServiceImpl implements SongService {
     }
 
     @Override
-    public void add(Song song) {
+    public int add(Song song) {
         song.setId(++id);
         songs.add(song);
+        return song.getId();
     }
 
     @Override

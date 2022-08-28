@@ -10,5 +10,5 @@ public interface SongService {
 
     void update(Song song) throws BusinessException;
 
-    void add(Song song);
+    int add(Song song);
 }
