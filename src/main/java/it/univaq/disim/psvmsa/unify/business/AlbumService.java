@@ -8,7 +8,7 @@ public interface AlbumService {
 
     Album getById(Integer id);
 
-    void deleteById (Integer id);
+    void deleteById (Integer id) throws BusinessException;
 
     void add(Album album);
 

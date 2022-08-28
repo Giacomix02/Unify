@@ -1,5 +1,7 @@
 package it.univaq.disim.psvmsa.unify.model;
 
+import java.util.Objects;
+
 public class Artist {
 
     private String name;
@@ -51,5 +53,22 @@ public class Artist {
 
     public void setPicture(Picture picture) {
         this.picture = picture;
+    }
+
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Artist)) return false;
+        Artist artist = (Artist) o;
+        return Objects.equals(name,artist.name) &&
+                Objects.equals(id, artist.id) &&
+                Objects.equals(biography, artist.biography) &&
+                Objects.equals(picture, artist.picture);
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, id, biography, picture);
     }
 }

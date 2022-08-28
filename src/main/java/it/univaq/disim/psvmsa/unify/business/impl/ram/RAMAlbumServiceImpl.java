@@ -5,47 +5,45 @@ import it.univaq.disim.psvmsa.unify.business.BusinessException;
 import it.univaq.disim.psvmsa.unify.model.Album;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RAMAlbumServiceImpl implements AlbumService {
 
-    private List<Album> albums = new ArrayList<>();
+    private Map<Integer,Album> albums = new HashMap<>();
     private Integer id = 0;
 
 
     @Override
     public Album getById(Integer id){
-        for(Album album : albums){
-            if(album.getId().equals(id)) return album;
-        }
-        return null;
+        return this.albums.get(id);
     }
+
 
     @Override
     public void add(Album album){
-        this.albums.add(album);
         album.setId(++id);
+        this.albums.put(album.getId(),album);
+
     }
 
     @Override
     public void update(Album album) throws  BusinessException {
         Album existing = getById(album.getId());
         if(existing==null) throw new BusinessException("Album not found");
-        existing.setFrom(album);    //experimental function
+        albums.put(album.getId(),album);
+
     }
 
     @Override
-    public void delete(Album album) throws BusinessException {
-        if (this.albums.contains(album)) {
-            this.albums.remove(album);
-        } else {
-            throw new BusinessException("Album not found");
-        }
+    public void delete(Album album) throws BusinessException{
+        deleteById(album.getId());
     }
 
     @Override
-    public void deleteById(Integer id) {
-
-        this.albums.remove(getById(id));
+    public void deleteById(Integer id) throws BusinessException{
+        Album existing = this.albums.remove(id);
+        if(existing==null) throw new BusinessException("Album not found");
     }
 }

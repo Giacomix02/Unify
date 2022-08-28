@@ -2,64 +2,48 @@ package it.univaq.disim.psvmsa.unify.business.impl.ram;
 
 import it.univaq.disim.psvmsa.unify.business.ArtistService;
 import it.univaq.disim.psvmsa.unify.business.BusinessException;
+import it.univaq.disim.psvmsa.unify.model.Album;
 import it.univaq.disim.psvmsa.unify.model.Artist;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RAMArtistServiceImpl implements ArtistService {
 
-    private List<Artist> artists = new ArrayList<>();
+    private Map<Integer,Artist> artists = new HashMap<>();
 
     private Integer id = 0;
 
     @Override
     public Artist getById(Integer id) {
-        for (Artist artist : artists) {
-            if (artist.getId().equals(id)) {
-                return artist;
-            }
-        }
-        return null;
+        return this.artists.get(id);
     }
 
     @Override
-    public void deleteById(Integer id) {
-        for (Artist artist : artists) {
-            if(artist.getId().equals(id)) {
-                artists.remove(artist);
-            }
-        }
+    public void deleteById(Integer id) throws BusinessException{
+        Artist existing = this.artists.remove(id);
+        if(existing==null) throw new BusinessException("Artist not found");
     }
 
     @Override
     public void add(Artist artist) {
         artist.setId(++id);
-        artists.add(artist);
+        artists.put(artist.getId(),artist);
     }
 
     @Override
     public void delete(Artist artist) throws BusinessException {
-        if(artists.contains(artist)) {
-            artists.remove(artist);
-        } else {
-            throw new BusinessException("Artist not found");
-        }
+        deleteById(artist.getId());
     }
 
     @Override
     public void update(Artist artist) throws BusinessException {
-        int index = findIndexById(artist.getId());
-        if(index < 0) throw new BusinessException("Artist not found");
-        artists.set(index, artist);
-    }
 
-    private int findIndexById(Integer id) {
-        for(int i = 0; i < artists.size(); i++) {
-            if (artists.get(i).getId().equals(id)) {
-                return i;
-            }
-        }
-        return -1;
+        Artist existing = getById(artist.getId());
+        if(existing == null) throw new BusinessException("Artist not found");
+
+        artists.put(artist.getId(),artist);
     }
 }

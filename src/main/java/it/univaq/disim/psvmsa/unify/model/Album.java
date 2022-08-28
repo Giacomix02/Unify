@@ -1,5 +1,7 @@
 package it.univaq.disim.psvmsa.unify.model;
 
+import java.util.Objects;
+
 public class Album {
     private String name;
     private Integer id;
@@ -30,17 +32,18 @@ public class Album {
     }
 
 
-    // experimental functions
-    public boolean equals(Object o ){
-        if(o instanceof Album){
-            Album album = (Album)o;
-            return name.equals(album.name) && id.equals(album.id);
-        }
-        return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Album)) return false;
+        Album album = (Album) o;
+        return Objects.equals(name,album.name) &&
+                Objects.equals(id, album.id);
     }
 
-    public void setFrom(Album album){
-        this.name = album.name;
-        this.id = album.id;
+    @Override
+    public int hashCode() {
+        return Objects.hash(name,id);
     }
+
 }

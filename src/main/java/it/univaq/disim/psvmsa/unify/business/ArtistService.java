@@ -6,7 +6,7 @@ public interface ArtistService {
 
     Artist getById(Integer id);
 
-    void deleteById(Integer id);
+    void deleteById(Integer id) throws BusinessException;
 
     void add(Artist artist);
 
