@@ -2,6 +2,7 @@ package it.univaq.disim.psvmsa.unify.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Song {
     private String name;
@@ -10,7 +11,6 @@ public class Song {
     private Artist artist;
     private String lyrics;
     private Picture picture;
-
     private Integer id;
 
 
@@ -83,4 +83,25 @@ public class Song {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Song)) return false;
+        Song song = (Song) o;
+        return Objects.equals(name,song.name) &&
+                Objects.equals(album, song.album) &&
+                Objects.equals(artist, song.artist) &&
+                Objects.equals(lyrics, song.lyrics) &&
+                Objects.equals(picture, song.picture) &&
+                Objects.equals(genres, song.genres) &&
+                Objects.equals(id, song.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, album, artist,
+                            lyrics, picture, genres, id);
+    }
+
 }
