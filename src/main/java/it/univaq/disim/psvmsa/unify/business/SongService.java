@@ -10,5 +10,7 @@ public interface SongService {
 
     void update(Song song) throws BusinessException;
 
+    void deleteById(Integer id) throws BusinessException;
+
     int add(Song song);
 }

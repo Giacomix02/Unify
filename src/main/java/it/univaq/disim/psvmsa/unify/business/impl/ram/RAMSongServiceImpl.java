@@ -4,51 +4,42 @@ import it.univaq.disim.psvmsa.unify.business.BusinessException;
 import it.univaq.disim.psvmsa.unify.business.SongService;
 import it.univaq.disim.psvmsa.unify.model.Song;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RAMSongServiceImpl implements SongService {
 
-    private List<Song> songs = new ArrayList<Song>();
+    private Map<Integer, Song> songs = new HashMap<>();
     private Integer id = 0;
 
     @Override
     public Song getById(Integer id) {
-        for (Song song : songs) {
-            if (song.getId().equals(id)) {
-                return song;
-            }
-        }
-        return null;
+        return this.songs.get(id);
     }
 
     @Override
     public int add(Song song) {
         song.setId(++id);
-        songs.add(song);
+        this.songs.put(song.getId(), song);
         return song.getId();
     }
 
     @Override
-    public void delete(Song song) throws BusinessException {
-        if (songs.contains(song)) {
-            songs.remove(song);
-        } else {
-            throw new BusinessException("Song not found");
-        }
+    public void update(Song song) throws BusinessException {
+        Song existing = getById(song.getId());
+        if(existing == null) throw new BusinessException("Song not found");
+        songs.put(song.getId(), song);
     }
 
     @Override
-    public void update(Song song) throws BusinessException {
-        int index = findIndexById(song.getId());
-        if (index < 0) throw new BusinessException("Song not found");
-        songs.set(index, song);
+    public void delete(Song song) throws BusinessException {
+        deleteById(song.getId());
     }
 
-    private int findIndexById(Integer id) {
-        for (int i = 0; i < songs.size(); i++) {
-            if (songs.get(i).getId().equals(id)) return i;
-        }
-        return -1;
+    @Override
+    public void deleteById(Integer id) throws BusinessException {
+        Song existing = this.songs.remove(id);
+        if(existing == null) throw new BusinessException("Song not found");
     }
+
 }

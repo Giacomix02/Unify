@@ -4,64 +4,42 @@ import it.univaq.disim.psvmsa.unify.business.BusinessException;
 import it.univaq.disim.psvmsa.unify.business.PictureService;
 import it.univaq.disim.psvmsa.unify.model.Picture;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RAMPictureServiceImpl implements PictureService {
 
-    private List<Picture> pictures = new ArrayList<>();
+    private Map<Integer, Picture> pictures = new HashMap<>();
     private Integer id = 0;
 
     @Override
     public Picture getById(Integer id) {
-        for (Picture picture : pictures) {
-            if (picture.getId().equals(id)) {
-                return picture;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public void deleteById(Integer id) {
-        for (Picture picture : pictures) {
-            if (picture.getId().equals(id)) {
-                pictures.remove(picture);
-            }
-        }
+        return this.pictures.get(id);
     }
 
     @Override
     public int add(Picture picture) {
         picture.setId(++id);
-        pictures.add(picture);
+        this.pictures.put(picture.getId(), picture);
         return picture.getId();
     }
 
     @Override
-    public void delete(Picture picture) throws BusinessException {
-        if (pictures.contains(picture)) {
-            pictures.remove(picture);
-        } else {
-            throw new BusinessException("Picture not found");
-        }
+    public void update(Picture picture) throws BusinessException {
+        Picture existing = getById(picture.getId());
+        if(existing == null) throw new BusinessException("Picture not found");
+        pictures.put(picture.getId(), picture);
     }
 
     @Override
-    public void update(Picture picture) throws BusinessException {
-        int index = findIndexById(picture.getId());
-        if (index < 0) throw new BusinessException("Picture not found");
-        pictures.set(index, picture);
+    public void delete(Picture picture) throws BusinessException {
+        deleteById(picture.getId());
     }
 
-    private int findIndexById(Integer id) {
-        for (int i = 0; i < pictures.size(); i++) {
-            if (pictures.get(i).getId().equals(id)) {
-                return i;
-            }
-        }
-        return -1;
+    @Override
+    public void deleteById(Integer id) throws BusinessException{
+        Picture existing = this.pictures.remove(id);
+        if(existing == null) throw new BusinessException("Picture not found");
     }
-
 }
 

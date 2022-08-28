@@ -4,9 +4,7 @@ import it.univaq.disim.psvmsa.unify.business.AlbumService;
 import it.univaq.disim.psvmsa.unify.business.BusinessException;
 import it.univaq.disim.psvmsa.unify.model.Album;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class RAMAlbumServiceImpl implements AlbumService {

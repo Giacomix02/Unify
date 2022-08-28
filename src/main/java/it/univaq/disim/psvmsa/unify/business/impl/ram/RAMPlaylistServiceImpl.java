@@ -5,7 +5,6 @@ import it.univaq.disim.psvmsa.unify.business.PlaylistService;
 import it.univaq.disim.psvmsa.unify.model.Playlist;
 import it.univaq.disim.psvmsa.unify.model.User;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,15 +32,15 @@ public class RAMPlaylistServiceImpl implements PlaylistService {
         playlists.put(playlist.getId(), playlist);
         return id;
     }
-    public void delete(Playlist playlist) throws BusinessException{
-        Playlist existing = this.getById(playlist.getId());
-        if(existing == null) throw new BusinessException("Playlist not found");
-        playlists.remove(existing.getId());
-    }
-
     public void update(Playlist playlist) throws BusinessException {
         Playlist existing = this.getById(playlist.getId());
         if(existing == null) throw new BusinessException("Playlist not found");
         playlists.put(existing.getId(), playlist);
+    }
+
+    public void delete(Playlist playlist) throws BusinessException{
+        Playlist existing = this.getById(playlist.getId());
+        if(existing == null) throw new BusinessException("Playlist not found");
+        playlists.remove(existing.getId());
     }
 }

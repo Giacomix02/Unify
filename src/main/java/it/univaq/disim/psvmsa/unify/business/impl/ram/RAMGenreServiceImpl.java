@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class RAMGenreServiceImpl implements GenreService {
     private Map<Integer, Genre> genres = new HashMap<>();
@@ -29,16 +28,16 @@ public class RAMGenreServiceImpl implements GenreService {
         return genre.getId();
     }
 
-    public void delete(Genre genre) throws BusinessException {
-        Genre existing = this.getById(genre.getId());
-        if(existing == null) throw new BusinessException("Genre not found");
-        genres.remove(existing.getId());
-    }
-
     public void update(Genre genre) throws BusinessException {
         Genre existing = this.getById(genre.getId());
         if(existing == null) throw new BusinessException("Genre not found");
         genres.put(existing.getId(), genre);
+    }
+
+    public void delete(Genre genre) throws BusinessException {
+        Genre existing = this.getById(genre.getId());
+        if(existing == null) throw new BusinessException("Genre not found");
+        genres.remove(existing.getId());
     }
 
 }

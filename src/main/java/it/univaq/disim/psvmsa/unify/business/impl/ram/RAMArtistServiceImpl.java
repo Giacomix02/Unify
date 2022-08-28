@@ -2,12 +2,9 @@ package it.univaq.disim.psvmsa.unify.business.impl.ram;
 
 import it.univaq.disim.psvmsa.unify.business.ArtistService;
 import it.univaq.disim.psvmsa.unify.business.BusinessException;
-import it.univaq.disim.psvmsa.unify.model.Album;
 import it.univaq.disim.psvmsa.unify.model.Artist;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class RAMArtistServiceImpl implements ArtistService {
@@ -22,16 +19,18 @@ public class RAMArtistServiceImpl implements ArtistService {
     }
 
     @Override
-    public void deleteById(Integer id) throws BusinessException{
-        Artist existing = this.artists.remove(id);
-        if(existing==null) throw new BusinessException("Artist not found");
-    }
-
-    @Override
     public int add(Artist artist) {
         artist.setId(++id);
         artists.put(artist.getId(),artist);
         return artist.getId();
+    }
+
+    @Override
+    public void update(Artist artist) throws BusinessException {
+
+        Artist existing = getById(artist.getId());
+        if(existing == null) throw new BusinessException("Artist not found");
+        artists.put(artist.getId(),artist);
     }
 
     @Override
@@ -40,11 +39,8 @@ public class RAMArtistServiceImpl implements ArtistService {
     }
 
     @Override
-    public void update(Artist artist) throws BusinessException {
-
-        Artist existing = getById(artist.getId());
-        if(existing == null) throw new BusinessException("Artist not found");
-
-        artists.put(artist.getId(),artist);
+    public void deleteById(Integer id) throws BusinessException{
+        Artist existing = this.artists.remove(id);
+        if(existing==null) throw new BusinessException("Artist not found");
     }
 }

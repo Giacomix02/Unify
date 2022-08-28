@@ -6,7 +6,7 @@ public interface PictureService {
 
     Picture getById(Integer id);
 
-    void deleteById (Integer id);
+    void deleteById (Integer id) throws BusinessException;
 
     int add(Picture picture);
 
