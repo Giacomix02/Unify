@@ -5,6 +5,7 @@ import it.univaq.disim.psvmsa.unify.business.BusinessException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class IndexedFile {
@@ -20,8 +21,23 @@ public class IndexedFile {
         }
         static Row fromText( String separator, String line){
             Row row = new Row(separator);
-            row.values = List.of(line.split(separator));
+            String escaped = line.replaceAll("\\\\n","\n");
+            row.values = List.of(escaped.split(Pattern.quote(separator)));
             return row;
+        }
+        public Row set(int index, String value){
+            this.values.add(index, value);
+            return this;
+        }
+        public Row set(int index, Integer value){
+            return this.set(index, value.toString());
+        }
+        public Row add(String value){
+            this.values.add(value);
+            return this;
+        }
+        public Row add(Integer value){
+            return this.add(value.toString());
         }
         public List<String> getValues() {
             return values;
@@ -40,7 +56,7 @@ public class IndexedFile {
         }
     }
 
-    private int id;
+    private int id = 0;
     private List<Row> rows = new ArrayList<>();
 
     public void appendRow(Row row){

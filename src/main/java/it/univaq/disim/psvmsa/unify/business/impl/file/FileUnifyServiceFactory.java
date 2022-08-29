@@ -2,7 +2,13 @@ package it.univaq.disim.psvmsa.unify.business.impl.file;
 
 import it.univaq.disim.psvmsa.unify.business.*;
 
+import java.io.File;
+import java.nio.file.Paths;
+
 public class FileUnifyServiceFactory extends UnifyServiceFactory {
+    private final String BASE_PATH = Paths.get("")
+            .toAbsolutePath()
+            + File.separator + "data" + File.separator;
 
     private FileGenreServiceImpl fileGenreService = new FileGenreServiceImpl();
     private FilePictureServiceImpl filePictureService = new FilePictureServiceImpl();
@@ -11,7 +17,7 @@ public class FileUnifyServiceFactory extends UnifyServiceFactory {
 
     private FilePlaylistServiceImpl filePlaylistService = new FilePlaylistServiceImpl();
 
-    private FileUserServiceImpl fileUserService = new FileUserServiceImpl();
+    private FileUserServiceImpl fileUserService = new FileUserServiceImpl(BASE_PATH + "users.txt");
 
 
 

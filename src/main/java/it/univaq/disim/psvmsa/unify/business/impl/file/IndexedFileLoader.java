@@ -12,14 +12,19 @@ public class IndexedFileLoader {
 
     public IndexedFile load(){
         IndexedFile indexedFile = new IndexedFile();
-        try(BufferedReader in = new BufferedReader(new FileReader(path))){
+        try{
+            boolean created = this.createFileIfNotExists(path);
+            if(created) return indexedFile;
+            BufferedReader in = new BufferedReader(new FileReader(path));
+            String header = in.readLine();
+
+            if(header == null) return indexedFile;
+            indexedFile.setId(Integer.parseInt(header));
             String l;
-            indexedFile.setId(Integer.parseInt(in.readLine()));
             while ((l = in.readLine())!=null){
                 IndexedFile.Row row = IndexedFile.Row.fromText(separator,l);
                 indexedFile.appendRow(row);
             }
-
             in.close();
         }
         catch (IOException e){
@@ -29,11 +34,14 @@ public class IndexedFileLoader {
     }
 
     public void save(IndexedFile file){
-        try(FileWriter out = new FileWriter(path)){
-            out.flush();
-            out.write(file.getId());
+        try{
+            this.createFileIfNotExists(path);
+            BufferedWriter out = new BufferedWriter(new FileWriter(path));
+            out.write(Integer.toString(file.getId()));
+            out.newLine();
             for(IndexedFile.Row row : file.getRows()){
                 out.write(row.toTextRow());
+                out.newLine();
             }
             out.close();
         }
@@ -42,14 +50,9 @@ public class IndexedFileLoader {
         }
 
     }
-
-    public void create(String name){
-        try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(name)))){}
-        catch (IOException e){
-            e.printStackTrace();
-        }
+    private boolean createFileIfNotExists(String path) throws IOException{
+        File file = new File(path);
+        file.getParentFile().mkdirs();
+        return file.createNewFile();
     }
-
-
-
 }
