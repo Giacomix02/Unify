@@ -25,9 +25,15 @@ public class FileUserServiceImpl implements UserService {
         return null;
     }
 
-    @Override
     public User getByUsername(String username) {
-        return null;
+        IndexedFile file = loader.load();
+        IndexedFile.Row row = file.findRow(r -> r.getStringAt(Schema.USER_NAME).equals(username));
+        if(row == null) return null;
+        return new User(
+                row.getStringAt(Schema.USER_NAME),
+                row.getStringAt(Schema.PASSWORD),
+                row.getIntAt(Schema.USER_ID)
+        );
     }
 
     @Override

@@ -8,9 +8,12 @@ import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+
+//TODO dont use business exception here, create a new one
+//TODO consider removing Row from static file here
 public class IndexedFile {
     public static class Row{
-        private List<String> values = new ArrayList<String>();
+        private List<String> values = new ArrayList<>();
         private String separator;
         public Row(String separator){
             this.separator = separator;
