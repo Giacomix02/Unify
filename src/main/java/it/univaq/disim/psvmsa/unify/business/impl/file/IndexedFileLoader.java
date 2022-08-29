@@ -1,8 +1,6 @@
 package it.univaq.disim.psvmsa.unify.business.impl.file;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public class IndexedFileLoader {
     private String path;
@@ -21,6 +19,8 @@ public class IndexedFileLoader {
                 IndexedFile.Row row = IndexedFile.Row.fromText(separator,l);
                 indexedFile.appendRow(row);
             }
+
+            in.close();
         }
         catch (IOException e){
             e.printStackTrace();
@@ -29,7 +29,27 @@ public class IndexedFileLoader {
     }
 
     public void save(IndexedFile file){
+        try(FileWriter out = new FileWriter(path)){
+            out.flush();
+            out.write(file.getId());
+            for(IndexedFile.Row row : file.getRows()){
+                out.write(row.toTextRow());
+            }
+            out.close();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
 
     }
+
+    public void create(String name){
+        try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(name)))){}
+        catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+
 
 }
