@@ -14,7 +14,7 @@ public class RAMGenreServiceImpl implements GenreService {
     private Integer id = 0;
 
     @Override
-    public List<Genre> getAllGenres() {
+    public List<Genre> getGenres() {
         return new ArrayList<>(genres.values());
     }
 

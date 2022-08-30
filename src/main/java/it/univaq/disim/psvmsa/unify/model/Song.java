@@ -7,7 +7,7 @@ import java.util.Objects;
 public class Song {
     private String name;
     private Album album;
-    private List<Genre> genres = new ArrayList<Genre>();
+    private List<Genre> genres;
     private Artist artist;
     private String lyrics;
     private Picture picture;

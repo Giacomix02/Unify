@@ -5,11 +5,12 @@ import java.util.Objects;
 public class Genre {
     private String name;
     private Integer id;
+
     public Genre(String name) {
         this.name = name;
     }
 
-    public Genre(String name, Integer id) {
+    public Genre(Integer id, String name) {
         this(name);
         this.id = id;
     }

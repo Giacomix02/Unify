@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface GenreService {
 
-    List<Genre> getAllGenres();
+    List<Genre> getGenres();
     Genre getById(Integer id);
     int add(Genre genre);
-    void delete(Genre genre) throws  BusinessException;
+    void delete(Genre genre) throws BusinessException;
     void update(Genre genre) throws BusinessException;
 }

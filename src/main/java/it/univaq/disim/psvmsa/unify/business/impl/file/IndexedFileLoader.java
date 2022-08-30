@@ -3,15 +3,24 @@ package it.univaq.disim.psvmsa.unify.business.impl.file;
 import java.io.*;
 
 public class IndexedFileLoader {
-    private String path;
-    private String separator;
+    private final String path;
+    private final String separator;
+
+    private final int ID_POSITION;
+
     public IndexedFileLoader(String path, String separator) {
         this.path = path;
         this.separator = separator;
+        this.ID_POSITION = 0;
+    }
+    public IndexedFileLoader(String path, String separator, int ID_POSITION) {
+        this.path = path;
+        this.separator = separator;
+        this.ID_POSITION = ID_POSITION;
     }
 
     public IndexedFile load(){
-        IndexedFile indexedFile = new IndexedFile();
+        IndexedFile indexedFile = new IndexedFile(ID_POSITION);
         try{
             boolean created = this.createFileIfNotExists(path);
             if(created) return indexedFile;

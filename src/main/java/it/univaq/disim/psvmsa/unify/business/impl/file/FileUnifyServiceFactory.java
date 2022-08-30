@@ -10,7 +10,7 @@ public class FileUnifyServiceFactory extends UnifyServiceFactory {
             .toAbsolutePath()
             + File.separator + "data" + File.separator;
 
-    private FileGenreServiceImpl fileGenreService = new FileGenreServiceImpl();
+    private FileGenreServiceImpl fileGenreService = new FileGenreServiceImpl(BASE_PATH + "genres.txt");
     private FilePictureServiceImpl filePictureService = new FilePictureServiceImpl();
 
     private FileSongServiceImpl fileSongService = new FileSongServiceImpl();
