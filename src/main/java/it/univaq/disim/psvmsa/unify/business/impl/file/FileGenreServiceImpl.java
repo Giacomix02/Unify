@@ -16,17 +16,12 @@ public class FileGenreServiceImpl implements GenreService {
 
     }
 
-    private final String separator = "|";
+    private final String SEPARATOR = "|";
 
-    IndexedFileLoader loader;
+    private IndexedFileLoader loader;
 
     public FileGenreServiceImpl(String path) {
-        this.loader = new IndexedFileLoader(path, this.separator);
-        try {
-            this.add(new Genre("Rock"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.loader = new IndexedFileLoader(path, this.SEPARATOR);
     }
 
     @Override
@@ -55,7 +50,7 @@ public class FileGenreServiceImpl implements GenreService {
     @Override
     public int add(Genre genre) {
         IndexedFile file = loader.load();
-        IndexedFile.Row row = new IndexedFile.Row(this.separator);
+        IndexedFile.Row row = new IndexedFile.Row(this.SEPARATOR);
         int id = file.incrementId();
         genre.setId(id);
         row.set(Schema.GENRE_ID, genre.getId())
@@ -75,7 +70,7 @@ public class FileGenreServiceImpl implements GenreService {
     @Override
     public void update(Genre genre) throws BusinessException {
         IndexedFile file = loader.load();
-        IndexedFile.Row row = new IndexedFile.Row(this.separator);
+        IndexedFile.Row row = new IndexedFile.Row(this.SEPARATOR);
         row.set(Schema.GENRE_ID, genre.getId())
                         .set(Schema.GENRE_NAME, genre.getName());
         file.updateRow(row);
