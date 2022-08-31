@@ -6,13 +6,13 @@ public class Album {
     private String name;
     private Integer id;
 
-    public Album(String name) {
-        this.name = name;
+    public Album(Integer id) {
+        this.id = id;
     }
 
-    public Album(String name, Integer id) {
-        this(name);
-        this.id = id;
+    public Album(Integer id, String name) {
+        this(id);
+        this.name = name;
     }
 
     public String getName() {

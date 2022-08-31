@@ -74,5 +74,6 @@ public class FileGenreServiceImpl implements GenreService {
         row.set(Schema.GENRE_ID, genre.getId())
                         .set(Schema.GENRE_NAME, genre.getName());
         file.updateRow(row);
+        loader.save(file);
     }
 }

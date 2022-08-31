@@ -13,12 +13,13 @@ public class FilePictureServiceImpl implements PictureService {
 
     private static class Schema {
         private static int PICTURE_ID = 0;
+
     }
 
     private final String SEPARATOR = "|";
-
     private final IndexedFileLoader loader;
     private final String imageFolder;
+
     public FilePictureServiceImpl(String path, String imageFolderPath) {
         loader = new IndexedFileLoader(path, this.SEPARATOR, Schema.PICTURE_ID);
         this.imageFolder = imageFolderPath;

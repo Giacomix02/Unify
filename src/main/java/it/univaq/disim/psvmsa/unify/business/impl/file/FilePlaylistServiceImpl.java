@@ -32,7 +32,6 @@ public class FilePlaylistServiceImpl implements PlaylistService {
 
     private IndexedFileLoader loader;
     private IndexedFileLoader loaderRelation;
-
     private SongService songService;
 
 

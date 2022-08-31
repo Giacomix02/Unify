@@ -4,23 +4,23 @@ import java.util.Objects;
 
 public class Artist {
 
-    private String name;
-
     private Integer id;
+
+    private String name;
 
     private String biography;
 
     private Picture picture;
 
-    public Artist(String name, String biography, Picture picture) {
+    public Artist(Integer id, String name, String biography) {
+        this.id = id;
         this.name = name;
         this.biography = biography;
-        this.picture = picture;
     }
 
-    public Artist(String name, String biography, Picture picture, Integer id) {
-        this(name, biography, picture);
-        this.id = id;
+    public Artist(Integer id, String name, String biography, Picture picture) {
+        this(id, name, biography);
+        this.picture = picture;
     }
 
     public String getName() {

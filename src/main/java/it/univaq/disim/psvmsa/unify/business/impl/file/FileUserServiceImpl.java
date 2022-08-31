@@ -1,6 +1,7 @@
 package it.univaq.disim.psvmsa.unify.business.impl.file;
 
 import it.univaq.disim.psvmsa.unify.business.BusinessException;
+import it.univaq.disim.psvmsa.unify.business.PlaylistService;
 import it.univaq.disim.psvmsa.unify.business.UserService;
 import it.univaq.disim.psvmsa.unify.model.User;
 
@@ -11,8 +12,10 @@ public class FileUserServiceImpl implements UserService {
         public static int PASSWORD = 2;
     }
     private final String separator = "|";
-    IndexedFileLoader loader;
-    public FileUserServiceImpl(String path){
+    private IndexedFileLoader loader;
+    private PlaylistService playlistService;
+
+    public FileUserServiceImpl(String path, PlaylistService playlistService){
         this.loader = new IndexedFileLoader(path, this.separator);
         try {
             this.add(new User("admin \n test new line", "admin"));
@@ -22,33 +25,57 @@ public class FileUserServiceImpl implements UserService {
     }
     @Override
     public User getById(Integer id) {
-        return null;
+        IndexedFile file = loader.load();
+        IndexedFile.Row row = file.findRowById(id);
+        if (row == null) return null;
+        User user = new User(
+                row.getStringAt(Schema.USER_NAME),
+                row.getStringAt(Schema.PASSWORD),
+                row.getIntAt(Schema.USER_ID)
+        );
+        user.setPlaylists(playlistService.getPlaylistsByUser(user));
+        return user;
     }
 
     public User getByUsername(String username) {
         IndexedFile file = loader.load();
         IndexedFile.Row row = file.findRow(r -> r.getStringAt(Schema.USER_NAME).equals(username));
         if(row == null) return null;
-        return new User(
+        User user = new User(
                 row.getStringAt(Schema.USER_NAME),
                 row.getStringAt(Schema.PASSWORD),
                 row.getIntAt(Schema.USER_ID)
         );
+        user.setPlaylists(playlistService.getPlaylistsByUser(user));
+        return user;
     }
 
     @Override
     public User validate(String username, String password) throws BusinessException {
-        return null;
+        User user = getByUsername(username);
+        if(user == null) throw new BusinessException("Username / password is incorrect");
+        if(user.getPassword().equals(password)) {
+            return user;
+        }
+        throw new BusinessException("Username / password is incorrect");
     }
 
     @Override
     public void delete(User user) throws BusinessException {
-
+        IndexedFile file = loader.load();
+        file.deleteRowById(user.getId());
+        loader.save(file);
     }
 
     @Override
     public void update(User user) throws BusinessException {
-
+        IndexedFile file = loader.load();
+        IndexedFile.Row row = new IndexedFile.Row(this.separator);
+        row.set(Schema.USER_ID, user.getId())
+                .set(Schema.USER_NAME, user.getUsername())
+                .set(Schema.PASSWORD, user.getPassword());
+        file.updateRow(row);
+        loader.save(file);
     }
 
     @Override
@@ -56,7 +83,7 @@ public class FileUserServiceImpl implements UserService {
         IndexedFile file = loader.load();
         IndexedFile.Row row = new IndexedFile.Row(this.separator);
         int id = file.incrementId();
-        row.set(Schema.USER_ID,id)
+        row.set(Schema.USER_ID,user.getId())
             .set(Schema.USER_NAME,user.getUsername())
             .set(Schema.PASSWORD,user.getPassword());
         file.appendRow(row);

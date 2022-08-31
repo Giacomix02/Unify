@@ -15,17 +15,12 @@ public class FileUnifyServiceFactory extends UnifyServiceFactory {
     private FilePictureServiceImpl filePictureService = new FilePictureServiceImpl(BASE_PATH + "pictures.txt", BASE_PATH + "images/");
     private FileSongServiceImpl fileSongService;
     private FileAlbumServiceImpl fileAlbumService = new FileAlbumServiceImpl(BASE_PATH + "albums.txt");
-    private FileArtistServiceImpl fileArtistService = new FileArtistServiceImpl(BASE_PATH + "artists.txt");
+    private FileArtistServiceImpl fileArtistService;
     private FilePlaylistServiceImpl filePlaylistService;
-    private FileUserServiceImpl fileUserService = new FileUserServiceImpl(BASE_PATH + "users.txt");
+    private FileUserServiceImpl fileUserService;
 
 
     public FileUnifyServiceFactory(){
-        filePlaylistService = new FilePlaylistServiceImpl(
-                BASE_PATH + "playlist.txt",
-                BASE_PATH + "playlist_relation.txt",
-                fileSongService
-        );
         fileSongService = new FileSongServiceImpl(
                 BASE_PATH + "songs.txt",
                 BASE_PATH + "song_relation.txt",
@@ -34,8 +29,23 @@ public class FileUnifyServiceFactory extends UnifyServiceFactory {
                 fileAlbumService,
                 filePictureService
         );
-    }
 
+        filePlaylistService = new FilePlaylistServiceImpl(
+                BASE_PATH + "playlist.txt",
+                BASE_PATH + "playlist_relation.txt",
+                fileSongService
+        );
+
+        fileUserService = new FileUserServiceImpl(
+                BASE_PATH + "users.txt",
+                filePlaylistService
+        );
+
+        fileArtistService = new FileArtistServiceImpl(
+                BASE_PATH + "artists.txt",
+                BASE_PATH + "images/"
+        );
+    }
 
     @Override
     public AlbumService getAlbumService() {
