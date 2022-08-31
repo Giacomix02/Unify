@@ -9,6 +9,6 @@ public interface PlaylistService {
         List<Playlist> getPlaylistsByUser(User user);
         Playlist getById(Integer id);
         Playlist add(Playlist playlist);
-        Playlist delete(Playlist playlist) throws BusinessException;
-        Playlist update(Playlist playlist) throws BusinessException;
+        void delete(Playlist playlist) throws BusinessException;
+        void update(Playlist playlist) throws BusinessException;
 }

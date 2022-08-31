@@ -20,10 +20,10 @@ public class RAMAlbumServiceImpl implements AlbumService {
 
 
     @Override
-    public int add(Album album){
+    public Album add(Album album){
         album.setId(++id);
         this.albums.put(album.getId(),album);
-        return album.getId();
+        return album;
     }
 
     @Override

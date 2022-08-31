@@ -15,6 +15,6 @@ public interface UserService {
 
     void update(User user) throws BusinessException;
 
-    int add(User user) throws BusinessException;
+    User add(User user) throws BusinessException;
 
 }

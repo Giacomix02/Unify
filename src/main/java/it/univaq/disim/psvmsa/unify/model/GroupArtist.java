@@ -7,10 +7,10 @@ public class GroupArtist extends Artist {
 
     private List<Musician> musicians = new ArrayList<Musician>();
 
-    public GroupArtist(String name, String biography, Picture picture) {
-        super(name, biography, picture);
+    public GroupArtist(Integer id,String name, String biography) {
+        super(id, name, biography);
     }
-    public GroupArtist(String name, String biography, Picture picture, Integer id) {
-        super(name, biography, picture, id);
+    public GroupArtist(Integer id, String name, String biography, Picture picture) {
+        super(id,name,biography,picture);
     }
 }

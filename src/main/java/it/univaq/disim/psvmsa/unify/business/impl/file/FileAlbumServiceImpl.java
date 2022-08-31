@@ -41,7 +41,7 @@ public class FileAlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public int add(Album album) {
+    public Album add(Album album) {
         IndexedFile file = loader.load();
         IndexedFile.Row row = new IndexedFile.Row(this.separator);
         int id = file.incrementId();
@@ -49,7 +49,7 @@ public class FileAlbumServiceImpl implements AlbumService {
                 .set(Schema.ALBUM_NAME, album.getName());
         file.appendRow(row);
         loader.save(file);
-        return id;
+        return album;
     }
 
     @Override

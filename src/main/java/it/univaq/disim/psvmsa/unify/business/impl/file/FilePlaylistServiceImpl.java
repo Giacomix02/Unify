@@ -127,18 +127,16 @@ public class FilePlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
-    public Playlist delete(Playlist playlist) throws BusinessException{
+    public void delete(Playlist playlist) throws BusinessException{
         IndexedFile file = loader.load();
 
         file.deleteRowById(playlist.getId());
 
         loader.save(file);
-
-        return playlist;
     }
 
     @Override
-    public Playlist update(Playlist playlist) throws BusinessException {
+    public void update(Playlist playlist) throws BusinessException {
         IndexedFile file = loader.load();
 
         IndexedFile.Row row = new IndexedFile.Row(SEPARATOR);
@@ -148,7 +146,5 @@ public class FilePlaylistServiceImpl implements PlaylistService {
 
         file.updateRow(row);
         loader.save(file);
-
-        return playlist;
     }
 }

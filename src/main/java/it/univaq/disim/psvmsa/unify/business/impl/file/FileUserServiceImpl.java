@@ -13,12 +13,11 @@ public class FileUserServiceImpl implements UserService {
     }
     private final String separator = "|";
     private IndexedFileLoader loader;
-    private PlaylistService playlistService;
 
     public FileUserServiceImpl(String path, PlaylistService playlistService){
         this.loader = new IndexedFileLoader(path, this.separator);
         try {
-            this.add(new User("admin \n test new line", "admin"));
+            this.add(new User("admin", "admin"));
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -33,7 +32,6 @@ public class FileUserServiceImpl implements UserService {
                 row.getStringAt(Schema.PASSWORD),
                 row.getIntAt(Schema.USER_ID)
         );
-        user.setPlaylists(playlistService.getPlaylistsByUser(user));
         return user;
     }
 
@@ -46,7 +44,6 @@ public class FileUserServiceImpl implements UserService {
                 row.getStringAt(Schema.PASSWORD),
                 row.getIntAt(Schema.USER_ID)
         );
-        user.setPlaylists(playlistService.getPlaylistsByUser(user));
         return user;
     }
 
@@ -79,15 +76,16 @@ public class FileUserServiceImpl implements UserService {
     }
 
     @Override
-    public int add(User user) throws BusinessException {
+    public User add(User user) throws BusinessException {
         IndexedFile file = loader.load();
         IndexedFile.Row row = new IndexedFile.Row(this.separator);
         int id = file.incrementId();
+        user.setId(id);
         row.set(Schema.USER_ID,user.getId())
             .set(Schema.USER_NAME,user.getUsername())
             .set(Schema.PASSWORD,user.getPassword());
         file.appendRow(row);
         loader.save(file);
-        return id;
+        return user;
     }
 }

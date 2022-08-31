@@ -4,10 +4,10 @@ public class SingleArtist extends Artist {
 
     private Musician musician;
 
-    public SingleArtist(String name, String biography, Picture picture) {
-        super(name, biography, picture);
+    public SingleArtist(Integer id,String name, String biography) {
+        super(id, name, biography);
     }
-    public SingleArtist(String name, String biography, Picture picture, Integer id) {
-        super(name, biography, picture, id);
+    public SingleArtist(Integer id, String name, String biography, Picture picture) {
+        super(id,name,biography,picture);
     }
 }

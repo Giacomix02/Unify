@@ -55,7 +55,7 @@ public class FileArtistServiceImpl implements ArtistService {
     }
 
     @Override
-    public int add(Artist artist) {
+    public Artist add(Artist artist) {
         IndexedFile file = loader.load();
         IndexedFile.Row row = new IndexedFile.Row(this.separator);
         int id = file.incrementId();
@@ -64,7 +64,7 @@ public class FileArtistServiceImpl implements ArtistService {
                 .set(Schema.ARTIST_BIOGRAPHY, artist.getBiography());
         file.appendRow(row);
         loader.save(file);
-        return id;
+        return artist;
     }
 
     @Override

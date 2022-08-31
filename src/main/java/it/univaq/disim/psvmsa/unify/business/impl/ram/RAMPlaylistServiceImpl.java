@@ -32,17 +32,15 @@ public class RAMPlaylistServiceImpl implements PlaylistService {
         playlists.put(playlist.getId(), playlist);
         return playlist;
     }
-    public Playlist update(Playlist playlist) throws BusinessException {
+    public void update(Playlist playlist) throws BusinessException {
         Playlist existing = this.getById(playlist.getId());
         if(existing == null) throw new BusinessException("Playlist not found");
         playlists.put(existing.getId(), playlist);
-        return playlist;
     }
 
-    public Playlist delete(Playlist playlist) throws BusinessException{
+    public void delete(Playlist playlist) throws BusinessException{
         Playlist existing = this.getById(playlist.getId());
         if(existing == null) throw new BusinessException("Playlist not found");
         playlists.remove(existing.getId());
-        return playlist;
     }
 }

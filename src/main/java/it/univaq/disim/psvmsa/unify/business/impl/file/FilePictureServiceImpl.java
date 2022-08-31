@@ -53,7 +53,7 @@ public class FilePictureServiceImpl implements PictureService {
     }
 
     @Override
-    public int add(Picture picture) {
+    public Picture add(Picture picture) {
         IndexedFile file = loader.load();
         IndexedFile.Row row = new IndexedFile.Row(this.SEPARATOR);
         int id = file.incrementId();
@@ -62,7 +62,7 @@ public class FilePictureServiceImpl implements PictureService {
         this.savePictureToFile(picture);
         file.appendRow(row);
         loader.save(file);
-        return picture.getId();
+        return picture;
     }
     @Override
     public void update(Picture picture) throws BusinessException {

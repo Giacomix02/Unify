@@ -36,11 +36,11 @@ public class RAMUserServiceImpl implements UserService   {
         users.put(user.getId(), user);
     }
     @Override
-    public int add(User user) throws BusinessException {
+    public User add(User user) throws BusinessException {
         if (getByUsername(user.getUsername()) != null) throw new BusinessException("User already exists");
         user.setId(++id);
         users.put(user.getId(), user);
-        return user.getId();
+        return user;
     }
     @Override
     public User getByUsername(String username) {

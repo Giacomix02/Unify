@@ -48,7 +48,7 @@ public class FileGenreServiceImpl implements GenreService {
     }
 
     @Override
-    public int add(Genre genre) {
+    public Genre add(Genre genre) {
         IndexedFile file = loader.load();
         IndexedFile.Row row = new IndexedFile.Row(this.SEPARATOR);
         int id = file.incrementId();
@@ -57,7 +57,7 @@ public class FileGenreServiceImpl implements GenreService {
                 .set(Schema.GENRE_NAME, genre.getName());
         file.appendRow(row);
         loader.save(file);
-        return id;
+        return genre;
     }
 
     @Override

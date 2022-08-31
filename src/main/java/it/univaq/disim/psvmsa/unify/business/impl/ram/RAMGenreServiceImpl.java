@@ -22,10 +22,10 @@ public class RAMGenreServiceImpl implements GenreService {
         return genres.get(id);
     }
 
-    public int add(Genre genre) {
+    public Genre add(Genre genre) {
         genre.setId(++id);
         genres.put(genre.getId(), genre);
-        return genre.getId();
+        return genre;
     }
 
     public void update(Genre genre) throws BusinessException {

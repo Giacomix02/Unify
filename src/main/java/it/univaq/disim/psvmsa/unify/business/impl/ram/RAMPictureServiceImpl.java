@@ -18,10 +18,10 @@ public class RAMPictureServiceImpl implements PictureService {
     }
 
     @Override
-    public int add(Picture picture) {
+    public Picture add(Picture picture) {
         picture.setId(++id);
         this.pictures.put(picture.getId(), picture);
-        return picture.getId();
+        return picture;
     }
 
     @Override
