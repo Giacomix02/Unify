@@ -27,20 +27,22 @@ public class RAMPlaylistServiceImpl implements PlaylistService {
         return playlists.get(id);
     }
 
-    public int add(Playlist playlist) {
+    public Playlist add(Playlist playlist) {
         playlist.setId(++id);
         playlists.put(playlist.getId(), playlist);
-        return id;
+        return playlist;
     }
-    public void update(Playlist playlist) throws BusinessException {
+    public Playlist update(Playlist playlist) throws BusinessException {
         Playlist existing = this.getById(playlist.getId());
         if(existing == null) throw new BusinessException("Playlist not found");
         playlists.put(existing.getId(), playlist);
+        return playlist;
     }
 
-    public void delete(Playlist playlist) throws BusinessException{
+    public Playlist delete(Playlist playlist) throws BusinessException{
         Playlist existing = this.getById(playlist.getId());
         if(existing == null) throw new BusinessException("Playlist not found");
         playlists.remove(existing.getId());
+        return playlist;
     }
 }

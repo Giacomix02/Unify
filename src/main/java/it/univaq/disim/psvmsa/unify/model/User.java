@@ -7,7 +7,6 @@ public class User {
     private String username;
     private String password;
     private Integer id;
-    private List<Playlist> playlists = new ArrayList<Playlist>();
 
     public User(String username, String password, Integer id) {
         this(username, password);
@@ -36,23 +35,6 @@ public class User {
         return this.id;
     }
 
-    public List<Playlist> getPlaylists() {
-        return this.playlists;
-    }
-
-    public void setPlaylists(List<Playlist> playlists) {
-        this.playlists = playlists;
-    }
-
-    public void addPlaylist(Playlist playlist) {
-        this.playlists.add(playlist);
-    }
-
-    public void removePlaylist(Playlist playlist) {
-        this.playlists.remove(playlist);
-    }
-
-
     public String toString() {
         return String.format("User{username='%s', password='%s', id=%d}", this.username, this.password, this.id);
     }
@@ -64,12 +46,11 @@ public class User {
         User user = (User) o;
         return Objects.equals(username,user.username) &&
                 Objects.equals(password, user.password) &&
-                Objects.equals(id, user.id) &&
-                Objects.equals(playlists, user.playlists);
+                Objects.equals(id, user.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, password, id, playlists);
+        return Objects.hash(username, password, id);
     }
 }
