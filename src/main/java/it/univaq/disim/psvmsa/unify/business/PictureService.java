@@ -10,12 +10,6 @@ public interface PictureService {
 
     void deleteById (Integer id) throws BusinessException;
 
-    Image addImage (Image image);
-
-    void updateImage (Image image) throws BusinessException;
-
-    void deleteImage (Image image) throws BusinessException;
-
     int add(Picture picture);
 
     void update (Picture picture) throws BusinessException;

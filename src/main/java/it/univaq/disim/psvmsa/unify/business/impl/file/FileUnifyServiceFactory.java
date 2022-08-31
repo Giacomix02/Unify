@@ -12,28 +12,39 @@ public class FileUnifyServiceFactory extends UnifyServiceFactory {
             + File.separator + "data" + File.separator;
 
     private FileGenreServiceImpl fileGenreService = new FileGenreServiceImpl(BASE_PATH + "genres.txt");
-    private FilePictureServiceImpl filePictureService = new FilePictureServiceImpl();
-
-    private FileSongServiceImpl fileSongService = new FileSongServiceImpl();
-
+    private FilePictureServiceImpl filePictureService = new FilePictureServiceImpl(BASE_PATH + "pictures.txt", BASE_PATH + "images/");
+    private FileSongServiceImpl fileSongService;
+    private FileAlbumServiceImpl fileAlbumService = new FileAlbumServiceImpl(BASE_PATH + "albums.txt");
+    private FileArtistServiceImpl fileArtistService = new FileArtistServiceImpl(BASE_PATH + "artists.txt");
     private FilePlaylistServiceImpl filePlaylistService;
-
     private FileUserServiceImpl fileUserService = new FileUserServiceImpl(BASE_PATH + "users.txt");
 
 
     public FileUnifyServiceFactory(){
-        filePlaylistService = new FilePlaylistServiceImpl(BASE_PATH + "playlist.txt",BASE_PATH + "playlist_relation.txt",fileSongService);
+        filePlaylistService = new FilePlaylistServiceImpl(
+                BASE_PATH + "playlist.txt",
+                BASE_PATH + "playlist_relation.txt",
+                fileSongService
+        );
+        fileSongService = new FileSongServiceImpl(
+                BASE_PATH + "songs.txt",
+                BASE_PATH + "song_relation.txt",
+                BASE_PATH + "songs/",
+                fileArtistService,
+                fileAlbumService,
+                filePictureService
+        );
     }
 
 
     @Override
     public AlbumService getAlbumService() {
-        return null;
+        return fileAlbumService;
     }
 
     @Override
     public ArtistService getArtistService() {
-        return null;
+        return fileArtistService;
     }
 
     @Override

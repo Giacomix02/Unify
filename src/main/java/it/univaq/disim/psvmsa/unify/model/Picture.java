@@ -3,19 +3,25 @@ package it.univaq.disim.psvmsa.unify.model;
 
 import javafx.scene.image.Image;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.Objects;
 
 public class Picture {
 
     private Integer id;
-    private Image image;
+    private InputStream stream;
 
-    public Picture(Image image) {
-        this.image = image;
+    public Picture(InputStream stream) {
+        this.stream = stream;
     }
 
-    public Picture(Image image, Integer id){
-        this(image);
+    public Picture(InputStream stream, Integer id){
+        this(stream);
         this.id = id;
     }
     public Integer getId() {
@@ -26,12 +32,12 @@ public class Picture {
         this.id = id;
     }
 
-    public Image getImage() {
-        return image;
+    public InputStream getImageStream() {
+        return stream;
     }
 
-    public void setImage(Image image) {
-        this.image = image;
+    public void setImageStream(InputStream stream) {
+        this.stream = stream;
     }
 
     @Override
@@ -39,11 +45,11 @@ public class Picture {
         if (this == o) return true;
         if (!(o instanceof Picture)) return false;
         Picture picture = (Picture) o;
-        return Objects.equals(image,picture.image) &&
+        return Objects.equals(stream,picture.stream) &&
                 Objects.equals(id, picture.id);
     }
     @Override
     public int hashCode() {
-        return Objects.hash(image,id);
+        return Objects.hash(stream,id);
     }
 }
