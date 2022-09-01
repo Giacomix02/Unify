@@ -1,6 +1,10 @@
 package it.univaq.disim.psvmsa.unify.business;
 
+import it.univaq.disim.psvmsa.unify.business.impl.file.IndexedFile;
 import it.univaq.disim.psvmsa.unify.model.Song;
+
+import java.util.List;
+import java.util.function.Predicate;
 
 public interface SongService {
 
@@ -13,4 +17,7 @@ public interface SongService {
     void deleteById(Integer id) throws BusinessException;
 
     Song add(Song song);
+
+    List<Song> getAllSongs();
+
 }

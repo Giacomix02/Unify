@@ -14,9 +14,10 @@ public class Song {
     private Integer id;
 
 
-    public Song(Integer id){
-        this.id=id;
+    public Song(String name){
+        this.name = name;
     }
+
     public Song(String name, Album album, Artist artist, String lyrics, Picture picture, List<Genre> genres) {
         this.name = name;
         this.album = album;

@@ -4,7 +4,9 @@ import it.univaq.disim.psvmsa.unify.business.BusinessException;
 import it.univaq.disim.psvmsa.unify.business.SongService;
 import it.univaq.disim.psvmsa.unify.model.Song;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RAMSongServiceImpl implements SongService {
@@ -40,6 +42,10 @@ public class RAMSongServiceImpl implements SongService {
     public void deleteById(Integer id) throws BusinessException {
         Song existing = this.songs.remove(id);
         if(existing == null) throw new BusinessException("Song not found");
+    }
+
+    public List<Song> getAllSongs(){
+        return new ArrayList<>(songs.values());
     }
 
 }
