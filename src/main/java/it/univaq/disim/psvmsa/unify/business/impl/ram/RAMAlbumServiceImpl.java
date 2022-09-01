@@ -5,6 +5,7 @@ import it.univaq.disim.psvmsa.unify.business.BusinessException;
 import it.univaq.disim.psvmsa.unify.model.Album;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RAMAlbumServiceImpl implements AlbumService {
@@ -37,6 +38,11 @@ public class RAMAlbumServiceImpl implements AlbumService {
     @Override
     public void delete(Album album) throws BusinessException{
         deleteById(album.getId());
+    }
+
+    @Override
+    public List<Album> searchAlbumsByName(String name) {
+        return null;
     }
 
     @Override

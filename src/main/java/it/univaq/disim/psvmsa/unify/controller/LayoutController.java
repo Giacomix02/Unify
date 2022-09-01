@@ -51,12 +51,6 @@ public class LayoutController implements Initializable, DataInitializable<User> 
     private View currentView;
 
     @FXML
-    private HBox searchBarWrapper;
-
-    @FXML
-    private TextField searchBar;
-
-    @FXML
     private VBox userMenu;
 
     @FXML
@@ -98,15 +92,9 @@ public class LayoutController implements Initializable, DataInitializable<User> 
     public void setCurrentView(View view){
         this.currentView = view;
         layoutRoot.setContent(view.getView());
-        searchBarWrapper.setVisible(view.getController() instanceof Searchable);
     }
 
-    @FXML
-    public void search(){
-        if(currentView.getController() instanceof Searchable){
-            ((Searchable) currentView.getController()).search(searchBar.getText());
-        }
-    }
+
     private void setCurrentPage(Pages page){
         try{
             ViewDispatcher.getInstance().navigateTo(page);

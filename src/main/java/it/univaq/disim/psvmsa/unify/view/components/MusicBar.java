@@ -41,18 +41,7 @@ public class MusicBar extends HBox {
     }
 
     private void playTick(int id) {
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                if (id != playId) return;
-                sliderBar.setValue(currentPosition++);
-                if (currentPosition < songLength) {
-                    playTick(id);
-                }else{
-                    pause();
-                }
-            }
-        }, 1000);
+
     }
 
     public void pause() {

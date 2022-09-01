@@ -6,6 +6,8 @@ import it.univaq.disim.psvmsa.unify.business.PictureService;
 import it.univaq.disim.psvmsa.unify.model.Artist;
 import it.univaq.disim.psvmsa.unify.model.Picture;
 
+import java.util.List;
+
 public class FileArtistServiceImpl implements ArtistService {
 
     private static class Schema {
@@ -77,5 +79,10 @@ public class FileArtistServiceImpl implements ArtistService {
     @Override
     public void delete(Artist artist) throws BusinessException {
         deleteById(artist.getId());
+    }
+
+    @Override
+    public List<Artist> searchArtistsByName(String name) {
+        return null;
     }
 }

@@ -5,6 +5,7 @@ import it.univaq.disim.psvmsa.unify.business.BusinessException;
 import it.univaq.disim.psvmsa.unify.model.Artist;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RAMArtistServiceImpl implements ArtistService {
@@ -35,6 +36,11 @@ public class RAMArtistServiceImpl implements ArtistService {
     @Override
     public void delete(Artist artist) throws BusinessException {
         deleteById(artist.getId());
+    }
+
+    @Override
+    public List<Artist> searchArtistsByName(String name) {
+        return null;
     }
 
     @Override

@@ -2,13 +2,14 @@ package it.univaq.disim.psvmsa.unify.controller;
 
 import it.univaq.disim.psvmsa.unify.business.ArtistService;
 import it.univaq.disim.psvmsa.unify.business.PlaylistService;
+import it.univaq.disim.psvmsa.unify.model.Artist;
 import it.univaq.disim.psvmsa.unify.model.User;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 
-import javax.swing.text.html.ListView;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -20,7 +21,7 @@ public class HomeController implements DataInitializable<User>, Initializable {
     private FlowPane genresPane;
 
     @FXML
-    private ListView randomArtistsList;
+    private ListView<Artist> randomArtistsList;
 
     private User user;
     private ArtistService artistService;

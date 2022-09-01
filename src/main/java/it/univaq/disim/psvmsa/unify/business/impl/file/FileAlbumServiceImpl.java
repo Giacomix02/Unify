@@ -3,6 +3,8 @@ import it.univaq.disim.psvmsa.unify.business.AlbumService;
 import it.univaq.disim.psvmsa.unify.business.BusinessException;
 import it.univaq.disim.psvmsa.unify.model.Album;
 
+import java.util.List;
+
 public class FileAlbumServiceImpl implements AlbumService {
 
     private static class Schema {
@@ -62,5 +64,10 @@ public class FileAlbumServiceImpl implements AlbumService {
     @Override
     public void delete(Album album) throws BusinessException {
         deleteById(album.getId());
+    }
+
+    @Override
+    public List<Album> searchAlbumsByName(String name) {
+        return null;
     }
 }

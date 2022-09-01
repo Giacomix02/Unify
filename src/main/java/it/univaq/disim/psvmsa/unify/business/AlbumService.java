@@ -2,6 +2,8 @@ package it.univaq.disim.psvmsa.unify.business;
 
 import it.univaq.disim.psvmsa.unify.model.Album;
 
+import java.util.List;
+
 
 public interface AlbumService {
 
@@ -16,4 +18,5 @@ public interface AlbumService {
 
     void delete (Album album) throws BusinessException;
 
+    List<Album> searchAlbumsByName(String name);
 }
