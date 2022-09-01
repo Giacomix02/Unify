@@ -2,6 +2,7 @@ package it.univaq.disim.psvmsa.unify.business.impl.file;
 
 import it.univaq.disim.psvmsa.unify.business.ArtistService;
 import it.univaq.disim.psvmsa.unify.business.BusinessException;
+import it.univaq.disim.psvmsa.unify.business.PictureService;
 import it.univaq.disim.psvmsa.unify.model.Album;
 import it.univaq.disim.psvmsa.unify.model.Artist;
 import it.univaq.disim.psvmsa.unify.model.Picture;
@@ -18,19 +19,18 @@ public class FileArtistServiceImpl implements ArtistService {
 
         public static int ARTIST_BIOGRAPHY = 2;
 
+        public static int PICTURE_ID = 3;
     }
 
     private final String separator = "|";
 
-    private IndexedFileLoader loader;
+    private final IndexedFileLoader loader;
+    private final PictureService pictureService;
 
-    private final String imageFolder;
 
-    private InputStream stream;
-
-    public FileArtistServiceImpl(String path, String imageFolderPath) {
+    public FileArtistServiceImpl(String path, PictureService pictureService) {
         this.loader = new IndexedFileLoader(path, this.separator);
-        this.imageFolder = imageFolderPath;
+        this.pictureService = pictureService;
     }
 
     @Override
@@ -43,7 +43,8 @@ public class FileArtistServiceImpl implements ArtistService {
                 row.getStringAt(Schema.ARTIST_NAME),
                 row.getStringAt(Schema.ARTIST_BIOGRAPHY)
         );
-        artist.setPicture(new Picture(this.stream, artist.getId()));
+        Picture picture = pictureService.getById(row.getIntAt(Schema.PICTURE_ID));
+        artist.setPicture(picture);
         return artist;
     }
 
@@ -59,9 +60,11 @@ public class FileArtistServiceImpl implements ArtistService {
         IndexedFile file = loader.load();
         IndexedFile.Row row = new IndexedFile.Row(this.separator);
         int id = file.incrementId();
+        artist.setId(id);
         row.set(Schema.ARTIST_ID, artist.getId())
                 .set(Schema.ARTIST_NAME, artist.getName())
-                .set(Schema.ARTIST_BIOGRAPHY, artist.getBiography());
+                .set(Schema.ARTIST_BIOGRAPHY, artist.getBiography())
+                .set(Schema.PICTURE_ID, artist.getPicture().getId());
         file.appendRow(row);
         loader.save(file);
         return artist;
@@ -73,7 +76,8 @@ public class FileArtistServiceImpl implements ArtistService {
         IndexedFile.Row row = new IndexedFile.Row(this.separator);
         row.set(Schema.ARTIST_ID, artist.getId())
                 .set(Schema.ARTIST_NAME, artist.getName())
-                .set(Schema.ARTIST_BIOGRAPHY, artist.getBiography());
+                .set(Schema.ARTIST_BIOGRAPHY, artist.getBiography())
+                .set(Schema.PICTURE_ID, artist.getPicture().getId());
         file.updateRow(row);
         loader.save(file);
     }

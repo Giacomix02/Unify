@@ -32,31 +32,31 @@ public class FilePlaylistServiceImpl implements PlaylistService {
 
     public static String SEPARATOR = "|";
 
-    private IndexedFileLoader loader;
-    private IndexedFileLoader loaderRelation;
-    private SongService songService;
+    private final IndexedFileLoader loader;
+    private final IndexedFileLoader loaderRelation;
+    private final SongService songService;
+    private final UserService userService;
 
-    private UserService userService;
 
-
-    public FilePlaylistServiceImpl(String path, String relationPath, SongService songService) {
+    public FilePlaylistServiceImpl(
+            String path,
+            String relationPath,
+            SongService songService,
+            UserService userService
+    ) {
         this.loader = new IndexedFileLoader(path, SEPARATOR);
         this.loaderRelation = new IndexedFileLoader(relationPath, SEPARATOR);
         this.songService = songService;
+        this.userService = userService;
     }
 
 
     @Override
     public List<Playlist> getPlaylistsByUser(User user) {
-
         List<Playlist> playlists = new ArrayList<>();
-
         IndexedFile relationFile = loaderRelation.load();
         IndexedFile playlistFile = loader.load();
-
-
         List<IndexedFile.Row> rows = playlistFile.filterRows(row -> row.getIntAt(Schema.USER_ID) == user.getId());
-
 
         for (IndexedFile.Row row : rows) {
             Playlist playlist = new Playlist(
@@ -64,11 +64,9 @@ public class FilePlaylistServiceImpl implements PlaylistService {
                     user,
                     row.getIntAt(Schema.PLAYLIST_ID)
             );
-
             List<IndexedFile.Row> relationRows = relationFile.filterRows(
                     relationRow -> relationRow.getIntAt(RelationSchema.PLAYLIST_ID) == playlist.getId()
             );
-
             for (IndexedFile.Row relationRow : relationRows) {
                 try {
                     Song song = songService.getById(relationRow.getIntAt(RelationSchema.SONG_ID));
@@ -77,13 +75,9 @@ public class FilePlaylistServiceImpl implements PlaylistService {
                     System.out.println(e.getMessage());
                 }
             }
-
             playlists.add(playlist);
-
         }
-
         return playlists;
-
     }
 
     @Override
@@ -104,41 +98,39 @@ public class FilePlaylistServiceImpl implements PlaylistService {
         }
 
 
-        Playlist playlist = new Playlist(row.getStringAt(Schema.PLAYLIST_NAME), userService.getById(row.getIntAt(Schema.USER_ID)),id,songs);
-
-
-        return playlist;
+        return new Playlist(
+                row.getStringAt(Schema.PLAYLIST_NAME),
+                userService.getById(row.getIntAt(Schema.USER_ID)),
+                id,
+                songs
+        );
     }
 
     @Override
     public Playlist add(Playlist playlist) {
         IndexedFile file = loader.load();
-
         IndexedFile.Row row = new IndexedFile.Row(SEPARATOR);
-
+        int id = file.incrementId();
+        playlist.setId(id);
         row.set(Schema.PLAYLIST_ID,playlist.getId())
             .set(Schema.PLAYLIST_NAME,playlist.getName())
             .set(Schema.USER_ID,playlist.getUser().getId());
 
         file.appendRow(row);
         loader.save(file);
-
         return playlist;
     }
 
     @Override
     public void delete(Playlist playlist) throws BusinessException{
         IndexedFile file = loader.load();
-
         file.deleteRowById(playlist.getId());
-
         loader.save(file);
     }
 
     @Override
     public void update(Playlist playlist) throws BusinessException {
         IndexedFile file = loader.load();
-
         IndexedFile.Row row = new IndexedFile.Row(SEPARATOR);
         row.set(Schema.PLAYLIST_ID,playlist.getId())
                 .set(Schema.PLAYLIST_NAME,playlist.getName())

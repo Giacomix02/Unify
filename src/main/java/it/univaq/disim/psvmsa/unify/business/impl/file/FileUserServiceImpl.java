@@ -12,9 +12,9 @@ public class FileUserServiceImpl implements UserService {
         public static int PASSWORD = 2;
     }
     private final String separator = "|";
-    private IndexedFileLoader loader;
+    private final IndexedFileLoader loader;
 
-    public FileUserServiceImpl(String path, PlaylistService playlistService){
+    public FileUserServiceImpl(String path){
         this.loader = new IndexedFileLoader(path, this.separator);
         try {
             this.add(new User("admin", "admin"));

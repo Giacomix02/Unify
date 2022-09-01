@@ -30,8 +30,10 @@ public class FileGenreServiceImpl implements GenreService {
         IndexedFile file = loader.load();
         List<IndexedFile.Row> rows = file.getRows();
         for (IndexedFile.Row row : rows) {
-            genres.add(new Genre(row.getIntAt(Schema.GENRE_ID),
-                    row.getStringAt(Schema.GENRE_NAME)));
+            genres.add(new Genre(
+                    row.getIntAt(Schema.GENRE_ID),
+                    row.getStringAt(Schema.GENRE_NAME)
+            ));
         }
         return genres;
     }

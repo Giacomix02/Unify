@@ -16,7 +16,7 @@ public class FileAlbumServiceImpl implements AlbumService {
 
     private final String separator = "|";
 
-    private IndexedFileLoader loader;
+    private final IndexedFileLoader loader;
 
     public FileAlbumServiceImpl(String path) {
         this.loader = new IndexedFileLoader(path, this.separator);
@@ -45,6 +45,7 @@ public class FileAlbumServiceImpl implements AlbumService {
         IndexedFile file = loader.load();
         IndexedFile.Row row = new IndexedFile.Row(this.separator);
         int id = file.incrementId();
+        album.setId(id);
         row.set(Schema.ALBUM_ID, album.getId())
                 .set(Schema.ALBUM_NAME, album.getName());
         file.appendRow(row);

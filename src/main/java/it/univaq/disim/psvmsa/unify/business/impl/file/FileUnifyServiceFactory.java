@@ -11,16 +11,19 @@ public class FileUnifyServiceFactory extends UnifyServiceFactory {
             .toAbsolutePath()
             + File.separator + "data" + File.separator;
 
-    private FileGenreServiceImpl fileGenreService = new FileGenreServiceImpl(BASE_PATH + "genres.txt");
-    private FilePictureServiceImpl filePictureService = new FilePictureServiceImpl(BASE_PATH + "pictures.txt", BASE_PATH + "images/");
-    private FileSongServiceImpl fileSongService;
-    private FileAlbumServiceImpl fileAlbumService = new FileAlbumServiceImpl(BASE_PATH + "albums.txt");
-    private FileArtistServiceImpl fileArtistService;
-    private FilePlaylistServiceImpl filePlaylistService;
-    private FileUserServiceImpl fileUserService;
-
+    private final FileGenreServiceImpl fileGenreService = new FileGenreServiceImpl(BASE_PATH + "genres.txt");
+    private final FilePictureServiceImpl filePictureService = new FilePictureServiceImpl(BASE_PATH + "pictures.txt", BASE_PATH + "images/");
+    private final FileAlbumServiceImpl fileAlbumService = new FileAlbumServiceImpl(BASE_PATH + "albums.txt");
+    private final FileArtistServiceImpl fileArtistService;
+    private final FilePlaylistServiceImpl filePlaylistService;
+    private final FileUserServiceImpl fileUserService;
+    private final FileSongServiceImpl fileSongService;
 
     public FileUnifyServiceFactory(){
+        fileArtistService = new FileArtistServiceImpl(
+                BASE_PATH + "artists.txt",
+                filePictureService
+        );
         fileSongService = new FileSongServiceImpl(
                 BASE_PATH + "songs.txt",
                 BASE_PATH + "song_relation.txt",
@@ -29,21 +32,14 @@ public class FileUnifyServiceFactory extends UnifyServiceFactory {
                 fileAlbumService,
                 filePictureService
         );
-
+        fileUserService = new FileUserServiceImpl(
+                BASE_PATH + "users.txt"
+        );
         filePlaylistService = new FilePlaylistServiceImpl(
                 BASE_PATH + "playlist.txt",
                 BASE_PATH + "playlist_relation.txt",
-                fileSongService
-        );
-
-        fileUserService = new FileUserServiceImpl(
-                BASE_PATH + "users.txt",
-                filePlaylistService
-        );
-
-        fileArtistService = new FileArtistServiceImpl(
-                BASE_PATH + "artists.txt",
-                BASE_PATH + "images/"
+                fileSongService,
+                fileUserService
         );
     }
 
