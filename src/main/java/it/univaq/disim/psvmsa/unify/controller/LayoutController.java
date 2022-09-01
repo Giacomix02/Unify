@@ -10,8 +10,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
@@ -26,24 +28,37 @@ public class LayoutController implements Initializable, DataInitializable<User> 
     private static final String ALBUM_IMAGE = IMAGE_PATH+"compact-disc.png";
     private static final String SONG_IMAGE = IMAGE_PATH+"note.png";
     private static final String GENRE_IMAGE = IMAGE_PATH+"tag.png";
-
+    private static final String PLAYLIST_IMAGE = IMAGE_PATH+"playlist.png";
     private MenuLink MENU_LINKS[] = {
         new MenuLink("Artists", Pages.ARTISTS, new Image(ARTIST_IMAGE)),
         new MenuLink("Albums", Pages.ALBUMS, new Image(ALBUM_IMAGE)),
         new MenuLink("Songs", Pages.SONGS, new Image(SONG_IMAGE)) ,
         new MenuLink("Genres", Pages.GENRES, new Image(GENRE_IMAGE))
     };
-
+    private MenuLink USER_LINKS[] = {
+            new MenuLink("Playlists", Pages.PLAYLISTS, new Image(PLAYLIST_IMAGE))
+    };
 
     private MusicBar musicBar;
     @FXML
     private BorderPane borderPane;
     @FXML
     private VBox navigationMenu;
+
     @FXML
     private Label usernameLabel;
 
     private View currentView;
+
+    @FXML
+    private HBox searchBarWrapper;
+
+    @FXML
+    private TextField searchBar;
+
+    @FXML
+    private VBox userMenu;
+
     @FXML
     private ScrollPane layoutRoot;
     @FXML
@@ -74,18 +89,28 @@ public class LayoutController implements Initializable, DataInitializable<User> 
             navigationMenu.getChildren().add(menuLink);
             menuLink.setOnMouseClicked(event -> setCurrentPage(menuLink.getPage()));
         }
+        for(MenuLink menuLink : USER_LINKS){
+            userMenu.getChildren().add(menuLink);
+            menuLink.setOnMouseClicked(event -> setCurrentPage(menuLink.getPage()));
+        }
     }
 
     public void setCurrentView(View view){
         this.currentView = view;
         layoutRoot.setContent(view.getView());
-        System.out.println(view.getController() instanceof Searchable);
+        searchBarWrapper.setVisible(view.getController() instanceof Searchable);
     }
 
+    @FXML
+    public void search(){
+        if(currentView.getController() instanceof Searchable){
+            ((Searchable) currentView.getController()).search(searchBar.getText());
+        }
+    }
     private void setCurrentPage(Pages page){
-        currentPage = page;
         try{
             ViewDispatcher.getInstance().navigateTo(page);
+            currentPage = page;
         }catch(ViewDispatcherException e){
             System.out.println(e.getMessage());
         }

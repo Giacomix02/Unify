@@ -12,7 +12,6 @@ public class View<T> {
         this.view = view;
     }
 
-
     public DataInitializable<T> getController() {
         return controller;
     }

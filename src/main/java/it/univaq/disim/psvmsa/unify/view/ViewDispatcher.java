@@ -60,6 +60,7 @@ public class ViewDispatcher {
             Parent view = loader.load();
             return new View<>(view,loader.getController());
         }catch(Exception e){
+            e.printStackTrace();
             throw new ViewDispatcherException(e.getMessage());
         }
     }

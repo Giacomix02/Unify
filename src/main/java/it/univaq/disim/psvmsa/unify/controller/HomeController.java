@@ -14,7 +14,7 @@ public class HomeController implements DataInitializable, Initializable, Searcha
     }
 
     @Override
-    public void Search(String text) {
+    public void search(String text) {
        System.out.println(text);
     }
 

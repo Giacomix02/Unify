@@ -90,6 +90,19 @@
                         <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
                      </padding>
                   </VBox>
+                  <Label styleClass="side-menu-title" text="You" textFill="#b3b3b3">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
+                  </Label>
+                  <VBox id="navigationMenu" fx:id="userMenu" prefHeight="200.0" prefWidth="100.0">
+                     <padding>
+                        <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
+                     </padding>
+                  </VBox>
                </children>
             </VBox>
             <HBox prefHeight="100.0" prefWidth="200.0" />
@@ -101,14 +114,14 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="0.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="456.0" spacing="20.0" styleClass="header-input-wrapper">
+                        <HBox fx:id="searchBarWrapper" alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="456.0" spacing="20.0" styleClass="header-input-wrapper">
                            <children>
-                              <TextField prefHeight="40.0" prefWidth="378.0" promptText="Search songs, artists ..." style="-fx-border-color: transparent; -fx-background-color: transparent transparent; -fx-text-fill: white;" HBox.hgrow="ALWAYS">
+                              <TextField fx:id="searchBar" prefHeight="40.0" prefWidth="378.0" promptText="Search songs, artists ..." style="-fx-border-color: transparent; -fx-background-color: transparent transparent; -fx-text-fill: white;" HBox.hgrow="ALWAYS">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
                               </TextField>
-                              <Button minWidth="35.0" mnemonicParsing="false" prefHeight="40.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
+                              <Button minWidth="35.0" mnemonicParsing="false" onAction="#search" prefHeight="40.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
                                  <graphic>
                                     <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
