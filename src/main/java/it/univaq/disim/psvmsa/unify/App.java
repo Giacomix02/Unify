@@ -1,6 +1,7 @@
 package it.univaq.disim.psvmsa.unify;
 
 import it.univaq.disim.psvmsa.unify.business.impl.ram.RAMUserServiceImpl;
+import it.univaq.disim.psvmsa.unify.model.User;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -18,8 +19,11 @@ public class App extends Application {
 		this.stage = stage;
 		ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
 		viewDispatcher.setStage(stage);
-		viewDispatcher.showLogin();
-		//viewDispatcher.loggedIn(testUser);
+		//viewDispatcher.showLogin();
+
+		User testUser = new User("admin","admin");
+
+		viewDispatcher.loggedIn(testUser);
 		stage.getIcons().add(new Image(getClass().getResource(UNIFY_ICON).toString()));
 		stage.show();
 	}
