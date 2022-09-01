@@ -13,25 +13,20 @@ import java.util.Objects;
 
 public class FilePlaylistServiceImpl implements PlaylistService {
 
-
     private static class Schema {
-
         public static int PLAYLIST_ID = 0;
         public static int PLAYLIST_NAME = 1;
         public static int USER_ID = 2;
-
     }
 
     public static class RelationSchema {
-
         public static int RELATION_ID = 0;
         public static int SONG_ID = 1;
         public static int PLAYLIST_ID = 2;
     }
 
 
-    public static String SEPARATOR = "|";
-
+    public final static String SEPARATOR = "|";
     private final IndexedFileLoader loader;
     private final IndexedFileLoader loaderRelation;
     private final SongService songService;
@@ -44,13 +39,11 @@ public class FilePlaylistServiceImpl implements PlaylistService {
             SongService songService,
             UserService userService
     ) {
-        this.loader = new IndexedFileLoader(path, SEPARATOR);
-        this.loaderRelation = new IndexedFileLoader(relationPath, SEPARATOR);
+        this.loader = new IndexedFileLoader(path, SEPARATOR, Schema.PLAYLIST_ID);
+        this.loaderRelation = new IndexedFileLoader(relationPath, SEPARATOR, RelationSchema.RELATION_ID);
         this.songService = songService;
         this.userService = userService;
     }
-
-
     @Override
     public List<Playlist> getPlaylistsByUser(User user) {
         List<Playlist> playlists = new ArrayList<>();
@@ -84,20 +77,14 @@ public class FilePlaylistServiceImpl implements PlaylistService {
     public Playlist getById(Integer id) {
         IndexedFile file = loader.load();
         IndexedFile relationFile = loaderRelation.load();
-
         List<Song> songs = new ArrayList<>();
-
         IndexedFile.Row row = file.findRowById(id);
-
         List<IndexedFile.Row> relationRows = relationFile.filterRows(
                 relationRow -> relationRow.getIntAt(RelationSchema.PLAYLIST_ID) == row.getIntAt(Schema.PLAYLIST_ID)
         );
-
         for(IndexedFile.Row r : relationRows){
-            songs.add( songService.getById(r.getIntAt(RelationSchema.SONG_ID)));
+            songs.add(songService.getById(r.getIntAt(RelationSchema.SONG_ID)));
         }
-
-
         return new Playlist(
                 row.getStringAt(Schema.PLAYLIST_NAME),
                 userService.getById(row.getIntAt(Schema.USER_ID)),
@@ -107,7 +94,7 @@ public class FilePlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
-    public Playlist add(Playlist playlist) {
+    public Playlist add(Playlist playlist){
         IndexedFile file = loader.load();
         IndexedFile.Row row = new IndexedFile.Row(SEPARATOR);
         int id = file.incrementId();
@@ -115,7 +102,7 @@ public class FilePlaylistServiceImpl implements PlaylistService {
         row.set(Schema.PLAYLIST_ID,playlist.getId())
             .set(Schema.PLAYLIST_NAME,playlist.getName())
             .set(Schema.USER_ID,playlist.getUser().getId());
-
+        this.addSongRelationInPlaylist(playlist);
         file.appendRow(row);
         loader.save(file);
         return playlist;
@@ -125,6 +112,7 @@ public class FilePlaylistServiceImpl implements PlaylistService {
     public void delete(Playlist playlist) throws BusinessException{
         IndexedFile file = loader.load();
         file.deleteRowById(playlist.getId());
+        this.deleteSongRelationsInPlaylist(playlist);
         loader.save(file);
     }
 
@@ -135,8 +123,32 @@ public class FilePlaylistServiceImpl implements PlaylistService {
         row.set(Schema.PLAYLIST_ID,playlist.getId())
                 .set(Schema.PLAYLIST_NAME,playlist.getName())
                 .set(Schema.USER_ID,playlist.getUser().getId());
-
+        this.deleteSongRelationsInPlaylist(playlist);
+        this.addSongRelationInPlaylist(playlist);
         file.updateRow(row);
         loader.save(file);
+    }
+
+    private void deleteSongRelationsInPlaylist(Playlist playlist) throws BusinessException{
+        IndexedFile relationFile = loaderRelation.load();
+        List<IndexedFile.Row> songs = relationFile.filterRows(
+                relationRow -> relationRow.getIntAt(RelationSchema.PLAYLIST_ID) == playlist.getId()
+        );
+        for(IndexedFile.Row r : songs){
+            relationFile.deleteRowById(r.getIntAt(RelationSchema.RELATION_ID));
+        }
+        loaderRelation.save(relationFile);
+    }
+
+    private void addSongRelationInPlaylist(Playlist playlist){
+        IndexedFile relationFile = loaderRelation.load();
+        for(Song song : playlist.getSongs()){
+            IndexedFile.Row row = new IndexedFile.Row(SEPARATOR);
+            int id = relationFile.incrementId();
+            row.set(RelationSchema.RELATION_ID,id)
+                    .set(RelationSchema.SONG_ID,song.getId())
+                    .set(RelationSchema.PLAYLIST_ID,playlist.getId());
+            relationFile.appendRow(row);
+        }
     }
 }

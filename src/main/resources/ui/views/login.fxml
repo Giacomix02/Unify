@@ -39,7 +39,7 @@
       </HBox>
       <VBox alignment="CENTER" fillWidth="false" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
          <children>
-            <VBox alignment="CENTER" style="-fx-background-radius: 10;" styleClass="login-pane" VBox.vgrow="NEVER">
+            <VBox alignment="CENTER" prefHeight="273.0" prefWidth="281.0" style="-fx-background-radius: 10;" styleClass="login-pane" VBox.vgrow="NEVER">
                <children>
                   <Label text="Sign in" textAlignment="CENTER">
                      <VBox.margin>
@@ -70,7 +70,17 @@
                         <Insets bottom="10.0" top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <Button mnemonicParsing="false" onAction="#login" styleClass="custom-button" text="Login" fx:id="loginButton">
+                  <Button fx:id="loginButton" mnemonicParsing="false" onAction="#login" styleClass="custom-button" text="Login">
+                     <cursor>
+                        <Cursor fx:constant="WAIT" />
+                     </cursor>
+                  </Button>
+                  <Label text="or">
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Button fx:id="registerButton" mnemonicParsing="false" onAction="#register" style="-fx-background-color: #3D9CA2;" styleClass="custom-button" text="Register">
                      <cursor>
                         <Cursor fx:constant="WAIT" />
                      </cursor>

@@ -1,25 +1,21 @@
 package it.univaq.disim.psvmsa.unify.business.impl.file;
 import it.univaq.disim.psvmsa.unify.business.AlbumService;
 import it.univaq.disim.psvmsa.unify.business.BusinessException;
-import it.univaq.disim.psvmsa.unify.business.PlaylistService;
 import it.univaq.disim.psvmsa.unify.model.Album;
 
 public class FileAlbumServiceImpl implements AlbumService {
 
     private static class Schema {
-
         public static int ALBUM_ID = 0;
-
         public static int ALBUM_NAME = 1;
-
     }
 
-    private final String separator = "|";
+    private final String SEPARATOR = "|";
 
     private final IndexedFileLoader loader;
 
     public FileAlbumServiceImpl(String path) {
-        this.loader = new IndexedFileLoader(path, this.separator);
+        this.loader = new IndexedFileLoader(path, this.SEPARATOR);
     }
 
     @Override
@@ -43,7 +39,7 @@ public class FileAlbumServiceImpl implements AlbumService {
     @Override
     public Album add(Album album) {
         IndexedFile file = loader.load();
-        IndexedFile.Row row = new IndexedFile.Row(this.separator);
+        IndexedFile.Row row = new IndexedFile.Row(this.SEPARATOR);
         int id = file.incrementId();
         album.setId(id);
         row.set(Schema.ALBUM_ID, album.getId())
@@ -56,7 +52,7 @@ public class FileAlbumServiceImpl implements AlbumService {
     @Override
     public void update(Album album) throws BusinessException {
         IndexedFile file = loader.load();
-        IndexedFile.Row row = new IndexedFile.Row(this.separator);
+        IndexedFile.Row row = new IndexedFile.Row(this.SEPARATOR);
         row.set(Schema.ALBUM_ID, album.getId())
                 .set(Schema.ALBUM_NAME, album.getName());
         file.updateRow(row);

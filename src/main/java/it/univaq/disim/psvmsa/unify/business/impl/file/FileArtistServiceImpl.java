@@ -3,33 +3,25 @@ package it.univaq.disim.psvmsa.unify.business.impl.file;
 import it.univaq.disim.psvmsa.unify.business.ArtistService;
 import it.univaq.disim.psvmsa.unify.business.BusinessException;
 import it.univaq.disim.psvmsa.unify.business.PictureService;
-import it.univaq.disim.psvmsa.unify.model.Album;
 import it.univaq.disim.psvmsa.unify.model.Artist;
 import it.univaq.disim.psvmsa.unify.model.Picture;
-
-import java.io.InputStream;
 
 public class FileArtistServiceImpl implements ArtistService {
 
     private static class Schema {
-
         public static int ARTIST_ID = 0;
-
         public static int ARTIST_NAME = 1;
-
         public static int ARTIST_BIOGRAPHY = 2;
-
         public static int PICTURE_ID = 3;
     }
 
-    private final String separator = "|";
-
+    private final String SEPARATOR = "|";
     private final IndexedFileLoader loader;
     private final PictureService pictureService;
 
 
     public FileArtistServiceImpl(String path, PictureService pictureService) {
-        this.loader = new IndexedFileLoader(path, this.separator);
+        this.loader = new IndexedFileLoader(path, this.SEPARATOR, Schema.ARTIST_ID);
         this.pictureService = pictureService;
     }
 
@@ -58,7 +50,7 @@ public class FileArtistServiceImpl implements ArtistService {
     @Override
     public Artist add(Artist artist) {
         IndexedFile file = loader.load();
-        IndexedFile.Row row = new IndexedFile.Row(this.separator);
+        IndexedFile.Row row = new IndexedFile.Row(this.SEPARATOR);
         int id = file.incrementId();
         artist.setId(id);
         row.set(Schema.ARTIST_ID, artist.getId())
@@ -73,7 +65,7 @@ public class FileArtistServiceImpl implements ArtistService {
     @Override
     public void update(Artist artist) throws BusinessException {
         IndexedFile file = loader.load();
-        IndexedFile.Row row = new IndexedFile.Row(this.separator);
+        IndexedFile.Row row = new IndexedFile.Row(this.SEPARATOR);
         row.set(Schema.ARTIST_ID, artist.getId())
                 .set(Schema.ARTIST_NAME, artist.getName())
                 .set(Schema.ARTIST_BIOGRAPHY, artist.getBiography())

@@ -15,36 +15,29 @@ public class FileUserServiceImpl implements UserService {
     private final IndexedFileLoader loader;
 
     public FileUserServiceImpl(String path){
-        this.loader = new IndexedFileLoader(path, this.separator);
-        try {
-            this.add(new User("admin", "admin"));
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+        this.loader = new IndexedFileLoader(path, this.separator, Schema.USER_ID);
     }
     @Override
     public User getById(Integer id) {
         IndexedFile file = loader.load();
         IndexedFile.Row row = file.findRowById(id);
         if (row == null) return null;
-        User user = new User(
+        return new User(
                 row.getStringAt(Schema.USER_NAME),
                 row.getStringAt(Schema.PASSWORD),
                 row.getIntAt(Schema.USER_ID)
         );
-        return user;
     }
 
     public User getByUsername(String username) {
         IndexedFile file = loader.load();
         IndexedFile.Row row = file.findRow(r -> r.getStringAt(Schema.USER_NAME).equals(username));
         if(row == null) return null;
-        User user = new User(
+        return new User(
                 row.getStringAt(Schema.USER_NAME),
                 row.getStringAt(Schema.PASSWORD),
                 row.getIntAt(Schema.USER_ID)
         );
-        return user;
     }
 
     @Override
@@ -59,6 +52,8 @@ public class FileUserServiceImpl implements UserService {
 
     @Override
     public void delete(User user) throws BusinessException {
+        User existingUser = this.getById(user.getId());
+        if(existingUser == null) throw new BusinessException("User not found");
         IndexedFile file = loader.load();
         file.deleteRowById(user.getId());
         loader.save(file);
@@ -77,6 +72,8 @@ public class FileUserServiceImpl implements UserService {
 
     @Override
     public User add(User user) throws BusinessException {
+        User existingUser = getByUsername(user.getUsername());
+        if(existingUser != null) throw new BusinessException("User already exists");
         IndexedFile file = loader.load();
         IndexedFile.Row row = new IndexedFile.Row(this.separator);
         int id = file.incrementId();

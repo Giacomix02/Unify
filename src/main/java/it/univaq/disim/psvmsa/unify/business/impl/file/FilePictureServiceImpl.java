@@ -13,7 +13,6 @@ public class FilePictureServiceImpl implements PictureService {
 
     private static class Schema {
         private static int PICTURE_ID = 0;
-
     }
 
     private final String SEPARATOR = "|";

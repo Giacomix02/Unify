@@ -3,7 +3,6 @@
     src: url('assets/Orienta/Orienta-Regular.ttf');
 }
 
-
 *{
     bg-color: #0A0F14;
     layer-1:  #161721;
@@ -13,6 +12,7 @@
     secondary-text: #E4E4E4;
     tertiary-text: #B3B3B3;
     accent: #F14458;
+    accent-2: #3D9CA2;
     accent-hover: #F25668;
     -fx-text-fill: main-text;
     -fx-font-family: 'Orienta';

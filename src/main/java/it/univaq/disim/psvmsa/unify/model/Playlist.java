@@ -1,9 +1,6 @@
 package it.univaq.disim.psvmsa.unify.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 public class Playlist {
 
@@ -52,7 +49,11 @@ public class Playlist {
         Random random = new Random();
         return getSong(random.nextInt(songs.size()));
     }
-
+    public List<Song> shuffle(){
+        List<Song> shuffled = new ArrayList<>(this.songs); //create clone
+        Collections.shuffle(shuffled);
+        return shuffled;
+    }
     public String getName() {
         return name;
     }

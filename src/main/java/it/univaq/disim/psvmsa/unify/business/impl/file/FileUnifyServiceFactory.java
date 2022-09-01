@@ -30,7 +30,8 @@ public class FileUnifyServiceFactory extends UnifyServiceFactory {
                 BASE_PATH + "songs/",
                 fileArtistService,
                 fileAlbumService,
-                filePictureService
+                filePictureService,
+                fileGenreService
         );
         fileUserService = new FileUserServiceImpl(
                 BASE_PATH + "users.txt"

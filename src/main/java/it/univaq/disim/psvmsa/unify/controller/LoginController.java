@@ -27,6 +27,9 @@ public class LoginController implements Initializable, DataInitializable{
 
     @FXML
     private Button loginButton;
+
+    @FXML
+    private Button registerButton;
     UserService userService;
     public LoginController(){
         UnifyServiceFactory factoryInstance = UnifyServiceFactory.getInstance();
@@ -42,13 +45,16 @@ public class LoginController implements Initializable, DataInitializable{
                         .isEmpty()
                         .or(password.textProperty().isEmpty())
                 );
+        this.registerButton
+                .disableProperty()
+                .bind(this.loginButton.disableProperty());
     }
 
     @FXML
     private void login() {
-        ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
         try{
             User user = this.userService.validate(username.getText(),password.getText());
+            ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
             viewDispatcher.loggedIn(user);
             viewDispatcher.navigateTo(Pages.HOME);
         }catch(ViewDispatcherException e){
@@ -56,6 +62,21 @@ public class LoginController implements Initializable, DataInitializable{
             logLabel.setText("Error logging in");
         }catch (BusinessException businessException){
             logLabel.setText(businessException.getMessage());
+        }
+    }
+
+    @FXML
+    private void register(){
+        try{
+            User user = new User(username.getText(),password.getText());
+            User registeredUser = this.userService.add(user);
+            ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
+            viewDispatcher.loggedIn(registeredUser);
+            viewDispatcher.navigateTo(Pages.HOME);
+        }catch(BusinessException e){
+            logLabel.setText(e.getMessage());
+        }catch(ViewDispatcherException e){
+            logLabel.setText("Error logging in");
         }
     }
 }

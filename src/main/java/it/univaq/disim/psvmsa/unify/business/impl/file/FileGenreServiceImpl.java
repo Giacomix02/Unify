@@ -10,18 +10,16 @@ import java.util.List;
 public class FileGenreServiceImpl implements GenreService {
 
     private static class Schema {
-
         public static int GENRE_ID = 0;
         public static int GENRE_NAME = 1;
-
     }
 
     private final String SEPARATOR = "|";
 
-    private IndexedFileLoader loader;
+    private final IndexedFileLoader loader;
 
     public FileGenreServiceImpl(String path) {
-        this.loader = new IndexedFileLoader(path, this.SEPARATOR);
+        this.loader = new IndexedFileLoader(path, this.SEPARATOR, Schema.GENRE_ID);
     }
 
     @Override
