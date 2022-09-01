@@ -1,0 +1,12 @@
+
+.random-artists-card, .home-genres-card{
+    -fx-background-color: layer-1;
+    -fx-background-radius: 10;
+    -fx-padding: 15;
+}
+.home-genres-card{
+}
+.home-playlists-card{
+    -fx-padding: 15;
+
+}

@@ -72,7 +72,6 @@ public class LoginController implements Initializable, DataInitializable{
             User registeredUser = this.userService.add(user);
             ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
             viewDispatcher.loggedIn(registeredUser);
-            viewDispatcher.navigateTo(Pages.HOME);
         }catch(BusinessException e){
             logLabel.setText(e.getMessage());
         }catch(ViewDispatcherException e){

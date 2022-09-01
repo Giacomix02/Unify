@@ -1,11 +1,30 @@
 package it.univaq.disim.psvmsa.unify.controller;
 
+import it.univaq.disim.psvmsa.unify.business.ArtistService;
+import it.univaq.disim.psvmsa.unify.business.PlaylistService;
+import it.univaq.disim.psvmsa.unify.model.User;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 
+import javax.swing.text.html.ListView;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class HomeController implements DataInitializable, Initializable, Searchable {
+public class HomeController implements DataInitializable<User>, Initializable {
+    @FXML
+    private GridPane playlistsPane;
+
+    @FXML
+    private FlowPane genresPane;
+
+    @FXML
+    private ListView randomArtistsList;
+
+    private User user;
+    private ArtistService artistService;
+    private PlaylistService playlistService;
 
 
     @Override
@@ -13,9 +32,7 @@ public class HomeController implements DataInitializable, Initializable, Searcha
 
     }
 
-    @Override
-    public void search(String text) {
-       System.out.println(text);
+    public void initializeData(User user){
+        this.user = user;
     }
-
 }
