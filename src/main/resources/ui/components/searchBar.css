@@ -1,0 +1,16 @@
+.header-input-wrapper{
+    -fx-background-radius: 100px;
+    padding: 10px;
+    -fx-background-color: layer-1;
+}
+
+.header-textfield{
+    -fx-border-fill: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-focus-color: transparent;
+}
+
+.main-content, .main-content-wrapper{
+    -fx-background: bg-color;
+    -fx-background-color: bg-color;
+}

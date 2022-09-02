@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Text?>
 
-
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" />
+<HBox alignment="CENTER" maxHeight="-Infinity" styleClass="song-row" stylesheets="@songRow.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView id="picture" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" styleClass="image" HBox.hgrow="ALWAYS" />
+      <Text id="songName" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="song-text" text="Text" />
+      <Text id="genreName" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+      <Text id="artistName" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+   </children>
+</HBox>
