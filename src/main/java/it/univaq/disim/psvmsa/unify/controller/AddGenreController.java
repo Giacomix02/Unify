@@ -33,6 +33,7 @@ public class AddGenreController implements Initializable, DataInitializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         this.saveButton
                 .disableProperty()
                 .bind(genreInput
