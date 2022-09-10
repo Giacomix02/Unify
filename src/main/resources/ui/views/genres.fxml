@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.psvmsa.unify.controller.GenreController">
-   <HBox fx:id="searchBox" alignment="CENTER" maxHeight="30.0" styleClass="searchBox" />
+   <HBox alignment="CENTER">
+      <children>
+         <HBox fx:id="searchBox" alignment="CENTER_RIGHT" maxHeight="50.0" styleClass="searchBox">
+            <HBox.margin>
+               <Insets />
+            </HBox.margin>
+         </HBox>
+         <HBox alignment="CENTER" HBox.hgrow="ALWAYS" />
+         <HBox fx:id="addBox" alignment="CENTER_LEFT" />
+      </children>
+      <VBox.margin>
+         <Insets bottom="10.0" />
+      </VBox.margin>
+   </HBox>
    <Label styleClass="title-text" text="Genres" />
 </VBox>

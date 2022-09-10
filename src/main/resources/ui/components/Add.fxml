@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+
+<HBox fx:id="addBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" stylesheets="@add.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Button id="button" fx:id="addButton" mnemonicParsing="false" style="-fx-background-color: transparent;" text="Add" textAlignment="CENTER">
+         <graphic>
+            <ImageView styleClass="image">
+               <image>
+                  <Image url="@../images/icons/add.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+   </children>
+</HBox>
