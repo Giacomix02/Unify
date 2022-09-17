@@ -3,18 +3,16 @@ package it.univaq.disim.psvmsa.unify.controller;
 import it.univaq.disim.psvmsa.unify.business.GenreService;
 import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.model.Genre;
-import it.univaq.disim.psvmsa.unify.model.Song;
 import it.univaq.disim.psvmsa.unify.view.components.Add;
 import it.univaq.disim.psvmsa.unify.view.components.SearchBar;
 import it.univaq.disim.psvmsa.unify.view.components.ViewGenres;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class GenreController implements Initializable, DataInitializable {
@@ -37,20 +35,39 @@ public class GenreController implements Initializable, DataInitializable {
     }
 
     public void initialize(URL location, ResourceBundle resources){
-        searchBar = new SearchBar();
+        searchBar = new SearchBar("Search by Genre");
         addGenre = new Add();
+
+        searchBar.setOnSearch(text ->{
+            showSearch(text);
+        });
+
+
 
         searchBox.getChildren().add(searchBar);
         addBox.getChildren().add(addGenre);
 
-        ObservableList<Genre> genres = FXCollections.observableList(genreService.getGenres());
+        List<Genre> genres = genreService.getGenres();
 
         for(Genre genre : genres){
             viewGenres = new ViewGenres(genre);
             viewList.getChildren().add(viewGenres);
         }
-
     }
+
+    public void showSearch(String text){
+
+        List<Genre> genres = genreService.searchByName(text);
+
+        viewList.getChildren().clear();
+
+        for(Genre genre : genres){
+            viewGenres = new ViewGenres(genre);
+            viewList.getChildren().add(viewGenres);
+        }
+    }
+
 }
 
+// TODO add songs and albums
 

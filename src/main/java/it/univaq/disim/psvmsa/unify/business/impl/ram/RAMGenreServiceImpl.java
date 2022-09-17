@@ -39,5 +39,14 @@ public class RAMGenreServiceImpl implements GenreService {
         if(existing == null) throw new BusinessException("Genre not found");
         genres.remove(existing.getId());
     }
+    public List<Genre> searchByName(String name) {
+        ArrayList<Genre> genres = new ArrayList<>();
+        for (Genre genre : this.genres.values()) {
+            if (genre.getName().contains(name)) {
+                genres.add(genre);
+            }
+        }
+        return genres;
+    }
 
 }

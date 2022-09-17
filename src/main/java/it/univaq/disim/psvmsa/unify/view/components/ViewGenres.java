@@ -62,5 +62,5 @@ public class ViewGenres extends VBox {
         });
     }
 
-
 }
+

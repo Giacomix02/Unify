@@ -48,6 +48,23 @@ public class FileGenreServiceImpl implements GenreService {
     }
 
     @Override
+    public List<Genre> searchByName(String name) {
+        ArrayList<Genre> genres = new ArrayList<>();
+        IndexedFile file = loader.load();
+        List<IndexedFile.Row> rows = file.filterRows(r -> r.getStringAt(Schema.GENRE_NAME).contains(name.toLowerCase()));
+        if (rows == null) return null;
+
+        for(IndexedFile.Row row : rows) {
+            genres.add(new Genre(
+                    row.getIntAt(Schema.GENRE_ID),
+                    row.getStringAt(Schema.GENRE_NAME)
+            ));
+        }
+
+        return genres;
+    }
+
+    @Override
     public Genre add(Genre genre) {
         IndexedFile file = loader.load();
         IndexedFile.Row row = new IndexedFile.Row(this.SEPARATOR);

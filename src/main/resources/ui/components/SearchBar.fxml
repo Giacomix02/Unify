@@ -11,12 +11,12 @@
 <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" style="-fx-background-color: #0A0F14;        -fx-background-radius: 67;" stylesheets="@searchBar.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
       <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="456.0" spacing="20.0" styleClass="header-input-wrapper" HBox.hgrow="ALWAYS">
           <children>
-              <TextField prefHeight="40.0" prefWidth="378.0" promptText="Search songs, artists ..." style="-fx-border-color: transparent; -fx-background-color: transparent transparent; -fx-text-fill: white;" HBox.hgrow="ALWAYS">
+              <TextField id="text" prefHeight="40.0" prefWidth="378.0" style="-fx-border-color: transparent; -fx-background-color: transparent transparent; -fx-text-fill: white;" HBox.hgrow="ALWAYS">
                   <HBox.margin>
                       <Insets />
                   </HBox.margin>
               </TextField>
-              <Button minWidth="35.0" mnemonicParsing="false" prefHeight="40.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
+              <Button id="search" minWidth="35.0" mnemonicParsing="false" prefHeight="40.0" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
                   <graphic>
                       <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                           <image>
