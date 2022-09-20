@@ -14,3 +14,5 @@ public interface GenreService {
     void update(Genre genre) throws BusinessException;
     List<Genre> searchByName(String name);
 }
+
+//TODO when a genre is deleted, all the songs with that genre must be updated

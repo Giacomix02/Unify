@@ -5,7 +5,7 @@ import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.model.Genre;
 import it.univaq.disim.psvmsa.unify.view.components.Add;
 import it.univaq.disim.psvmsa.unify.view.components.SearchBar;
-import it.univaq.disim.psvmsa.unify.view.components.ViewGenres;
+import it.univaq.disim.psvmsa.unify.view.components.ViewGenre;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.HBox;
@@ -27,7 +27,7 @@ public class GenreController implements Initializable, DataInitializable {
 
     private SearchBar searchBar;
     private Add addGenre;
-    private ViewGenres viewGenres;
+    private ViewGenre viewGenre;
 
     public GenreController(){
         UnifyServiceFactory factoryInstance = UnifyServiceFactory.getInstance();
@@ -50,8 +50,8 @@ public class GenreController implements Initializable, DataInitializable {
         List<Genre> genres = genreService.getGenres();
 
         for(Genre genre : genres){
-            viewGenres = new ViewGenres(genre);
-            viewList.getChildren().add(viewGenres);
+            viewGenre = new ViewGenre(genre);
+            viewList.getChildren().add(viewGenre);
         }
     }
 
@@ -62,8 +62,8 @@ public class GenreController implements Initializable, DataInitializable {
         viewList.getChildren().clear();
 
         for(Genre genre : genres){
-            viewGenres = new ViewGenres(genre);
-            viewList.getChildren().add(viewGenres);
+            viewGenre = new ViewGenre(genre);
+            viewList.getChildren().add(viewGenre);
         }
     }
 
