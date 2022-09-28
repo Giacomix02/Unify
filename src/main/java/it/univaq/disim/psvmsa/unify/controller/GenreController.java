@@ -3,7 +3,7 @@ package it.univaq.disim.psvmsa.unify.controller;
 import it.univaq.disim.psvmsa.unify.business.GenreService;
 import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.model.Genre;
-import it.univaq.disim.psvmsa.unify.view.components.Add;
+import it.univaq.disim.psvmsa.unify.view.components.AddGenre;
 import it.univaq.disim.psvmsa.unify.view.components.SearchBar;
 import it.univaq.disim.psvmsa.unify.view.components.ViewGenre;
 import javafx.fxml.FXML;
@@ -26,7 +26,7 @@ public class GenreController implements Initializable, DataInitializable {
     private VBox viewList;
 
     private SearchBar searchBar;
-    private Add addGenre;
+    private AddGenre addGenre;
     private ViewGenre viewGenre;
 
     public GenreController(){
@@ -36,11 +36,12 @@ public class GenreController implements Initializable, DataInitializable {
 
     public void initialize(URL location, ResourceBundle resources){
         searchBar = new SearchBar("Search by Genre");
-        addGenre = new Add();
+        addGenre = new AddGenre();
 
         searchBar.setOnSearch(text ->{
             showSearch(text);
         });
+
 
 
 
@@ -69,5 +70,5 @@ public class GenreController implements Initializable, DataInitializable {
 
 }
 
-// TODO add songs and albums
+// TODO add albums
 

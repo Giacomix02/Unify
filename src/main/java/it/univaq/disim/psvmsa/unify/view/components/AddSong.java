@@ -8,9 +8,9 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
-public class Add extends HBox {
+public class AddSong extends HBox {
     private Button addButton;
-    public Add() {
+    public AddSong() {
         super();
         init();
     }
@@ -27,16 +27,16 @@ public class Add extends HBox {
             System.out.println(e.getMessage());
         }
 
-        addGenre();
+        addSong();
     }
 
 
     @FXML
-    public void addGenre(){
+    public void addSong(){
 
         this.addButton.setOnAction(event -> {
             try {
-                ViewDispatcher.getInstance().navigateTo(Pages.ADDGENRE);
+                ViewDispatcher.getInstance().navigateTo(Pages.ADDSONG);
             }
             catch (Exception e){
                 System.out.println(e.getMessage());

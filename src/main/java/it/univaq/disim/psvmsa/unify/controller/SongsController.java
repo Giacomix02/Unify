@@ -3,12 +3,16 @@ package it.univaq.disim.psvmsa.unify.controller;
 import it.univaq.disim.psvmsa.unify.business.SongService;
 import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.model.*;
+import it.univaq.disim.psvmsa.unify.view.components.AddGenre;
+import it.univaq.disim.psvmsa.unify.view.components.AddSong;
+import it.univaq.disim.psvmsa.unify.view.components.SearchBar;
 import it.univaq.disim.psvmsa.unify.view.components.SongRowCell;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.HBox;
 
 
 import java.net.URL;
@@ -18,6 +22,14 @@ public class SongsController implements Initializable, DataInitializable {
 
     @FXML
     private ListView listView;
+    @FXML
+    private HBox searchBox;
+    @FXML
+    private HBox addBox;
+
+
+    private SearchBar searchBar;
+    private AddSong addSong;
 
     private final SongService songService;
 
@@ -28,6 +40,18 @@ public class SongsController implements Initializable, DataInitializable {
 
     public void initialize(URL location, ResourceBundle resources) {
 
+        searchBar = new SearchBar("Search by Song");
+        addSong = new AddSong();
+
+        searchBox.getChildren().add(searchBar);
+        addBox.getChildren().add(addSong);
+
+        searchBar.setOnSearch(text ->{
+            showSearch(text);
+        });
+
+
+
         ObservableList<Song> songs = FXCollections.observableList(songService.getAllSongs());
 
         songs.add(new Song("aa"));
@@ -36,5 +60,9 @@ public class SongsController implements Initializable, DataInitializable {
         listView.setCellFactory(song -> new SongRowCell());
 
 
+    }
+
+    public void showSearch(String text){
+     //TODO search songs and show them
     }
 }

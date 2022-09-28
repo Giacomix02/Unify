@@ -10,7 +10,9 @@ public enum Pages {
     ARTISTS("artists"),
     GENRES("genres"),
     PLAYLISTS("playlists"),
-    ADDGENRE("addGenre");
+    ADDGENRE("addGenre"),
+
+    ADDSONG("addSong");
     private final String name;
 
     Pages(String name) {

@@ -2,7 +2,6 @@ package it.univaq.disim.psvmsa.unify.business;
 
 import it.univaq.disim.psvmsa.unify.model.Genre;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface GenreService {

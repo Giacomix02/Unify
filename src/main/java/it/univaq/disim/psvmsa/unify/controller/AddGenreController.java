@@ -24,11 +24,11 @@ public class AddGenreController implements Initializable, DataInitializable{
 
     @FXML
     private Button exit;
-    private final GenreService addGenreService;
+    private final GenreService genreService;
 
     public AddGenreController(){
         UnifyServiceFactory factoryInstance = UnifyServiceFactory.getInstance();
-        this.addGenreService = factoryInstance.getGenreService();
+        this.genreService = factoryInstance.getGenreService();
     }
 
     @Override
@@ -44,7 +44,7 @@ public class AddGenreController implements Initializable, DataInitializable{
 
     public void saveGenre(){
         Genre genre = new Genre(genreInput.getText());
-        addGenreService.add(genre);
+        genreService.add(genre);
         genreInput.clear();
     }
 
