@@ -4,11 +4,14 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Text?>
 
-<HBox alignment="CENTER" maxHeight="-Infinity" styleClass="song-row" stylesheets="@songRow.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<HBox alignment="CENTER" styleClass="song-row" stylesheets="@songRow.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ImageView id="picture" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" styleClass="image" HBox.hgrow="ALWAYS" />
-      <Text id="songName" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="song-text" text="Text" />
-      <Text id="genreName" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-      <Text id="artistName" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+      <ImageView id="picture" fitHeight="90.0" fitWidth="107.0" pickOnBounds="true" preserveRatio="true" styleClass="image" />
+      <HBox prefHeight="100.0" prefWidth="200.0" />
+      <Text id="songName" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="song-text" text="Text" />
+      <HBox prefHeight="100.0" prefWidth="200.0" />
+      <Text id="genreName" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+      <HBox prefHeight="100.0" prefWidth="200.0" />
+      <Text id="artistName" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
    </children>
 </HBox>

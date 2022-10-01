@@ -3,11 +3,10 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import org.controlsfx.control.textfield.CustomTextField?>
-
 
 <VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/home.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.psvmsa.unify.controller.AddSongController">
    <children>
@@ -27,7 +26,7 @@
                               <Insets bottom="10.0" />
                            </VBox.margin>
                         </Label>
-                        <TextField fx:id="genreInput" prefHeight="30.0" prefWidth="244.0" promptText="write here..." style="-fx-background-radius: 7;" />
+                        <TextField fx:id="songNameInput" prefHeight="30.0" prefWidth="244.0" promptText="write here..." style="-fx-background-radius: 7;" />
                      </children>
                      <HBox.margin>
                         <Insets left="10.0" />
@@ -36,8 +35,8 @@
                   <HBox prefHeight="100.0" prefWidth="159.0" HBox.hgrow="ALWAYS" />
                   <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button mnemonicParsing="false" styleClass="custom-button" text="Upload an Image" />
-                        <Label text="Image Uploaded!" />
+                        <Button fx:id="saveImageButton" mnemonicParsing="false" onAction="#uploadImage" styleClass="custom-button" text="Upload an Image" />
+                        <Label fx:id="saveImageLabel" text="Image Uploaded!" />
                      </children>
                      <HBox.margin>
                         <Insets right="10.0" />
@@ -49,12 +48,12 @@
                <children>
                   <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="header-textfield" text="Insert song lyric">
+                        <Label styleClass="header-textfield" text="Insert song lyrics">
                            <VBox.margin>
                               <Insets bottom="10.0" />
                            </VBox.margin>
                         </Label>
-                        <CustomTextField alignment="TOP_LEFT" prefHeight="86.0" prefWidth="580.0" promptText="write here..." style="-fx-background-radius: 7;" VBox.vgrow="ALWAYS" />
+                        <TextArea fx:id="songLyricsInput" prefHeight="102.0" prefWidth="579.0" promptText="write here..." style="-fx-background-radius: 10; -fx-text-fill: black;" />
                      </children>
                      <HBox.margin>
                         <Insets left="10.0" right="10.0" top="10.0" />

@@ -54,7 +54,7 @@ public class SongsController implements Initializable, DataInitializable {
 
         ObservableList<Song> songs = FXCollections.observableList(songService.getAllSongs());
 
-        songs.add(new Song("aa"));
+        //songs.add(new Song("aa"));
 
         listView.setItems(songs);
         listView.setCellFactory(song -> new SongRowCell());
