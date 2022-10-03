@@ -1,14 +1,6 @@
 package it.univaq.disim.psvmsa.unify.model;
 
-
-import javafx.scene.image.Image;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.Objects;
 
 public class Picture {
@@ -48,8 +40,10 @@ public class Picture {
         return Objects.equals(stream,picture.stream) &&
                 Objects.equals(id, picture.id);
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(stream,id);
     }
+
 }

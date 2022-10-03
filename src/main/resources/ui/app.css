@@ -106,3 +106,6 @@ TextField, PasswordField{
 .list-cell:selected{
     -fx-background-color: transparent;
 }
+.choice-box .label {
+    -fx-text-fill: black;
+}
