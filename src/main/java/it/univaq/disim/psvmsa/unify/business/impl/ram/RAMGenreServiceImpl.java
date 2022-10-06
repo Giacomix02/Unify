@@ -22,9 +22,11 @@ public class RAMGenreServiceImpl implements GenreService {
         return genres.get(id);
     }
 
-    public Genre add(Genre genre) {
+    public Genre add(Genre genre) throws BusinessException  {
+        List<Genre> g = searchByName(genre.getName());
+        if(!g.isEmpty()) throw new BusinessException("Genre already exist");
         genre.setId(++id);
-        genres.put(genre.getId(), genre);
+        this.genres.put(genre.getId(), genre);
         return genre;
     }
 
@@ -32,6 +34,12 @@ public class RAMGenreServiceImpl implements GenreService {
         Genre existing = this.getById(genre.getId());
         if(existing == null) throw new BusinessException("Genre not found");
         genres.put(existing.getId(), genre);
+    }
+    public boolean existGenreName(String name) {
+        for(Genre g : genres.values()){
+            if(g.getName().toLowerCase().equals(name.toLowerCase())) return true;
+        }
+        return false;
     }
 
     public void delete(Genre genre) throws BusinessException {

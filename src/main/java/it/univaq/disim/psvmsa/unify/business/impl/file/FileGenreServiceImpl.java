@@ -65,7 +65,8 @@ public class FileGenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Genre add(Genre genre) {
+    public Genre add(Genre genre) throws BusinessException {
+        if(existGenreName(genre.getName())) throw new BusinessException("Genre already exist");
         IndexedFile file = loader.load();
         IndexedFile.Row row = new IndexedFile.Row(this.SEPARATOR);
         int id = file.incrementId();
@@ -75,6 +76,13 @@ public class FileGenreServiceImpl implements GenreService {
         file.appendRow(row);
         loader.save(file);
         return genre;
+    }
+
+    public boolean existGenreName(String name) {
+        IndexedFile file = loader.load();
+        IndexedFile.Row row = file.findRow(r -> r.getStringAt(Schema.GENRE_NAME).equalsIgnoreCase(name));
+        if (row == null) return false;
+        return true;
     }
 
     @Override
