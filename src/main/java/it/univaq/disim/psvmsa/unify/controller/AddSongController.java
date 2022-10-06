@@ -61,8 +61,6 @@ public class AddSongController implements Initializable, DataInitializable {
     private Label saveSongLabel;
 
 
-
-
     private Picture picture;
 
     private FileInputStream songFileInputStream;
@@ -84,8 +82,8 @@ public class AddSongController implements Initializable, DataInitializable {
         saveImageLabel.setVisible(false);
 
         List<Genre> genres = genreService.getGenres();
-        List <Artist> artists = artistService.getArtists();
-        List <Album> albums = albumService.getAlbums();
+        List<Artist> artists = artistService.getArtists();
+        List<Album> albums = albumService.getAlbums();
 
 
         genreBoxChoice.setConverter(new StringConverter<>() {
@@ -127,6 +125,7 @@ public class AddSongController implements Initializable, DataInitializable {
                 }
                 return "";
             }
+
             @Override
             public Album fromString(String s) {
                 List<Album> a = albumService.searchAlbumsByName(s);
@@ -146,7 +145,6 @@ public class AddSongController implements Initializable, DataInitializable {
         for (Album album : albums) {
             albumBoxChoice.getItems().add(album);
         }
-
 
 
     }

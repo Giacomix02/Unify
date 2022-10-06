@@ -71,8 +71,16 @@ public class ViewGenre extends VBox {
             try {
                 UnifyServiceFactory factoryInstance = UnifyServiceFactory.getInstance();
                 this.genreService = factoryInstance.getGenreService();
+                this.songService = factoryInstance.getSongService();
 
                 genreService.delete(genre);
+                List<Song> songs = songService.getAllSongs();
+                for(Song song : songs){
+                    if(song.getGenres().contains(genre)){
+                        song.getGenres().remove(genre);
+                        songService.update(song);
+                    }
+                }
 
                 ViewDispatcher.getInstance().navigateTo(Pages.GENRES);
             }
