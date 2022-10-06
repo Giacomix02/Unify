@@ -7,19 +7,21 @@ import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
+import org.controlsfx.control.CheckComboBox;
 
-import javax.swing.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 
-public class AddSongController implements Initializable, DataInitializable{
+public class AddSongController implements Initializable, DataInitializable {
 
     private final SongService songService;
 
@@ -48,25 +50,25 @@ public class AddSongController implements Initializable, DataInitializable{
     private Button uploadSongButton;
 
     @FXML
-    private ChoiceBox<String> albumBoxChoice;
+    private ChoiceBox<Album> albumBoxChoice;
 
     @FXML
-    private ChoiceBox<String> artistBoxChoice;
-
+    private ChoiceBox<Artist> artistBoxChoice;
     @FXML
-    private ChoiceBox<Genre> genreBoxChoice;
+    private CheckComboBox<Genre> genreBoxChoice;
+
     @FXML
     private Label saveSongLabel;
 
 
+
+
     private Picture picture;
-    private List<Genre> genres;
 
     private FileInputStream songFileInputStream;
 
 
-
-    public AddSongController(){
+    public AddSongController() {
         UnifyServiceFactory factoryInstance = UnifyServiceFactory.getInstance();
         this.songService = factoryInstance.getSongService();
 
@@ -81,15 +83,15 @@ public class AddSongController implements Initializable, DataInitializable{
         saveSongLabel.setVisible(false);
         saveImageLabel.setVisible(false);
 
-        List< Genre > genres = genreService.getGenres();
-        //List < Artist > artists = artistService.getArtists();
-        //List < Album > albums = albumService.getAlbums();
+        List<Genre> genres = genreService.getGenres();
+        List <Artist> artists = artistService.getArtists();
+        List <Album> albums = albumService.getAlbums();
 
 
         genreBoxChoice.setConverter(new StringConverter<>() {
             @Override
             public String toString(Genre genre) {
-                if(genre!=null){
+                if (genre != null) {
                     return genre.getName();
                 }
                 return "";
@@ -101,21 +103,64 @@ public class AddSongController implements Initializable, DataInitializable{
                 return genres.get(0);
             }
         });
+        artistBoxChoice.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(Artist artist) {
+                if (artist != null) {
+                    return artist.getName();
+                }
+                return "";
+            }
+
+            @Override
+            public Artist fromString(String s) {
+                List<Artist> a = artistService.searchArtistsByName(s);
+                return a.get(0);
+            }
+        });
+
+        albumBoxChoice.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(Album album) {
+                if (album != null) {
+                    return album.getName();
+                }
+                return "";
+            }
+            @Override
+            public Album fromString(String s) {
+                List<Album> a = albumService.searchAlbumsByName(s);
+                return a.get(0);
+            }
+        });
 
 
-
-        for(Genre genre : genres){
+        for (Genre genre : genres) {
             genreBoxChoice.getItems().add(genre);
         }
+
+        for (Artist artist : artists) {
+            artistBoxChoice.getItems().add(artist);
+        }
+
+        for (Album album : albums) {
+            albumBoxChoice.getItems().add(album);
+        }
+
+
 
     }
 
     public void uploadImage() throws FileNotFoundException {
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Choose a picture");
-        fileChooser.showDialog(null, "Upload");
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
 
-        File file =  fileChooser.getSelectedFile();
+        fileChooser.setTitle("Choose a picture");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg")
+        );
+        Stage stage = new Stage();
+        File file = fileChooser.showOpenDialog(stage);
         FileInputStream inputStream = new FileInputStream(file);
         picture = new Picture(inputStream);
 
@@ -124,34 +169,42 @@ public class AddSongController implements Initializable, DataInitializable{
     }
 
     public void uploadSong() throws FileNotFoundException {
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Choose a song");
-        fileChooser.showDialog(null, "Upload");
 
-        File file =  fileChooser.getSelectedFile();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+
+        fileChooser.setTitle("Choose a song");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files", "*.mp3", "*.wav")
+        );
+        Stage stage = new Stage();
+
+        File file = fileChooser.showOpenDialog(stage);
         songFileInputStream = new FileInputStream(file);
+        //TODO song input stream
 
-
-
-        saveSongLabel.setVisible(true);
     }
 
-    public void exit(){
+    public void exit() {
 
         try {
             ViewDispatcher.getInstance().navigateTo(Pages.SONGS);
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public void saveSong(){
+    public void saveSong() {
         Song song = new Song(songNameInput.getText());
         song.setLyrics(songLyricsInput.getText());
         song.setPicture(picture);
 
-        genres.add(genreService.getById(genreBoxChoice.getSelectionModel().getSelectedItem().getId()));
+        ArrayList<Genre> genres = new ArrayList<>(genreBoxChoice.getCheckModel().getCheckedItems());
         song.setGenres(genres);
+
+
+        song.setArtist(artistService.getById(artistBoxChoice.getSelectionModel().getSelectedItem().getId()));
+        song.setAlbum(albumService.getById(albumBoxChoice.getSelectionModel().getSelectedItem().getId()));
 
         songService.add(song);
         songNameInput.clear();

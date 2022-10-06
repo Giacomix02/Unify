@@ -109,3 +109,7 @@ TextField, PasswordField{
 .choice-box .label {
     -fx-text-fill: black;
 }
+.combo-box .list-cell .label .choice-box .text-area .text-field .title-text{
+    -fx-text-fill: black;
+
+}

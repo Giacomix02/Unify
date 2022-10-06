@@ -3,6 +3,7 @@ import it.univaq.disim.psvmsa.unify.business.AlbumService;
 import it.univaq.disim.psvmsa.unify.business.BusinessException;
 import it.univaq.disim.psvmsa.unify.model.Album;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FileAlbumServiceImpl implements AlbumService {
@@ -29,6 +30,20 @@ public class FileAlbumServiceImpl implements AlbumService {
                 row.getIntAt(Schema.ALBUM_ID),
                 row.getStringAt(Schema.ALBUM_NAME)
         );
+    }
+
+    @Override
+    public List<Album> getAlbums(){
+        List<Album> albums = new ArrayList<>();
+        IndexedFile file = loader.load();
+        List<IndexedFile.Row> rows = file.getRows();
+        for (IndexedFile.Row row : rows) {
+            albums.add(new Album(
+                    row.getIntAt(Schema.ALBUM_ID),
+                    row.getStringAt(Schema.ALBUM_NAME)
+            ));
+        }
+        return albums;
     }
 
     @Override

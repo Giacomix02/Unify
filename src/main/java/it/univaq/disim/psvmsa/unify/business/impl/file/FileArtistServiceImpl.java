@@ -4,8 +4,10 @@ import it.univaq.disim.psvmsa.unify.business.ArtistService;
 import it.univaq.disim.psvmsa.unify.business.BusinessException;
 import it.univaq.disim.psvmsa.unify.business.PictureService;
 import it.univaq.disim.psvmsa.unify.model.Artist;
+import it.univaq.disim.psvmsa.unify.model.Genre;
 import it.univaq.disim.psvmsa.unify.model.Picture;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FileArtistServiceImpl implements ArtistService {
@@ -25,6 +27,21 @@ public class FileArtistServiceImpl implements ArtistService {
     public FileArtistServiceImpl(String path, PictureService pictureService) {
         this.loader = new IndexedFileLoader(path, this.SEPARATOR, Schema.ARTIST_ID);
         this.pictureService = pictureService;
+    }
+
+    @Override
+    public List<Artist> getArtists(){
+        List<Artist> artists = new ArrayList<>();
+        IndexedFile file = loader.load();
+        List<IndexedFile.Row> rows = file.getRows();
+        for (IndexedFile.Row row : rows) {
+            artists.add(new Artist(
+                    row.getIntAt(Schema.ARTIST_ID),
+                    row.getStringAt(Schema.ARTIST_NAME),
+                    row.getStringAt(Schema.ARTIST_BIOGRAPHY)
+            ));
+        }
+        return artists;
     }
 
     @Override

@@ -8,6 +8,8 @@ public interface ArtistService {
 
     Artist getById(Integer id);
 
+    List<Artist> getArtists();
+
     void deleteById(Integer id) throws BusinessException;
 
     Artist add(Artist artist);

@@ -4,6 +4,7 @@ import it.univaq.disim.psvmsa.unify.business.AlbumService;
 import it.univaq.disim.psvmsa.unify.business.BusinessException;
 import it.univaq.disim.psvmsa.unify.model.Album;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,11 @@ public class RAMAlbumServiceImpl implements AlbumService {
         if(existing==null) throw new BusinessException("Album not found");
         albums.put(album.getId(),album);
 
+    }
+
+    @Override
+    public List<Album> getAlbums(){
+        return new ArrayList<>(albums.values());
     }
 
     @Override

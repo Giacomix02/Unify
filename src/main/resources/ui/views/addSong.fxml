@@ -8,6 +8,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import org.controlsfx.control.CheckComboBox?>
 
 <VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/home.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.psvmsa.unify.controller.AddSongController">
    <children>
@@ -89,7 +90,7 @@
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                            <children>
                               <Label text="Choose genre/s" />
-                              <ChoiceBox fx:id="genreBoxChoice" prefWidth="150.0" style="-fx-text-fill: black;" stylesheets="@../app.css" />
+                              <CheckComboBox fx:id="genreBoxChoice" prefWidth="150.0" styleClass="combo-box" stylesheets="@../app.css" />
                            </children>
                         </VBox>
                      </children>

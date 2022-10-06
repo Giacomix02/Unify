@@ -27,6 +27,11 @@ public class RAMArtistServiceImpl implements ArtistService {
     }
 
     @Override
+    public List<Artist> getArtists() {
+        return (List<Artist>) artists.values();
+    }
+
+    @Override
     public void update(Artist artist) throws BusinessException {
         Artist existing = getById(artist.getId());
         if(existing == null) throw new BusinessException("Artist not found");
