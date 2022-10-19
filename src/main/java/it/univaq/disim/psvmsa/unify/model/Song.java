@@ -47,6 +47,7 @@ public class Song {
         this.album = album;
     }
 
+
     public List<Genre> getGenres() {
         return genres;
     }

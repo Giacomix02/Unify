@@ -31,7 +31,6 @@ public class AddSong extends HBox {
     }
 
 
-    @FXML
     public void addSong(){
 
         this.addButton.setOnAction(event -> {
