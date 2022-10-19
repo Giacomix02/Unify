@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+
+<HBox styleClass="background" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox>
+         <children>
+            <ImageView id="albumImage" pickOnBounds="true" preserveRatio="true" />
+         </children>
+      </HBox>
+      <HBox HBox.hgrow="ALWAYS" />
+      <HBox alignment="CENTER">
+         <children>
+            <Label id="albumName" alignment="CENTER" styleClass="text" text="Album name" textFill="WHITE" />
+         </children>
+         <opaqueInsets>
+            <Insets left="10.0" />
+         </opaqueInsets></HBox>
+      <HBox HBox.hgrow="ALWAYS" />
+      <HBox alignment="CENTER">
+         <children>
+            <Button id="removeButton" mnemonicParsing="false" style="-fx-background-color: transparent;" styleClass="text" text="Remove">
+               <graphic>
+                  <ImageView pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/icons/minus.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </HBox>
+   </children>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+</HBox>

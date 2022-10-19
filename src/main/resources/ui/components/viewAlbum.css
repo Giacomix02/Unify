@@ -1,0 +1,9 @@
+.text{
+    -fx-text-fill: #ffff;
+    -fx-font-size: 18;
+}
+
+.background{
+    -fx-background-color: #161721;
+    -fx-background-radius: 10;
+}
