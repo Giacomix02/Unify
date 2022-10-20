@@ -18,7 +18,7 @@
       <HBox HBox.hgrow="ALWAYS" />
       <HBox alignment="CENTER">
          <children>
-            <Button id="removeButton" mnemonicParsing="false" styleClass="text" text="Remove">
+            <Button id="removeButton" mnemonicParsing="false" style="-fx-background-color: transparent;" styleClass="text" text="Remove">
                <graphic>
                   <ImageView pickOnBounds="true" preserveRatio="true">
                      <image>

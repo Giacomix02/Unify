@@ -18,7 +18,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class SongsController implements Initializable, DataInitializable {
+public class SongController implements Initializable, DataInitializable {
 
     @FXML
     private ListView listView;
@@ -33,7 +33,7 @@ public class SongsController implements Initializable, DataInitializable {
 
     private SongService songService;
 
-    public SongsController(){
+    public SongController(){
         UnifyServiceFactory factoryInstance = UnifyServiceFactory.getInstance();
         this.songService = factoryInstance.getSongService();
     }
