@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-
-<VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-border-color: red;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label text="Artists" />
+      <HBox alignment="CENTER">
+         <children>
+            <HBox fx:id="searchBox" alignment="CENTER_RIGHT" maxHeight="50.0" />
+            <HBox alignment="CENTER" HBox.hgrow="ALWAYS" />
+            <HBox fx:id="addBox" alignment="CENTER_LEFT" />
+         </children></HBox>
+      <Label styleClass="title-text" text="Artists" />
    </children>
 </VBox>

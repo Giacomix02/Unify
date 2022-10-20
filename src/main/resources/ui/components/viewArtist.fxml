@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox>
+         <children>
+            <ImageView id="artistImage" pickOnBounds="true" preserveRatio="true" />
+         </children></HBox>
+      <HBox HBox.hgrow="ALWAYS" />
+      <HBox>
+         <children>
+            <Label text="Artist name" textFill="WHITE" />
+         </children></HBox>
+      <HBox HBox.hgrow="ALWAYS" />
+      <HBox alignment="CENTER">
+         <children>
+            <Button id="removeButton" mnemonicParsing="false" styleClass="text" text="Remove">
+               <graphic>
+                  <ImageView pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/icons/minus.png" />
+                     </image></ImageView>
+               </graphic></Button>
+         </children></HBox>
+   </children>
+</HBox>
