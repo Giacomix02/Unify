@@ -28,8 +28,17 @@ public class AddAlbum extends HBox {
         catch (Exception e){
             System.out.println(e.getMessage());
         }
+        addAlbum();
     }
 
-    public void addAlbum(){}
-
+    public void addAlbum(){
+        this.addButton.setOnAction(event -> {
+            try {
+                ViewDispatcher.getInstance().navigateTo(Pages.ADDALBUM);
+            }
+            catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        });
+    }
     }

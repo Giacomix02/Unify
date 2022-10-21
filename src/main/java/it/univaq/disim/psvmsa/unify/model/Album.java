@@ -6,6 +6,10 @@ public class Album {
     private String name;
     private Integer id;
 
+    public Album(String name) {
+        this.name = name;
+    }
+
     public Album(Integer id) {
         this.id = id;
     }

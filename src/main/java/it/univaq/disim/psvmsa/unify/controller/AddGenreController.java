@@ -25,7 +25,7 @@ public class AddGenreController implements Initializable, DataInitializable{
     private Button saveButton;
 
     @FXML
-    private Label exeptionLabel;
+    private Label exceptionLabel;
 
     @FXML
     private Button exit;
@@ -39,7 +39,7 @@ public class AddGenreController implements Initializable, DataInitializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        exeptionLabel.setText("");
+        exceptionLabel.setText("");
 
         this.saveButton
                 .disableProperty()
@@ -55,7 +55,7 @@ public class AddGenreController implements Initializable, DataInitializable{
             genreService.add(genre);
         }
         catch (BusinessException e){
-            exeptionLabel.setText(e.getMessage());
+            exceptionLabel.setText(e.getMessage());
         }
         genreInput.clear();
     }
@@ -69,6 +69,6 @@ public class AddGenreController implements Initializable, DataInitializable{
     }
 
     public void textFieldClick(){
-        exeptionLabel.setText("");
+        exceptionLabel.setText("");
     }
 }

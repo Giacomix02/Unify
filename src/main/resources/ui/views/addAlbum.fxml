@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/home.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.psvmsa.unify.controller.AddAlbumController">
+   <children>
+      <VBox alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
+         <children>
+            <Label text="Add album">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="50.0" />
+               </padding></Label>
+            <Label text="Insert album name">
+               <padding>
+                  <Insets bottom="20.0" />
+               </padding></Label>
+            <TextField fx:id="albumInput" maxWidth="244.0" prefHeight="30.0" prefWidth="244.0" promptText="write here..." style="-fx-background-radius: 7;">
+               <VBox.margin>
+                  <Insets bottom="70.0" />
+               </VBox.margin></TextField>
+            <Button fx:id="saveButton" minWidth="100.0" mnemonicParsing="false" onAction="#saveAlbum" styleClass="custom-button" text="Save" />
+            <Label fx:id="exceptionLabel" />
+            <HBox alignment="CENTER" prefHeight="50.0" />
+            <Button fx:id="exit" mnemonicParsing="false" onAction="#exit" style="-fx-background-color: #3D9CA2;" styleClass="custom-button" text="Exit" />
+         </children></VBox>
+   </children>
+</VBox>
