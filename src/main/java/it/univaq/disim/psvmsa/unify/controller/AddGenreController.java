@@ -27,8 +27,6 @@ public class AddGenreController implements Initializable, DataInitializable{
     @FXML
     private Label exceptionLabel;
 
-    @FXML
-    private Button exit;
     private final GenreService genreService;
 
     public AddGenreController(){
@@ -60,13 +58,6 @@ public class AddGenreController implements Initializable, DataInitializable{
         genreInput.clear();
     }
 
-    public void exit(){
-        try {
-            ViewDispatcher.getInstance().navigateTo(Pages.GENRES);
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-        }
-    }
 
     public void textFieldClick(){
         exceptionLabel.setText("");

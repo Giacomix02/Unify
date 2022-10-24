@@ -22,8 +22,6 @@ public class AddAlbumController implements Initializable, DataInitializable {
     @FXML
     private Button saveButton;
 
-    @FXML
-    private Button exit;
 
     @FXML
     private TextField albumInput;
@@ -55,12 +53,4 @@ public class AddAlbumController implements Initializable, DataInitializable {
         albumInput.clear();
     }
 
-    public void exit() {
-        try{
-            ViewDispatcher.getInstance().navigateTo(Pages.ALBUMS);
-        }
-        catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
 }

@@ -7,6 +7,8 @@ import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
@@ -22,7 +24,7 @@ import java.util.ResourceBundle;
 
 
 public class AddSongController implements Initializable, DataInitializable {
-
+    private final String DEFAULT_IMAGE = "src/main/resources/images/music-placeholder.png";
     private final SongService songService;
 
     private final AlbumService albumService;
@@ -43,8 +45,6 @@ public class AddSongController implements Initializable, DataInitializable {
     @FXML
     private Button saveButton;
 
-    @FXML
-    private Label saveImageLabel;
 
     @FXML
     private Button uploadSongButton;
@@ -60,7 +60,8 @@ public class AddSongController implements Initializable, DataInitializable {
     @FXML
     private Label saveSongLabel;
 
-
+    @FXML
+    private ImageView songImage;
     private Picture picture;
 
     private FileInputStream songFileInputStream;
@@ -79,7 +80,6 @@ public class AddSongController implements Initializable, DataInitializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         saveSongLabel.setVisible(false);
-        saveImageLabel.setVisible(false);
 
         List<Genre> genres = genreService.getGenres();
         List<Artist> artists = artistService.getArtists();
@@ -161,9 +161,7 @@ public class AddSongController implements Initializable, DataInitializable {
         File file = fileChooser.showOpenDialog(stage);
         FileInputStream inputStream = new FileInputStream(file);
         picture = new Picture(inputStream);
-
-        saveImageLabel.setVisible(true);    // advise the user that the image has been uploaded
-        //TODO exeption?
+        songImage.setImage(new Image(inputStream));
     }
 
     public void uploadSong() throws FileNotFoundException {
@@ -206,6 +204,6 @@ public class AddSongController implements Initializable, DataInitializable {
 
         songService.add(song);
         songNameInput.clear();
-        saveImageLabel.setVisible(false);
+        songImage.setImage(new Image(DEFAULT_IMAGE));
     }
 }
