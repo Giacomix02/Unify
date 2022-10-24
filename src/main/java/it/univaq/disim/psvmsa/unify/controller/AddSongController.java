@@ -45,7 +45,6 @@ public class AddSongController implements Initializable, DataInitializable {
     @FXML
     private Button saveButton;
 
-
     @FXML
     private Button uploadSongButton;
 
@@ -54,6 +53,7 @@ public class AddSongController implements Initializable, DataInitializable {
 
     @FXML
     private ChoiceBox<Artist> artistBoxChoice;
+
     @FXML
     private CheckComboBox<Genre> genreBoxChoice;
 
@@ -62,6 +62,7 @@ public class AddSongController implements Initializable, DataInitializable {
 
     @FXML
     private ImageView songImage;
+
     private Picture picture;
 
     private FileInputStream songFileInputStream;
@@ -204,6 +205,7 @@ public class AddSongController implements Initializable, DataInitializable {
 
         songService.add(song);
         songNameInput.clear();
+        songLyricsInput.clear();
         songImage.setImage(new Image(DEFAULT_IMAGE));
     }
 }

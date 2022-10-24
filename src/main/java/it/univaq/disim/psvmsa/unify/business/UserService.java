@@ -10,7 +10,6 @@ public interface UserService {
 
     User validate(String username, String password) throws BusinessException;
 
-
     void delete(User user) throws BusinessException;
 
     void update(User user) throws BusinessException;

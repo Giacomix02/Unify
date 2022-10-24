@@ -1,5 +1,7 @@
 package it.univaq.disim.psvmsa.unify.view.components;
 
+import it.univaq.disim.psvmsa.unify.view.Pages;
+import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
@@ -25,8 +27,19 @@ public class AddArtist extends HBox {
         catch (Exception e){
             System.out.println(e.getMessage());
         }
+        addArtist();
     }
 
-    public void addArtist(){}
+    public void addArtist(){
+
+        this.addButton.setOnAction(event -> {
+            try{
+                ViewDispatcher.getInstance().navigateTo(Pages.ADDARTIST);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        });
+
+    }
 
 }

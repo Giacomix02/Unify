@@ -12,6 +12,12 @@ public class Artist {
 
     private Picture picture;
 
+    public Artist(String name, String biography, Picture picture){
+        this.name = name;
+        this.biography = biography;
+        this.picture = picture;
+    }
+
     public Artist(Integer id, String name, String biography) {
         this.id = id;
         this.name = name;
