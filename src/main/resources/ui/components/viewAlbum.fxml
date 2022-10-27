@@ -15,7 +15,7 @@
       <HBox HBox.hgrow="ALWAYS" />
       <HBox alignment="CENTER">
          <children>
-            <Label id="albumName" fx:id="label" alignment="CENTER" styleClass="text" text="Album name" textFill="WHITE" />
+            <Label id="albumName" fx:id="label" alignment="CENTER" styleClass="text" textFill="WHITE" />
          </children>
          <opaqueInsets>
             <Insets left="10.0" />

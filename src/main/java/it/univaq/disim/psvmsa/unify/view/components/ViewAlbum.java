@@ -12,20 +12,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 import java.util.List;
 
-public class ViewAlbum extends VBox {
+public class ViewAlbum extends HBox {
 
-    @FXML
     private ImageView albumImage;
 
-    @FXML
     private Label label;
 
-    @FXML
     private Button editButton;
 
     private Song song;
@@ -43,17 +41,17 @@ public class ViewAlbum extends VBox {
 
     public void init() {
         try{
-            VBox root = FXMLLoader.load(getClass().getResource("/ui/components/viewAlbum.fxml"));
-            VBox.setVgrow(root, Priority.ALWAYS);
+            HBox root = FXMLLoader.load(getClass().getResource("/ui/components/viewAlbum.fxml"));
+            HBox.setHgrow(root, Priority.ALWAYS);
             getChildren().add(root);
 
             albumImage = (ImageView) root.lookup("#albumImage");
-            label = (Label) root.lookup("#label");
+            label = (Label) root.lookup("#albumName");
             editButton = (Button) root.lookup("#editButton");
 
 
-            albumImage.setImage(new Image(getAlbumPicture().toStream()));
             label.setText(album.getName());
+            albumImage.setImage(new Image(getAlbumPicture().toStream()));
 
         }
         catch (Exception e) {
