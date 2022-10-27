@@ -4,7 +4,7 @@ target/
 !**/src/main/**
 !**/src/test/**
 logs
-
+data
 ### Eclipse ###
 .classpath
 .project
@@ -21,6 +21,7 @@ logs
 /nbproject/private/
 /nbbuild/
 /dist/
+
 /nbdist/
 /.nb-gradle/
 build/

@@ -20,13 +20,14 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class AddArtistController implements Initializable, DataInitializable {
 
 
-    private final String DEFAULT_IMAGE = "src/main/resources/images/artist-placeholder.png";
+    private Image DEFAULT_IMAGE = null;
 
     private ArtistService artistService;
 
@@ -61,8 +62,7 @@ public class AddArtistController implements Initializable, DataInitializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources){
-
-
+        DEFAULT_IMAGE = artistImage.getImage();
     }
 
     public void uploadImage() throws FileNotFoundException {
@@ -75,22 +75,22 @@ public class AddArtistController implements Initializable, DataInitializable {
         );
         Stage stage = new Stage();
         File file = fileChooser.showOpenDialog(stage);
-        FileInputStream inputStream = new FileInputStream(file);
-        picture = new Picture(inputStream);
-        artistImage.setImage(new Image(inputStream));
+        try(FileInputStream inputStream = new FileInputStream(file)){
+            picture = new Picture(inputStream.readAllBytes());
+            artistImage.setImage(new Image(picture.toStream()));
+        }catch(IOException e){
+            System.out.println(e);
+        }
     }
 
     public void saveArtist(){
 
         Picture p = pictureService.add(picture);
-
         Artist artist = new Artist(artistNameInput.getText(), artistBiographyInput.getText(), p);
-
         artistService.add(artist);
-
         artistNameInput.clear();
         artistBiographyInput.clear();
-        artistImage.setImage(new Image(DEFAULT_IMAGE));
+        artistImage.setImage(DEFAULT_IMAGE);
     }
 
     public void exit(){

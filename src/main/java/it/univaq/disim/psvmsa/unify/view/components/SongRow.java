@@ -46,7 +46,7 @@ public class SongRow extends HBox {
             this.genreName.setText(allGenres);
             this.artistName.setText(song.getArtist().getName());
 
-            Image image = new Image(song.getPicture().getImageStream());
+            Image image = new Image(song.getPicture().toStream());
             this.picture.setImage(image);
 
         }

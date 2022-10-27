@@ -22,6 +22,7 @@ public class FilePictureServiceImpl implements PictureService {
     public FilePictureServiceImpl(String path, String imageFolderPath) {
         loader = new IndexedFileLoader(path, this.SEPARATOR, Schema.PICTURE_ID);
         this.imageFolder = imageFolderPath;
+        ensurePictureFolderExists();
     }
     @Override
     public Picture getById(Integer id) {
@@ -32,7 +33,7 @@ public class FilePictureServiceImpl implements PictureService {
             InputStream stream = this.getPictureStream(row.getIntAt(Schema.PICTURE_ID));
             if(stream == null) return null;
             return new Picture(
-                    stream,
+                    stream.readAllBytes(),
                     row.getIntAt(Schema.PICTURE_ID)
             );
         } catch (Exception e) {
@@ -84,10 +85,10 @@ public class FilePictureServiceImpl implements PictureService {
     }
 
     private void savePictureToFile(Picture picture){
-        File fileToSave = new File(this.imageFolder + picture.getId());
+        File fileToSave = new File(this.imageFolder + picture.getId() + ".png");
         try {
-            BufferedImage img = ImageIO.read(picture.getImageStream());
-            ImageIO.write(img, ".png", fileToSave);
+            BufferedImage img = ImageIO.read(picture.toStream());
+            ImageIO.write(img, "png", fileToSave);
         } catch (IOException e) {
             //TODO maybe relaunch error
             e.printStackTrace();
@@ -108,5 +109,10 @@ public class FilePictureServiceImpl implements PictureService {
             //TODO maybe relaunch error
             return null;
         }
+    }
+
+    private void ensurePictureFolderExists(){
+        File folder = new File(this.imageFolder);
+        if(!folder.exists()) folder.mkdir();
     }
 }

@@ -1,19 +1,21 @@
 package it.univaq.disim.psvmsa.unify.model;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 
 public class Picture {
 
     private Integer id;
-    private InputStream stream;
+    private byte[] content;
 
-    public Picture(InputStream stream) {
-        this.stream = stream;
+    public Picture(byte[] content) {
+        this.content = content;
     }
 
-    public Picture(InputStream stream, Integer id){
-        this(stream);
+    public Picture(byte[] content, Integer id){
+        this(content);
         this.id = id;
     }
     public Integer getId() {
@@ -24,26 +26,29 @@ public class Picture {
         this.id = id;
     }
 
-    public InputStream getImageStream() {
-        return stream;
-    }
 
-    public void setImageStream(InputStream stream) {
-        this.stream = stream;
+    public void setContent(byte[] content) {
+        this.content = content;
     }
-
+    public void setContentFromStream(InputStream content) throws IOException {
+        this.content = content.readAllBytes();
+    }
+    public InputStream toStream()  {
+        return new ByteArrayInputStream(this.content);
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Picture)) return false;
         Picture picture = (Picture) o;
-        return Objects.equals(stream,picture.stream) &&
+        //Uses reference for comparison of the content
+        return Objects.equals(content,picture.content) &&
                 Objects.equals(id, picture.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(stream,id);
+        return Objects.hash(content,id);
     }
 
 }

@@ -36,7 +36,7 @@ public class SingleSong extends VBox {
             this.label.setText(song.getName());
             Picture picture = song.getPicture();
             if(picture != null){
-                image.setImage(new Image(picture.getImageStream()));
+                image.setImage(new Image(picture.toStream()));
             }
 
         }catch (Exception e){

@@ -17,6 +17,7 @@ import org.controlsfx.control.CheckComboBox;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,7 @@ import java.util.ResourceBundle;
 
 
 public class AddSongController implements Initializable, DataInitializable {
-    private final String DEFAULT_IMAGE = "src/main/resources/images/music-placeholder.png";
+    private Image DEFAULT_IMAGE = null;
     private final SongService songService;
 
     private final AlbumService albumService;
@@ -79,9 +80,8 @@ public class AddSongController implements Initializable, DataInitializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        DEFAULT_IMAGE = songImage.getImage();
         saveSongLabel.setVisible(false);
-
         List<Genre> genres = genreService.getGenres();
         List<Artist> artists = artistService.getArtists();
         List<Album> albums = albumService.getAlbums();
@@ -160,9 +160,13 @@ public class AddSongController implements Initializable, DataInitializable {
         );
         Stage stage = new Stage();
         File file = fileChooser.showOpenDialog(stage);
-        FileInputStream inputStream = new FileInputStream(file);
-        picture = new Picture(inputStream);
-        songImage.setImage(new Image(inputStream));
+        try(FileInputStream inputStream = new FileInputStream(file)) {
+            picture = new Picture(inputStream.readAllBytes());
+            songImage.setImage(new Image(picture.toStream()));
+        }catch(IOException e){
+            System.out.println(e);
+        }
+
     }
 
     public void uploadSong() throws FileNotFoundException {
@@ -206,6 +210,6 @@ public class AddSongController implements Initializable, DataInitializable {
         songService.add(song);
         songNameInput.clear();
         songLyricsInput.clear();
-        songImage.setImage(new Image(DEFAULT_IMAGE));
+        songImage.setImage(DEFAULT_IMAGE);
     }
 }

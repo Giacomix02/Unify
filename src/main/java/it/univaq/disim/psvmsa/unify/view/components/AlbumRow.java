@@ -56,7 +56,7 @@ public class AlbumRow extends HBox {
                 }
             }
 
-            Image image = new Image(song.getPicture().getImageStream());
+            Image image = new Image(song.getPicture().toStream());
             albumImage.setImage(image);
 
         } catch (Exception e) {
