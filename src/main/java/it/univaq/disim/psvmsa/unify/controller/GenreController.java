@@ -42,9 +42,6 @@ public class GenreController implements Initializable, DataInitializable {
             showSearch(text);
         });
 
-
-
-
         searchBox.getChildren().add(searchBar);
         addBox.getChildren().add(addGenre);
 
