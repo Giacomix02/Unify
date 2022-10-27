@@ -87,7 +87,7 @@ public class FilePictureServiceImpl implements PictureService {
         File fileToSave = new File(this.imageFolder + picture.getId());
         try {
             BufferedImage img = ImageIO.read(picture.getImageStream());
-            ImageIO.write(img, "png", fileToSave);
+            ImageIO.write(img, ".png", fileToSave);
         } catch (IOException e) {
             //TODO maybe relaunch error
             e.printStackTrace();

@@ -1,6 +1,7 @@
 package it.univaq.disim.psvmsa.unify.controller;
 
 import it.univaq.disim.psvmsa.unify.business.ArtistService;
+import it.univaq.disim.psvmsa.unify.business.PictureService;
 import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.model.Artist;
 import it.univaq.disim.psvmsa.unify.model.Picture;
@@ -27,9 +28,11 @@ public class AddArtistController implements Initializable, DataInitializable {
 
     private final String DEFAULT_IMAGE = "src/main/resources/images/artist-placeholder.png";
 
-    private final ArtistService artistService;
+    private ArtistService artistService;
 
     private Picture picture;
+
+    private PictureService pictureService;
 
     @FXML
     private ImageView artistImage;
@@ -53,6 +56,7 @@ public class AddArtistController implements Initializable, DataInitializable {
     public AddArtistController(){
         UnifyServiceFactory factoryInstance = UnifyServiceFactory.getInstance();
         this.artistService = factoryInstance.getArtistService();
+        this.pictureService = factoryInstance.getPictureService();
     }
 
     @Override
@@ -77,13 +81,13 @@ public class AddArtistController implements Initializable, DataInitializable {
     }
 
     public void saveArtist(){
-        Artist artist = new Artist(artistNameInput.getText(), artistBiographyInput.getText(), picture);
 
-        artist.setName(artistNameInput.getText());
-        artist.setBiography(artistBiographyInput.getText());
-        artist.setPicture(picture);
+        Picture p = pictureService.add(picture);
+
+        Artist artist = new Artist(artistNameInput.getText(), artistBiographyInput.getText(), p);
 
         artistService.add(artist);
+
         artistNameInput.clear();
         artistBiographyInput.clear();
         artistImage.setImage(new Image(DEFAULT_IMAGE));
