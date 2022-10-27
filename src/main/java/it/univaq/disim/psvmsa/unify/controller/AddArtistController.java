@@ -63,6 +63,18 @@ public class AddArtistController implements Initializable, DataInitializable {
     @Override
     public void initialize(URL location, ResourceBundle resources){
         DEFAULT_IMAGE = artistImage.getImage();
+
+        this.saveButton
+                .disableProperty()
+                .bind(artistNameInput
+                        .textProperty()
+                        .isEmpty().and(
+                        artistBiographyInput
+                                .textProperty()
+                                .isEmpty()).and(
+                        uploadImageButton.onMouseClickedProperty().isNull()
+                        )
+                );
     }
 
     public void uploadImage() throws FileNotFoundException {
@@ -82,6 +94,7 @@ public class AddArtistController implements Initializable, DataInitializable {
             System.out.println(e);
         }
     }
+
 
     public void saveArtist(){
 

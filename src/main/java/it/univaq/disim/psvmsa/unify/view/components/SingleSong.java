@@ -9,6 +9,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
 
 public class SingleSong extends VBox {
 
@@ -36,7 +38,16 @@ public class SingleSong extends VBox {
             this.label.setText(song.getName());
             Picture picture = song.getPicture();
             if(picture != null){
-                image.setImage(new Image(picture.toStream()));
+                Image i = new Image(picture.toStream());
+
+                Rectangle rectangle = new Rectangle(0, 0, 100, 100);
+                rectangle.setArcWidth(14);   // Corner radius
+                rectangle.setArcHeight(14);
+                ImagePattern pattern = new ImagePattern(i);
+                rectangle.setFill(pattern);
+                image.setClip(rectangle);
+
+                image.setImage(i);
             }
 
         }catch (Exception e){

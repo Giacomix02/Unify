@@ -33,12 +33,6 @@ public class IndexedFile {
         }
 
         public Row set(int index, String value) {
-            //TODO not sure if this is the best way to do this
-            if(index >= values.size()) {
-                for(int i = values.size(); i < index; i++) {
-                    values.add(null);
-                }
-            }
             this.values.add(index, value);
             return this;
         }

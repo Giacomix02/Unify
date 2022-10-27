@@ -4,6 +4,7 @@ import it.univaq.disim.psvmsa.unify.business.ArtistService;
 import it.univaq.disim.psvmsa.unify.business.BusinessException;
 import it.univaq.disim.psvmsa.unify.model.Artist;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +29,7 @@ public class RAMArtistServiceImpl implements ArtistService {
 
     @Override
     public List<Artist> getArtists() {
-        return (List<Artist>) artists.values();
+        return new ArrayList<>(artists.values());
     }
 
     @Override

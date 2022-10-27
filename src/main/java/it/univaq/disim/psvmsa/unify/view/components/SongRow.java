@@ -8,8 +8,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SongRow extends HBox {
@@ -37,49 +40,34 @@ public class SongRow extends HBox {
             picture = (ImageView) root.lookup("#picture");
 
             List<Genre> genres = song.getGenres();
-            String allGenres = "";
+
+
+            ArrayList<String> genresNames = new ArrayList<>();
+
             for (Genre genre : genres) {
-                allGenres = allGenres + "," + genre.getName();
+                if (genre != null) {
+                    genresNames.add(genre.getName());
+                }
             }
+            String allGenres = String.join(", ", genresNames);
 
             this.songName.setText(song.getName());
             this.genreName.setText(allGenres);
             this.artistName.setText(song.getArtist().getName());
 
             Image image = new Image(song.getPicture().toStream());
+            Rectangle rectangle = new Rectangle(0, 0, 50, 50);
+            rectangle.setArcWidth(14);   // Corner radius
+            rectangle.setArcHeight(14);
+            ImagePattern pattern = new ImagePattern(image);
+            rectangle.setFill(pattern);
+            picture.setClip(rectangle);
             this.picture.setImage(image);
 
         }
         catch (Exception e){
             System.out.println(e.getMessage());
         }
-
-
-
-        /*
-        this.songName = new Text();
-        this.songName.setText(song.getName());
-
-        List<Genre> genres = song.getGenres();
-        String allGenres = "";
-        for (Genre genre : genres) {
-            allGenres = allGenres + "," + genre.getName();
-        }
-
-        this.genreName = new Text();
-        this.genreName.setText(allGenres);
-
-        this.artistName = new Text();
-        this.artistName.setText(song.getArtist().getName());
-
-        Image image = new Image(song.getPicture().getImageStream());
-        this.picture.setImage(image);
-
-        this.getChildren().addAll(picture, songName, genreName, artistName);
-
-        this.getChildren().addAll(songName);
-
-         */
     }
 
 }

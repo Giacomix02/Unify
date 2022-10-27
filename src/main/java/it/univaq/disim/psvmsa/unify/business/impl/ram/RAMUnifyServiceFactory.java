@@ -11,6 +11,8 @@ public class RAMUnifyServiceFactory extends UnifyServiceFactory {
     private RAMPictureServiceImpl ramPictureService = new RAMPictureServiceImpl();
     private RAMSongServiceImpl ramSongService = new RAMSongServiceImpl();
     private RAMUserServiceImpl ramUserService = new RAMUserServiceImpl();
+    private  RAMAlbumServiceImpl ramAlbumService = new RAMAlbumServiceImpl();
+    private  RAMArtistServiceImpl ramArtistService = new RAMArtistServiceImpl();
 
     public RAMUnifyServiceFactory(){
         User adminUser = new Admin("admin","admin");
@@ -25,12 +27,12 @@ public class RAMUnifyServiceFactory extends UnifyServiceFactory {
 
     @Override
     public AlbumService getAlbumService(){
-        return null;
+        return ramAlbumService;
     }
 
     @Override
     public ArtistService getArtistService() {
-        return null;
+        return ramArtistService;
     }
 
     @Override

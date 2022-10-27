@@ -106,9 +106,9 @@ public class FileSongServiceImpl implements SongService {
         IndexedFile.Row row = new IndexedFile.Row(SEPARATOR);
         row.set(Schema.SONG_ID, song.getId())
                 .set(Schema.SONG_NAME, song.getName())
-                .set(Schema.LYRICS, song.getLyrics())
-                .set(Schema.ALBUM_ID, song.getAlbum().getId())
                 .set(Schema.ARTIST_ID, song.getArtist().getId())
+                .set(Schema.ALBUM_ID, song.getAlbum().getId())
+                .set(Schema.LYRICS, song.getLyrics())
                 .set(Schema.PICTURE_ID, song.getPicture().getId());
         this.deleteRelations(song);
         this.addRelations(song);
@@ -126,12 +126,13 @@ public class FileSongServiceImpl implements SongService {
         IndexedFile file = loader.load();
         IndexedFile.Row row = new IndexedFile.Row(SEPARATOR);
         song.setId(file.incrementId());
-        row.set(Schema.SONG_NAME, song.getName())
+        row.set(Schema.SONG_ID, song.getId())
+                .set(Schema.SONG_NAME, song.getName())
                 .set(Schema.ARTIST_ID, song.getArtist().getId())
                 .set(Schema.ALBUM_ID, song.getAlbum().getId())
-                .set(Schema.PICTURE_ID, song.getPicture().getId())
-                .set(Schema.SONG_ID, song.getId())
-                .set(Schema.LYRICS, song.getLyrics());
+                .set(Schema.LYRICS, song.getLyrics())
+                .set(Schema.PICTURE_ID, song.getPicture().getId());
+
         this.saveSongToFile(song);
         file.appendRow(row);
         this.addRelations(song);
@@ -158,6 +159,7 @@ public class FileSongServiceImpl implements SongService {
             row.set(RelationSchema.RELATION_ID, id)
                     .set(RelationSchema.SONG_ID, song.getId())
                     .set(RelationSchema.GENRE_ID, genre.getId());
+            relationFile.appendRow(row);
         }
         genresRelationLoader.save(relationFile);
     }
