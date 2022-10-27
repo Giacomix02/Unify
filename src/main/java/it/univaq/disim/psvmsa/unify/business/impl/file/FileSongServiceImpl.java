@@ -2,9 +2,14 @@ package it.univaq.disim.psvmsa.unify.business.impl.file;
 
 import it.univaq.disim.psvmsa.unify.business.*;
 import it.univaq.disim.psvmsa.unify.model.Genre;
+import it.univaq.disim.psvmsa.unify.model.Picture;
 import it.univaq.disim.psvmsa.unify.model.Song;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.IdentityHashMap;
 import java.util.List;
@@ -51,10 +56,11 @@ public class FileSongServiceImpl implements SongService {
         this.albumService = albumService;
         this.pictureService = pictureService;
         this.genreService = genreService;
+        ensureSongsFolderExists();
     }
 
 
-    public Song getById(Integer id) {
+    public Song getById(Integer id) throws BusinessException {
         IndexedFile file = loader.load();
         IndexedFile relationFile = genresRelationLoader.load();
         IndexedFile.Row row = file.findRowById(id);
@@ -70,17 +76,23 @@ public class FileSongServiceImpl implements SongService {
             genres.add(genre);
         }
 
-
-        return new Song(
-                row.getStringAt(Schema.SONG_NAME),
-                albumService.getById(row.getIntAt(Schema.ALBUM_ID)),
-                artistService.getById(row.getIntAt(Schema.ARTIST_ID)),
-                row.getStringAt(Schema.LYRICS),
-                pictureService.getById(row.getIntAt(Schema.PICTURE_ID)),
-                genres,
-                row.getIntAt(Schema.SONG_ID)
-        );
+        try {
+            return new Song(
+                    row.getStringAt(Schema.SONG_NAME),
+                    albumService.getById(row.getIntAt(Schema.ALBUM_ID)),
+                    artistService.getById(row.getIntAt(Schema.ARTIST_ID)),
+                    row.getStringAt(Schema.LYRICS),
+                    pictureService.getById(row.getIntAt(Schema.PICTURE_ID)),
+                    genres,
+                    getSongStream(row.getIntAt(Schema.SONG_ID)).readAllBytes(),
+                    row.getIntAt(Schema.SONG_ID)
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BusinessException("Error while reading song content");
+        }
     }
+
 
     public void delete(Song song) throws BusinessException {
         IndexedFile file = loader.load();
@@ -119,6 +131,7 @@ public class FileSongServiceImpl implements SongService {
                 .set(Schema.PICTURE_ID, song.getPicture().getId())
                 .set(Schema.SONG_ID, song.getId())
                 .set(Schema.LYRICS, song.getLyrics());
+        this.saveSongToFile(song);
         file.appendRow(row);
         this.addRelations(song);
         loader.save(file);
@@ -149,7 +162,7 @@ public class FileSongServiceImpl implements SongService {
     }
 
 
-    public List<Song> getAllSongs() {
+    public List<Song> getAllSongs() throws BusinessException {
         IndexedFile file = loader.load();
         IndexedFile relationFile = genresRelationLoader.load();
 
@@ -169,23 +182,50 @@ public class FileSongServiceImpl implements SongService {
                 genres.add(genre);
             }
 
-            Song song = new Song(
-                    row.getStringAt(Schema.SONG_NAME),
-                    albumService.getById(row.getIntAt(Schema.ALBUM_ID)),
-                    artistService.getById(row.getIntAt(Schema.ARTIST_ID)),
-                    row.getStringAt(Schema.LYRICS),
-                    pictureService.getById(row.getIntAt(Schema.PICTURE_ID)),
-                    genres,
-                    row.getIntAt(Schema.SONG_ID)
-            );
-
-            songs.add(song);
-
-
+            try{
+                Song song = new Song(
+                        row.getStringAt(Schema.SONG_NAME),
+                        albumService.getById(row.getIntAt(Schema.ALBUM_ID)),
+                        artistService.getById(row.getIntAt(Schema.ARTIST_ID)),
+                        row.getStringAt(Schema.LYRICS),
+                        pictureService.getById(row.getIntAt(Schema.PICTURE_ID)),
+                        genres,
+                        getSongStream(row.getIntAt(Schema.SONG_ID)).readAllBytes(),
+                        row.getIntAt(Schema.SONG_ID)
+                );
+                songs.add(song);
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new BusinessException("Error while loading song content");
+            }
         }
-
-
         return songs;
     }
 
+
+    private void saveSongToFile(Song song){
+        File fileToSave = new File(this.songsFolderPath + song.getId() + ".mp3");
+            try (FileOutputStream outputStream = new FileOutputStream(fileToSave)) {
+                outputStream.write(song.getContent());
+            }catch (IOException e) {
+                //TODO maybe relaunch error
+                e.printStackTrace();
+            }
+    }
+
+    private InputStream getSongStream(Integer id){
+        try{
+            File file = new File(this.songsFolderPath + id + ".mp3");
+            return new FileInputStream(file);
+        }catch(Exception e){
+            e.printStackTrace();
+            //TODO maybe relaunch error
+            return null;
+        }
+    }
+
+    private void ensureSongsFolderExists(){
+        File folder = new File(this.songsFolderPath);
+        if(!folder.exists()) folder.mkdir();
+    }
 }

@@ -3,6 +3,7 @@ package it.univaq.disim.psvmsa.unify.model;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class Picture {
@@ -41,8 +42,7 @@ public class Picture {
         if (this == o) return true;
         if (!(o instanceof Picture)) return false;
         Picture picture = (Picture) o;
-        //Uses reference for comparison of the content
-        return Objects.equals(content,picture.content) &&
+        return Arrays.equals(content,picture.content) &&
                 Objects.equals(id, picture.id);
     }
 

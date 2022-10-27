@@ -97,7 +97,6 @@ public class FilePictureServiceImpl implements PictureService {
 
     private InputStream getPictureStream(Integer id){
         try{
-            //TODO might be able to use FileInputStream instead
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             BufferedImage img = ImageIO.read(
                     new URL(this.imageFolder + id)
@@ -113,6 +112,7 @@ public class FilePictureServiceImpl implements PictureService {
 
     private void ensurePictureFolderExists(){
         File folder = new File(this.imageFolder);
+        System.out.println(folder.exists());
         if(!folder.exists()) folder.mkdir();
     }
 }

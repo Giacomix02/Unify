@@ -1,5 +1,6 @@
 package it.univaq.disim.psvmsa.unify.controller;
 
+import it.univaq.disim.psvmsa.unify.business.BusinessException;
 import it.univaq.disim.psvmsa.unify.business.SongService;
 import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.model.*;
@@ -50,22 +51,22 @@ public class SongController implements Initializable, DataInitializable {
             showSearch(text);
         });
 
-        ObservableList<Song> songs = FXCollections.observableList(songService.getAllSongs());
-
-        //songs.add(new Song("aa"));
-
-        listView.setItems(songs);
-        listView.setCellFactory(song -> new SongRowCell());
+        try{
+            ObservableList<Song> songs = FXCollections.observableList(songService.getAllSongs());
+            listView.setItems(songs);
+            listView.setCellFactory(song -> new SongRowCell());
+        }catch(BusinessException e){
+            e.printStackTrace();
+        }
     }
 
     public void showSearch(String text){
-
-        List<Song> songs = songService.getAllSongs();
-        for (Song song : songs) {
-            if (song.getName().equals(text)) {
-                listView.getItems().clear();
-                listView.getItems().add(song);
-            }
+        try{
+            List<Song> songs = songService.getAllSongs();
+            listView.setItems(FXCollections.observableList(songs));
+        }catch(BusinessException e){
+            e.printStackTrace();
         }
+
     }
 }

@@ -1,5 +1,9 @@
 package it.univaq.disim.psvmsa.unify.model;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -12,25 +16,35 @@ public class Song {
     private Picture picture;
     private Integer id;
 
+    private byte[] content;
 
-    public Song(String name){
-        this.name = name;
-    }
 
-    public Song(String name, Album album, Artist artist, String lyrics, Picture picture, List<Genre> genres) {
+    public Song(String name, Album album, Artist artist, String lyrics, Picture picture, List<Genre> genres, byte[] content) {
         this.name = name;
         this.album = album;
         this.artist = artist;
         this.lyrics = lyrics;
         this.picture = picture;
         this.genres = genres;
+        this.content = content;
     }
 
-    public Song (String name, Album album, Artist artist, String lyrics, Picture picture, List<Genre> genres, Integer id) {
-        this(name, album, artist, lyrics, picture, genres);
+    public Song (String name, Album album, Artist artist, String lyrics, Picture picture, List<Genre> genres, byte[] content, Integer id) {
+        this(name, album, artist, lyrics, picture, genres, content);
         this.id = id;
     }
-
+    public byte[] getContent() {
+        return content;
+    }
+    public void setContent(byte[] content) {
+        this.content = content;
+    }
+    public void setContentFromStream(InputStream content) throws IOException {
+        this.content = content.readAllBytes();
+    }
+    public InputStream toStream()  {
+        return new ByteArrayInputStream(this.content);
+    }
     public String getName() {
         return name;
     }
@@ -99,7 +113,9 @@ public class Song {
                 Objects.equals(lyrics, song.lyrics) &&
                 Objects.equals(picture, song.picture) &&
                 Objects.equals(genres, song.genres) &&
-                Objects.equals(id, song.id);
+                Objects.equals(id, song.id) &&
+                Arrays.equals(content, song.content);
+
     }
 
     @Override

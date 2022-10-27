@@ -45,7 +45,7 @@ public class FilePlaylistServiceImpl implements PlaylistService {
         this.userService = userService;
     }
     @Override
-    public List<Playlist> getPlaylistsByUser(User user) {
+    public List<Playlist> getPlaylistsByUser(User user) throws BusinessException {
         List<Playlist> playlists = new ArrayList<>();
         IndexedFile relationFile = loaderRelation.load();
         IndexedFile playlistFile = loader.load();
@@ -64,8 +64,9 @@ public class FilePlaylistServiceImpl implements PlaylistService {
                 try {
                     Song song = songService.getById(relationRow.getIntAt(RelationSchema.SONG_ID));
                     playlist.addSong(song);
-                } catch (SongAlreadyExistsException e) {
-                    System.out.println(e.getMessage());
+                } catch (SongAlreadyExistsException | BusinessException e) {
+                    e.printStackTrace();
+                    throw new BusinessException("Error while loading playlist");
                 }
             }
             playlists.add(playlist);
@@ -74,7 +75,7 @@ public class FilePlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
-    public Playlist getById(Integer id) {
+    public Playlist getById(Integer id) throws BusinessException {
         IndexedFile file = loader.load();
         IndexedFile relationFile = loaderRelation.load();
         List<Song> songs = new ArrayList<>();
@@ -82,9 +83,15 @@ public class FilePlaylistServiceImpl implements PlaylistService {
         List<IndexedFile.Row> relationRows = relationFile.filterRows(
                 relationRow -> relationRow.getIntAt(RelationSchema.PLAYLIST_ID) == row.getIntAt(Schema.PLAYLIST_ID)
         );
-        for(IndexedFile.Row r : relationRows){
-            songs.add(songService.getById(r.getIntAt(RelationSchema.SONG_ID)));
+        try{
+            for(IndexedFile.Row r : relationRows){
+                songs.add(songService.getById(r.getIntAt(RelationSchema.SONG_ID)));
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            throw new BusinessException("Error while loading playlist");
         }
+
         return new Playlist(
                 row.getStringAt(Schema.PLAYLIST_NAME),
                 userService.getById(row.getIntAt(Schema.USER_ID)),

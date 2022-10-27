@@ -8,7 +8,7 @@ import java.util.function.Predicate;
 
 public interface SongService {
 
-    Song getById(Integer id);
+    Song getById(Integer id) throws BusinessException;
 
     void delete(Song song) throws BusinessException;
 
@@ -18,6 +18,6 @@ public interface SongService {
 
     Song add(Song song);
 
-    List<Song> getAllSongs();
+    List<Song> getAllSongs() throws BusinessException;
 
 }

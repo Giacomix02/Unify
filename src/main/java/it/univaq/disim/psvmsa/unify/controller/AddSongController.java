@@ -31,6 +31,7 @@ public class AddSongController implements Initializable, DataInitializable {
     private final AlbumService albumService;
     private final ArtistService artistService;
     private final GenreService genreService;
+    private final PictureService pictureService;
 
     @FXML
     private TextField songNameInput;
@@ -76,6 +77,7 @@ public class AddSongController implements Initializable, DataInitializable {
         this.artistService = factoryInstance.getArtistService();
         this.albumService = factoryInstance.getAlbumService();
         this.genreService = factoryInstance.getGenreService();
+        this.pictureService = factoryInstance.getPictureService();
     }
 
     @Override
@@ -196,20 +198,26 @@ public class AddSongController implements Initializable, DataInitializable {
     }
 
     public void saveSong() {
-        Song song = new Song(songNameInput.getText());
-        song.setLyrics(songLyricsInput.getText());
-        song.setPicture(picture);
-
         ArrayList<Genre> genres = new ArrayList<>(genreBoxChoice.getCheckModel().getCheckedItems());
-        song.setGenres(genres);
+        Picture picture = pictureService.add(this.picture);
+        try{
+            Song song = new Song(
+                    songNameInput.getText(),
+                    albumService.getById(albumBoxChoice.getSelectionModel().getSelectedItem().getId()),
+                    artistService.getById(artistBoxChoice.getSelectionModel().getSelectedItem().getId()),
+                    songLyricsInput.getText(),
+                    picture,
+                    genres,
+                    songFileInputStream.readAllBytes()
 
+            );
+            songService.add(song);
+            songNameInput.clear();
+            songLyricsInput.clear();
+            songImage.setImage(DEFAULT_IMAGE);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
-        song.setArtist(artistService.getById(artistBoxChoice.getSelectionModel().getSelectedItem().getId()));
-        song.setAlbum(albumService.getById(albumBoxChoice.getSelectionModel().getSelectedItem().getId()));
-
-        songService.add(song);
-        songNameInput.clear();
-        songLyricsInput.clear();
-        songImage.setImage(DEFAULT_IMAGE);
     }
 }
