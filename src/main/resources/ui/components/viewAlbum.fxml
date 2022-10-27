@@ -23,11 +23,11 @@
       <HBox HBox.hgrow="ALWAYS" />
       <HBox alignment="CENTER">
          <children>
-            <Button id="removeButton" mnemonicParsing="false" style="-fx-background-color: transparent;" styleClass="text" text="Remove">
+            <Button id="editButton" mnemonicParsing="false" style="-fx-background-color: transparent;" styleClass="text" text="Edit">
                <graphic>
                   <ImageView pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/icons/minus.png" />
+                        <Image url="@../images/icons/pencil-alt.png" />
                      </image>
                   </ImageView>
                </graphic>

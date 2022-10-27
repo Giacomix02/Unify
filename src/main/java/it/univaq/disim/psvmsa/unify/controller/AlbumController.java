@@ -5,6 +5,7 @@ import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.model.Album;
 import it.univaq.disim.psvmsa.unify.view.components.AddAlbum;
 import it.univaq.disim.psvmsa.unify.view.components.SearchBar;
+import it.univaq.disim.psvmsa.unify.view.components.ViewAlbum;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.HBox;
@@ -32,6 +33,8 @@ public class AlbumController implements Initializable, DataInitializable {
 
     private AlbumService albumService;
 
+    private ViewAlbum viewAlbum;
+
     public AlbumController() {
         UnifyServiceFactory factoryInstance = UnifyServiceFactory.getInstance();
         this.albumService = factoryInstance.getAlbumService();
@@ -46,9 +49,8 @@ public class AlbumController implements Initializable, DataInitializable {
         List<Album> albums = albumService.getAlbums();
 
         for (Album album : albums) {
-            //need to show the photo (maybe viewPhoto)
-            //need to show the album's name
-            //need to show the remove album button
+            viewAlbum = new ViewAlbum(album);
+            viewList.getChildren().add(viewAlbum);
         }
     }
 

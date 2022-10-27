@@ -37,6 +37,7 @@ public class Picture {
     public InputStream toStream()  {
         return new ByteArrayInputStream(this.content);
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
