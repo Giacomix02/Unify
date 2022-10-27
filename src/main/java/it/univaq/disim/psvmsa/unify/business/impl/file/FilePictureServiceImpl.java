@@ -97,12 +97,8 @@ public class FilePictureServiceImpl implements PictureService {
 
     private InputStream getPictureStream(Integer id){
         try{
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
-            BufferedImage img = ImageIO.read(
-                    new URL(this.imageFolder + id)
-            );
-            ImageIO.write(img, "png", os);
-            return new ByteArrayInputStream(os.toByteArray());
+            File file = new File(this.imageFolder + id + ".png");
+            return new FileInputStream(file);
         }catch(Exception e){
             e.printStackTrace();
             //TODO maybe relaunch error
@@ -113,6 +109,6 @@ public class FilePictureServiceImpl implements PictureService {
     private void ensurePictureFolderExists(){
         File folder = new File(this.imageFolder);
         System.out.println(folder.exists());
-        if(!folder.exists()) folder.mkdir();
+        if(!folder.exists()) folder.mkdirs();
     }
 }

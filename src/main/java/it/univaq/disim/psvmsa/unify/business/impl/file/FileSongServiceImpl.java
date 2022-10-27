@@ -125,6 +125,7 @@ public class FileSongServiceImpl implements SongService {
     public Song add(Song song) {
         IndexedFile file = loader.load();
         IndexedFile.Row row = new IndexedFile.Row(SEPARATOR);
+        song.setId(file.incrementId());
         row.set(Schema.SONG_NAME, song.getName())
                 .set(Schema.ARTIST_ID, song.getArtist().getId())
                 .set(Schema.ALBUM_ID, song.getAlbum().getId())
@@ -226,6 +227,6 @@ public class FileSongServiceImpl implements SongService {
 
     private void ensureSongsFolderExists(){
         File folder = new File(this.songsFolderPath);
-        if(!folder.exists()) folder.mkdir();
+        if(!folder.exists()) folder.mkdirs();
     }
 }
