@@ -7,16 +7,17 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 
-<HBox styleClass="background" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<HBox alignment="CENTER" styleClass="background" stylesheets="@viewAlbum.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox>
          <children>
             <ImageView id="albumImage" fx:id="albumImage" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true">
                <HBox.margin>
-                  <Insets right="10.0" />
+                  <Insets />
                </HBox.margin></ImageView>
          </children>
       </HBox>
+      <HBox HBox.hgrow="ALWAYS" />
       <HBox alignment="CENTER">
          <children>
             <Label id="albumName" fx:id="label" alignment="CENTER" textFill="WHITE" />
