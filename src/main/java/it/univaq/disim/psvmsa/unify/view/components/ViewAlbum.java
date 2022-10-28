@@ -15,6 +15,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
 
 import java.util.List;
 
@@ -51,7 +53,16 @@ public class ViewAlbum extends HBox {
 
 
             label.setText(album.getName());
-            albumImage.setImage(new Image(getAlbumPicture().toStream()));
+
+            Image image = new Image(getAlbumPicture().toStream());
+            Rectangle rectangle = new Rectangle(0, 0, 50, 50);
+            rectangle.setArcWidth(14);   // Corner radius
+            rectangle.setArcHeight(14);
+            ImagePattern pattern = new ImagePattern(image);
+            rectangle.setFill(pattern);
+            albumImage.setClip(rectangle);
+
+            albumImage.setImage(image);
 
         }
         catch (Exception e) {
