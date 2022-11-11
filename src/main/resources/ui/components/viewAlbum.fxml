@@ -20,7 +20,7 @@
       <HBox HBox.hgrow="ALWAYS" />
       <HBox alignment="CENTER">
          <children>
-            <Label id="albumName" fx:id="label" alignment="CENTER" textFill="WHITE" />
+            <Label id="albumName" fx:id="label" alignment="CENTER" styleClass="text" stylesheets="@viewAlbum.css" textFill="WHITE" />
          </children>
          <opaqueInsets>
             <Insets left="10.0" />
@@ -28,7 +28,7 @@
       <HBox HBox.hgrow="ALWAYS" />
       <HBox alignment="CENTER">
          <children>
-            <Button id="editButton" mnemonicParsing="false" style="-fx-background-color: transparent;" styleClass="text" text="Edit">
+            <Button id="editButton" mnemonicParsing="false" style="-fx-background-color: transparent;" styleClass="text-button" text="Edit">
                <graphic>
                   <ImageView pickOnBounds="true" preserveRatio="true">
                      <image>

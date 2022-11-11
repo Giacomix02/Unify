@@ -2,8 +2,12 @@ package it.univaq.disim.psvmsa.unify.view.components;
 
 import it.univaq.disim.psvmsa.unify.model.Genre;
 import it.univaq.disim.psvmsa.unify.model.Song;
+import it.univaq.disim.psvmsa.unify.view.Pages;
+import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
+import it.univaq.disim.psvmsa.unify.view.ViewDispatcherException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -24,6 +28,8 @@ public class SongRow extends HBox {
 
     private Text artistName;
 
+    private Button editButton;
+
     public SongRow (Song song){
         super();
         init(song);
@@ -38,6 +44,7 @@ public class SongRow extends HBox {
             genreName = (Text) root.lookup("#genreName");
             artistName = (Text) root.lookup("#artistName");
             picture = (ImageView) root.lookup("#picture");
+            editButton = (Button) root.lookup("#editButton");
 
             List<Genre> genres = song.getGenres();
 
@@ -68,6 +75,17 @@ public class SongRow extends HBox {
         catch (Exception e){
             System.out.println(e.getMessage());
         }
+        editSong(song);
+    }
+
+    public void editSong(Song song){
+        this.editButton.setOnMouseClicked(event -> {
+            try {
+                ViewDispatcher.getInstance().navigateTo(Pages.EDITSONG,song);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        });
     }
 
 }

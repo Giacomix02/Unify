@@ -2,8 +2,6 @@ package it.univaq.disim.psvmsa.unify.business;
 
 import it.univaq.disim.psvmsa.unify.model.Picture;
 
-import javafx.scene.image.Image;
-
 public interface PictureService {
 
     Picture getById(Integer id);
@@ -12,7 +10,7 @@ public interface PictureService {
 
     Picture add(Picture picture);
 
-    void update (Picture picture) throws BusinessException;
+    Picture update (Picture picture) throws BusinessException;
 
     void delete (Picture picture) throws BusinessException;
 

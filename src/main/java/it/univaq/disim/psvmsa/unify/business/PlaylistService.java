@@ -1,7 +1,6 @@
 package it.univaq.disim.psvmsa.unify.business;
 
 import it.univaq.disim.psvmsa.unify.model.Playlist;
-import it.univaq.disim.psvmsa.unify.model.SongAlreadyExistsException;
 import it.univaq.disim.psvmsa.unify.model.User;
 
 import java.util.List;

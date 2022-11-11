@@ -7,7 +7,6 @@ import it.univaq.disim.psvmsa.unify.model.Picture;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.URL;
 
 public class FilePictureServiceImpl implements PictureService {
 
@@ -65,7 +64,7 @@ public class FilePictureServiceImpl implements PictureService {
         return picture;
     }
     @Override
-    public void update(Picture picture) throws BusinessException {
+    public Picture update(Picture picture) throws BusinessException {
         IndexedFile file = loader.load();
         IndexedFile.Row row = file.findRow(r -> r.getIntAt(Schema.PICTURE_ID) == picture.getId());
         if (row == null) throw new BusinessException("Picture not found");
@@ -73,6 +72,7 @@ public class FilePictureServiceImpl implements PictureService {
         this.savePictureToFile(picture);
         file.updateRow(row);
         loader.save(file);
+        return picture;
     }
 
     @Override

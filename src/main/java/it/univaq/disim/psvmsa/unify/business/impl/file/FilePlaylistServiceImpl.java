@@ -1,15 +1,10 @@
 package it.univaq.disim.psvmsa.unify.business.impl.file;
 
-import it.univaq.disim.psvmsa.unify.business.BusinessException;
-import it.univaq.disim.psvmsa.unify.business.PlaylistService;
-import it.univaq.disim.psvmsa.unify.business.SongService;
-import it.univaq.disim.psvmsa.unify.business.UserService;
+import it.univaq.disim.psvmsa.unify.business.*;
 import it.univaq.disim.psvmsa.unify.model.*;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class FilePlaylistServiceImpl implements PlaylistService {
 

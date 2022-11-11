@@ -25,10 +25,11 @@ public class RAMPictureServiceImpl implements PictureService {
     }
 
     @Override
-    public void update(Picture picture) throws BusinessException {
+    public Picture update(Picture picture) throws BusinessException {
         Picture existing = getById(picture.getId());
         if(existing == null) throw new BusinessException("Picture not found");
         pictures.put(picture.getId(), picture);
+        return existing;
     }
 
     @Override
