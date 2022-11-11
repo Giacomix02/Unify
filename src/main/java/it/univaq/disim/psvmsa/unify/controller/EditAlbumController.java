@@ -1,11 +1,8 @@
 package it.univaq.disim.psvmsa.unify.controller;
 
 import it.univaq.disim.psvmsa.unify.business.AlbumService;
-import it.univaq.disim.psvmsa.unify.business.BusinessException;
 import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.model.Album;
-import it.univaq.disim.psvmsa.unify.view.Pages;
-import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -15,12 +12,12 @@ import javafx.scene.control.TextField;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class AddAlbumController implements Initializable, DataInitializable {
+public class EditAlbumController implements Initializable, DataInitializable {
 
     private final AlbumService albumService;
 
     @FXML
-    private Button saveButton;
+    private Button editButton;
 
     @FXML
     private TextField albumInput;
@@ -28,28 +25,37 @@ public class AddAlbumController implements Initializable, DataInitializable {
     @FXML
     private Label exceptionLabel;
 
-    public AddAlbumController(){
+    private Album album;
+
+    public EditAlbumController(){
         UnifyServiceFactory factoryInstance = UnifyServiceFactory.getInstance();
         this.albumService = factoryInstance.getAlbumService();
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources){
+    public void initializeData(Object data){
+        this.album = (Album) data;
+        albumInput.setText(album.getName());
+    }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         exceptionLabel.setText("");
 
-        this.saveButton
+        this.editButton
                 .disableProperty()
                 .bind(albumInput
                         .textProperty()
-                        .isEmpty()
-                );
+                        .isEmpty());
     }
 
-    public void saveAlbum(){
-        Album album = new Album(albumInput.getText());
-        albumService.add(album);
-        albumInput.clear();
+    @FXML
+    public void updateAlbum(){
+        try{
+        album.setName(albumInput.getText());
+        albumService.update(album);
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
-
 }

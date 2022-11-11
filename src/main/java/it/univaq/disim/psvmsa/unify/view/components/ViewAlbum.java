@@ -6,6 +6,8 @@ import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.model.Album;
 import it.univaq.disim.psvmsa.unify.model.Picture;
 import it.univaq.disim.psvmsa.unify.model.Song;
+import it.univaq.disim.psvmsa.unify.view.Pages;
+import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -68,12 +70,19 @@ public class ViewAlbum extends HBox {
         catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
+        editAlbum(album);
     }
 
     @FXML
-    public void editAlbum(){
-
+    public void editAlbum(Album album){
+        this.editButton.setOnAction(event -> {
+            try{
+                ViewDispatcher.getInstance().navigateTo(Pages.EDITALBUM, album);
+            }
+            catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        });
     }
 
     public Picture getAlbumPicture() {
