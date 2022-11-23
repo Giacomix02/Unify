@@ -14,10 +14,7 @@ import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import org.controlsfx.control.CheckComboBox;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +65,7 @@ public class EditSongController implements Initializable, DataInitializable {
     private Picture picture;
     private Picture inputPicture;
 
-    private FileInputStream songFileInputStream;
+    private InputStream songInputStream;
 
     private Song song;
 
@@ -98,10 +95,11 @@ public class EditSongController implements Initializable, DataInitializable {
         inputPicture = song.getPicture();
         Image image = new Image(inputPicture.toStream());
         songImage.setImage(image);
+        picture = inputPicture;
+
+        songInputStream = song.toStream();
 
 
-        albumBoxChoice.setValue(song.getAlbum());
-        artistBoxChoice.setValue(song.getArtist());
 
 
         genreBoxChoice.setConverter(new StringConverter<>() {
@@ -166,9 +164,12 @@ public class EditSongController implements Initializable, DataInitializable {
         for (Genre genre : song.getGenres()) {
              genreBoxChoice.getCheckModel().check(genre); //set previous song genres
         }
+
+        albumBoxChoice.setValue(song.getAlbum());
+        artistBoxChoice.setValue(song.getArtist());
     }
 
-    public void uploadImage() throws FileNotFoundException {
+    public void uploadImage() throws IOException {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
 
@@ -178,14 +179,9 @@ public class EditSongController implements Initializable, DataInitializable {
         );
         Stage stage = new Stage();
         File file = fileChooser.showOpenDialog(stage);
-        try(FileInputStream inputStream = new FileInputStream(file)) {
-            picture = new Picture(inputStream.readAllBytes());
-            songImage.setImage(new Image(picture.toStream()));
-            inputPicture = picture;
-        }catch(IOException e){
-            System.out.println(e);
-        }
-
+        FileInputStream inputStream = new FileInputStream(file);
+        picture = new Picture(inputStream.readAllBytes());
+        songImage.setImage(new Image(picture.toStream()));
     }
 
     public void uploadSong() throws FileNotFoundException {
@@ -200,55 +196,58 @@ public class EditSongController implements Initializable, DataInitializable {
         Stage stage = new Stage();
 
         File file = fileChooser.showOpenDialog(stage);
-        songFileInputStream = new FileInputStream(file);
+        songInputStream = new FileInputStream(file);
         //TODO song input stream
 
     }
 
-    public void exit() {
+    public void delete() {
+        ArrayList<Genre> genres = new ArrayList<>(genreBoxChoice.getCheckModel().getCheckedItems());
+        Picture picture = pictureService.add(this.picture);
+        try{
+            Song song = new Song(
+                    songNameInput.getText(),
+                    albumService.getById(albumBoxChoice.getSelectionModel().getSelectedItem().getId()),
+                    artistService.getById(artistBoxChoice.getSelectionModel().getSelectedItem().getId()),
+                    songLyricsInput.getText(),
+                    picture,
+                    genres,
+                    songInputStream.readAllBytes(),
+                    this.song.getId()
+            );
+            songService.delete(song);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        goHome();
+    }
 
+    public void saveSong() {
+        ArrayList<Genre> genres = new ArrayList<>(genreBoxChoice.getCheckModel().getCheckedItems());
+        Picture picture = pictureService.add(this.picture);
+        try{
+            Song song = new Song(
+                    songNameInput.getText(),
+                    albumService.getById(albumBoxChoice.getSelectionModel().getSelectedItem().getId()),
+                    artistService.getById(artistBoxChoice.getSelectionModel().getSelectedItem().getId()),
+                    songLyricsInput.getText(),
+                    picture,
+                    genres,
+                    songInputStream.readAllBytes(),
+                    this.song.getId()
+
+            );
+            songService.update(song);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        goHome();
+    }
+    private void goHome(){
         try {
             ViewDispatcher.getInstance().navigateTo(Pages.SONGS);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-    }
-
-    public void saveSong(){
-        ArrayList<Genre> genres = new ArrayList<>(genreBoxChoice.getCheckModel().getCheckedItems());
-        try{
-            if (picture!=null) {
-                Picture picture = pictureService.add(this.picture);
-                Song song = new Song(
-                        songNameInput.getText(),
-                        albumService.getById(albumBoxChoice.getSelectionModel().getSelectedItem().getId()),
-                        artistService.getById(artistBoxChoice.getSelectionModel().getSelectedItem().getId()),
-                        songLyricsInput.getText(),
-                        picture,
-                        genres,
-                        songFileInputStream.readAllBytes()
-
-                );
-                songService.update(song);
-            }else{
-                Song song = new Song(
-                        songNameInput.getText(),
-                        albumService.getById(albumBoxChoice.getSelectionModel().getSelectedItem().getId()),
-                        artistService.getById(artistBoxChoice.getSelectionModel().getSelectedItem().getId()),
-                        songLyricsInput.getText(),
-                        inputPicture,
-                        genres,
-                        this.song.getContent()
-
-                );
-                songService.update(song);
-            }
-            songNameInput.clear();
-            songLyricsInput.clear();
-            songImage.setImage(DEFAULT_IMAGE);
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-
     }
 }

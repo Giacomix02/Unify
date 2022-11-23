@@ -20,4 +20,6 @@ public interface SongService {
 
     List<Song> getAllSongs() throws BusinessException;
 
+    List<Song> searchByName(String name) throws BusinessException;
+
 }

@@ -146,7 +146,7 @@ public class FileSongServiceImpl implements SongService {
                 r -> r.getIntAt(RelationSchema.SONG_ID) == song.getId()
         );
         for (IndexedFile.Row row : rows) {
-            relationFile.deleteRowById(row.getIntAt(RelationSchema.SONG_ID));
+            relationFile.deleteRowById(row.getIntAt(RelationSchema.RELATION_ID));
         }
         genresRelationLoader.save(relationFile);
     }
@@ -230,5 +230,18 @@ public class FileSongServiceImpl implements SongService {
     private void ensureSongsFolderExists(){
         File folder = new File(this.songsFolderPath);
         if(!folder.exists()) folder.mkdirs();
+    }
+
+    public List<Song> searchByName(String name) throws BusinessException{
+        IndexedFile file = loader.load();
+        List<IndexedFile.Row> rows = file.filterRows(
+                r -> r.getStringAt(Schema.SONG_NAME).toLowerCase().contains(name.toLowerCase())
+        );
+        List<Song> songs = new ArrayList<>();
+        for (IndexedFile.Row row : rows) {
+            Song song = this.getById(row.getIntAt(Schema.SONG_ID));
+            songs.add(song);
+        }
+        return songs;
     }
 }

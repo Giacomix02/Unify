@@ -120,7 +120,7 @@
             </HBox>
             <HBox>
                <children>
-                  <Button fx:id="exit" mnemonicParsing="false" onAction="#exit" style="-fx-background-color: #3D9CA2;" styleClass="custom-button" text="Cancel" />
+                  <Button fx:id="exit" mnemonicParsing="false" onAction="#delete" style="-fx-background-color: #3D9CA2;" styleClass="custom-button" text="Delete" />
                   <HBox HBox.hgrow="ALWAYS">
                      <HBox.margin>
                         <Insets />

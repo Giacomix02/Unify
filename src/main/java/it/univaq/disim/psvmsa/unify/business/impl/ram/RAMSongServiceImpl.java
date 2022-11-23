@@ -48,4 +48,14 @@ public class RAMSongServiceImpl implements SongService {
         return new ArrayList<>(songs.values());
     }
 
+    public List<Song> searchByName(String name) {
+        ArrayList<Song> songs = new ArrayList<>();
+        for(Song song : this.songs.values()) {
+            if(song.getName().contains(name.toLowerCase())) {
+                songs.add(song);
+            }
+        }
+        return songs;
+    }
+
 }

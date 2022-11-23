@@ -16,6 +16,7 @@ import javafx.scene.layout.HBox;
 
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -62,8 +63,10 @@ public class SongController implements Initializable, DataInitializable {
 
     public void showSearch(String text){
         try{
-            List<Song> songs = songService.getAllSongs();
-            listView.setItems(FXCollections.observableList(songs));
+            List<Song> searchedSongs = new ArrayList<>(songService.searchByName(text));
+            listView.setItems(FXCollections.observableList(searchedSongs));
+
+
         }catch(BusinessException e){
             e.printStackTrace();
         }
