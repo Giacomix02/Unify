@@ -83,6 +83,15 @@ public class FileAlbumServiceImpl implements AlbumService {
 
     @Override
     public List<Album> searchAlbumsByName(String name) {
-        return null;
+        IndexedFile file = loader.load();
+        List<IndexedFile.Row> rows = file.filterRows(
+                r -> r.getStringAt(Schema.ALBUM_NAME).toLowerCase().contains(name.toLowerCase())
+        );
+        List<Album> albums = new ArrayList<>();
+        for (IndexedFile.Row row : rows) {
+            Album album = this.getById(row.getIntAt(Schema.ALBUM_ID));
+            albums.add(album);
+        }
+        return albums;
     }
 }

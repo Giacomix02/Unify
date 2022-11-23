@@ -43,6 +43,10 @@ public class AlbumController implements Initializable, DataInitializable {
         searchBar = new SearchBar("Search by Album");
         addAlbum = new AddAlbum();
 
+        searchBar.setOnSearch(text ->{
+            showSearch(text);
+        });
+
         searchBox.getChildren().add(searchBar);
         addBox.getChildren().add(addAlbum);
 
@@ -54,5 +58,16 @@ public class AlbumController implements Initializable, DataInitializable {
         }
     }
 
+    public void showSearch(String text) {
+
+        List<Album> albums = albumService.searchAlbumsByName(text);
+
+        viewList.getChildren().clear();
+
+        for (Album album : albums) {
+            viewAlbum = new ViewAlbum(album);
+            viewList.getChildren().add(viewAlbum);
+        }
+    }
 }
 
