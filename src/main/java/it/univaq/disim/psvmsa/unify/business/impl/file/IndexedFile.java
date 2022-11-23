@@ -4,6 +4,7 @@ import it.univaq.disim.psvmsa.unify.business.BusinessException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -11,6 +12,7 @@ import java.util.stream.Collectors;
 
 //TODO dont use business exception here, create a new one
 //TODO consider removing Row from static file here
+
 public class IndexedFile {
     public static class Row {
         private List<String> values = new ArrayList<>();
@@ -33,7 +35,10 @@ public class IndexedFile {
         }
 
         public Row set(int index, String value) {
-            this.values.add(index, value);
+            for (int i = this.values.size() - 1; index > i; i++) {
+                    this.values.add(null);
+            }
+            this.values.set(index, value);
             return this;
         }
 
@@ -72,7 +77,7 @@ public class IndexedFile {
     }
 
     private final int ID_POSITION;
-    private int id = 0;
+    private int currentId = 0;
     private List<Row> rows = new ArrayList<>();
 
     public IndexedFile() {
@@ -95,16 +100,16 @@ public class IndexedFile {
         this.rows = rows;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setCurrentId(int currentId) {
+        this.currentId = currentId;
     }
 
     public int incrementId() {
-        return ++id;
+        return ++currentId;
     }
 
-    public int getId() {
-        return id;
+    public int getCurrentId() {
+        return currentId;
     }
 
     public List<Row> filterRows(Predicate<Row> predicate) {
@@ -124,20 +129,22 @@ public class IndexedFile {
         return findRow(row -> row.getIntAt(ID_POSITION) == id);
     }
 
-    public void deleteRowById(int id) throws BusinessException {
-        for (int i = 0; i < rows.size(); i++) {
-            if (rows.get(i).getIntAt(ID_POSITION) == id) {
-                rows.remove(i);
+    public void deleteRowById(int id) throws BusinessException{
+        ListIterator<Row> listIterator = this.rows.listIterator();
+        while (listIterator.hasNext()) {
+            if (listIterator.next().getIntAt(ID_POSITION) == id) {
+                listIterator.remove();
                 return;
             }
         }
         throw new BusinessException("Row doesn't exist");
     }
 
-    public void updateRow(Row row) throws BusinessException {
-        for (int i = 0; i < rows.size(); i++) {
-            if (rows.get(i).getIntAt(ID_POSITION) == row.getIntAt(id)) {
-                rows.set(i, row);
+    public void updateRow(Row row) throws BusinessException{
+        ListIterator<Row> listIterator = this.rows.listIterator();
+        while (listIterator.hasNext()) {
+            if (listIterator.next().getIntAt(ID_POSITION) == row.getIntAt(ID_POSITION)) {
+                listIterator.set(row);
                 return;
             }
         }

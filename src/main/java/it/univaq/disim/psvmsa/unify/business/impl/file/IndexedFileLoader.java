@@ -28,7 +28,7 @@ public class IndexedFileLoader {
             String header = in.readLine();
 
             if(header == null) return indexedFile;
-            indexedFile.setId(Integer.parseInt(header));
+            indexedFile.setCurrentId(Integer.parseInt(header));
             String l;
             while ((l = in.readLine())!=null){
                 IndexedFile.Row row = IndexedFile.Row.fromText(separator,l);
@@ -46,7 +46,7 @@ public class IndexedFileLoader {
         try{
             this.createFileIfNotExists(path);
             BufferedWriter out = new BufferedWriter(new FileWriter(path));
-            out.write(Integer.toString(file.getId()));
+            out.write(Integer.toString(file.getCurrentId()));
             out.newLine();
             for(IndexedFile.Row row : file.getRows()){
                 out.write(row.toTextRow());
