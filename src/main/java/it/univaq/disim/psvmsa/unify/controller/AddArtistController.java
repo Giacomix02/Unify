@@ -4,12 +4,16 @@ import it.univaq.disim.psvmsa.unify.business.ArtistService;
 import it.univaq.disim.psvmsa.unify.business.PictureService;
 import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.model.Artist;
+import it.univaq.disim.psvmsa.unify.model.GroupArtist;
 import it.univaq.disim.psvmsa.unify.model.Picture;
 import it.univaq.disim.psvmsa.unify.view.Pages;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -53,6 +57,10 @@ public class AddArtistController implements Initializable, DataInitializable {
     @FXML
     private TextArea artistBiographyInput;
 
+    @FXML
+    private ChoiceBox<String> artistBoxChoice;
+
+    private ObservableList<String> options;
 
     public AddArtistController(){
         UnifyServiceFactory factoryInstance = UnifyServiceFactory.getInstance();
@@ -63,6 +71,13 @@ public class AddArtistController implements Initializable, DataInitializable {
     @Override
     public void initialize(URL location, ResourceBundle resources){
         DEFAULT_IMAGE = artistImage.getImage();
+
+        options = FXCollections.observableArrayList(
+                "Artist",
+                    "GroupArtist"
+        );
+
+        artistBoxChoice.getItems().addAll(options);
 
         this.saveButton
                 .disableProperty()
@@ -95,11 +110,18 @@ public class AddArtistController implements Initializable, DataInitializable {
         }
     }
 
-
     public void saveArtist(){
-
         Picture p = pictureService.add(picture);
-        Artist artist = new Artist(artistNameInput.getText(), artistBiographyInput.getText(), p);
+        if (artistBoxChoice.getSelectionModel().equals("Artist")) {
+            Artist artist = new Artist(artistNameInput.getText(), artistBiographyInput.getText(), p);
+            save(artist);
+        } else {
+            GroupArtist groupArtist = new GroupArtist(artistNameInput.getText(), artistBiographyInput.getText(), p);
+            save(groupArtist);
+        }
+    }
+
+    public void save(Artist artist){
         artistService.add(artist);
         artistNameInput.clear();
         artistBiographyInput.clear();

@@ -13,4 +13,5 @@ public class GroupArtist extends Artist {
     public GroupArtist(Integer id, String name, String biography, Picture picture) {
         super(id,name,biography,picture);
     }
+    public GroupArtist(String name, String biography, Picture picture) {super(name, biography, picture);}
 }
