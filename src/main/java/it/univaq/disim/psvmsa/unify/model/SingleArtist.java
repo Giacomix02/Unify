@@ -10,4 +10,7 @@ public class SingleArtist extends Artist {
     public SingleArtist(Integer id, String name, String biography, Picture picture) {
         super(id,name,biography,picture);
     }
+    public SingleArtist(String name, String biography, Picture picture) {
+        super(name, biography, picture);
+    }
 }

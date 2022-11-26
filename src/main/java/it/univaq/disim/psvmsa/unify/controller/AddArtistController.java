@@ -6,6 +6,7 @@ import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.model.Artist;
 import it.univaq.disim.psvmsa.unify.model.GroupArtist;
 import it.univaq.disim.psvmsa.unify.model.Picture;
+import it.univaq.disim.psvmsa.unify.model.SingleArtist;
 import it.univaq.disim.psvmsa.unify.view.Pages;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import javafx.collections.FXCollections;
@@ -73,8 +74,8 @@ public class AddArtistController implements Initializable, DataInitializable {
         DEFAULT_IMAGE = artistImage.getImage();
 
         options = FXCollections.observableArrayList(
-                "Artist",
-                    "GroupArtist"
+                "Single",
+                    "Group"
         );
 
         artistBoxChoice.getItems().addAll(options);
@@ -112,9 +113,9 @@ public class AddArtistController implements Initializable, DataInitializable {
 
     public void saveArtist(){
         Picture p = pictureService.add(picture);
-        if (artistBoxChoice.getSelectionModel().equals("Artist")) {
-            Artist artist = new Artist(artistNameInput.getText(), artistBiographyInput.getText(), p);
-            save(artist);
+        if (artistBoxChoice.getSelectionModel().equals("Single")) {
+            SingleArtist singleArtist = new SingleArtist(artistNameInput.getText(), artistBiographyInput.getText(), p);
+            save(singleArtist);
         } else {
             GroupArtist groupArtist = new GroupArtist(artistNameInput.getText(), artistBiographyInput.getText(), p);
             save(groupArtist);

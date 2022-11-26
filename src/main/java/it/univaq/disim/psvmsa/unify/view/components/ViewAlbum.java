@@ -33,6 +33,7 @@ public class ViewAlbum extends HBox {
     private Song song;
 
     private SongService songService;
+
     private Album album;
 
     private AlbumService albumService;

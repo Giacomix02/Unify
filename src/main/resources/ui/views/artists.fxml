@@ -16,5 +16,6 @@
             <Insets bottom="10.0" />
          </VBox.margin></HBox>
       <Label styleClass="title-text" text="Artists" />
+      <VBox fx:id="viewList" />
    </children>
 </VBox>
