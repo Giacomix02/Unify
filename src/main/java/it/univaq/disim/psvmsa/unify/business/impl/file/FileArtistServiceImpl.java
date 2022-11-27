@@ -38,7 +38,8 @@ public class FileArtistServiceImpl implements ArtistService {
             artists.add(new Artist(
                     row.getIntAt(Schema.ARTIST_ID),
                     row.getStringAt(Schema.ARTIST_NAME),
-                    row.getStringAt(Schema.ARTIST_BIOGRAPHY)
+                    row.getStringAt(Schema.ARTIST_BIOGRAPHY),
+                    pictureService.getById(row.getIntAt(Schema.PICTURE_ID))
             ));
         }
         return artists;

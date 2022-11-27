@@ -43,7 +43,7 @@ public class ViewArtist extends HBox {
 
             label.setText(artist.getName());
 
-            Image image = new Image(getArtistPicture().toStream());
+            Image image = new Image(artist.getPicture().toStream());
             Rectangle rectangle = new Rectangle(0,0,50,50);
             rectangle.setArcHeight(14);
             rectangle.setArcWidth(14);
@@ -56,10 +56,6 @@ public class ViewArtist extends HBox {
             System.out.println(e.getMessage());
         }
 
-    }
-
-    public Picture getArtistPicture() {
-        return artist.getPicture();
     }
 }
 
