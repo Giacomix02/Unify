@@ -74,6 +74,9 @@ public class IndexedFile {
         public String toTextRow() {
             return String.join(this.separator, values).replaceAll("\n", "\\\\n");
         }
+        public String toString(){
+            return this.toTextRow();
+        }
     }
 
     private final int ID_POSITION;
@@ -129,12 +132,13 @@ public class IndexedFile {
         return findRow(row -> row.getIntAt(ID_POSITION) == id);
     }
 
-    public void deleteRowById(int id) throws BusinessException{
+    public Row deleteRowById(int id) throws BusinessException{
         ListIterator<Row> listIterator = this.rows.listIterator();
         while (listIterator.hasNext()) {
+            Row current = listIterator.next();
             if (listIterator.next().getIntAt(ID_POSITION) == id) {
                 listIterator.remove();
-                return;
+                return current;
             }
         }
         throw new BusinessException("Row doesn't exist");

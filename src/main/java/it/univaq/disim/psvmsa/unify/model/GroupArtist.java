@@ -5,13 +5,19 @@ import java.util.List;
 
 public class GroupArtist extends Artist {
 
-    private List<Musician> musicians = new ArrayList<Musician>();
+    private List<Artist> artists;
 
-    public GroupArtist(Integer id,String name, String biography) {
-        super(id, name, biography);
+    public GroupArtist(String name, String biography, Picture picture, List<Artist> artists) {
+        super(name, biography, picture);
+        this.artists = artists;
     }
-    public GroupArtist(Integer id, String name, String biography, Picture picture) {
-        super(id,name,biography,picture);
+    public GroupArtist(String name, String biography, Picture picture, List<Artist> artists, Integer id) {
+        super(name, biography, picture, id);
+        this.artists = artists;
     }
-    public GroupArtist(String name, String biography, Picture picture) {super(name, biography, picture);}
+
+
+    public List<Artist> getArtists(){
+        return this.artists;
+    }
 }

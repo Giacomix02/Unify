@@ -97,7 +97,7 @@ public class ViewAlbum extends HBox {
             }
         }
         catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         return null;
     }

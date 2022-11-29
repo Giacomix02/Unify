@@ -53,7 +53,7 @@ public class ViewArtist extends HBox {
             artistImage.setImage(image);
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
     }

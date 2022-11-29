@@ -59,7 +59,7 @@ public class ViewGenre extends VBox {
 
         }
         catch (Exception e){
-            System.out.println(e.getMessage());
+          e.printStackTrace();
         }
 
         removeGenre();

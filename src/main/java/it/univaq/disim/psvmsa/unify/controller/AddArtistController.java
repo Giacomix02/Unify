@@ -6,7 +6,6 @@ import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.model.Artist;
 import it.univaq.disim.psvmsa.unify.model.GroupArtist;
 import it.univaq.disim.psvmsa.unify.model.Picture;
-import it.univaq.disim.psvmsa.unify.model.SingleArtist;
 import it.univaq.disim.psvmsa.unify.view.Pages;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import javafx.collections.FXCollections;
@@ -27,6 +26,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class AddArtistController implements Initializable, DataInitializable {
@@ -107,17 +107,18 @@ public class AddArtistController implements Initializable, DataInitializable {
             picture = new Picture(inputStream.readAllBytes());
             artistImage.setImage(new Image(picture.toStream()));
         }catch(IOException e){
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 
     public void saveArtist(){
         Picture p = pictureService.add(picture);
-        if (artistBoxChoice.getSelectionModel().equals("Single")) {
-            SingleArtist singleArtist = new SingleArtist(artistNameInput.getText(), artistBiographyInput.getText(), p);
+        if (artistBoxChoice.getSelectionModel().getSelectedItem().equals("Single")) {
+            Artist singleArtist = new Artist(artistNameInput.getText(), artistBiographyInput.getText(), p);
             save(singleArtist);
         } else {
-            GroupArtist groupArtist = new GroupArtist(artistNameInput.getText(), artistBiographyInput.getText(), p);
+            //TODO add artists
+            GroupArtist groupArtist = new GroupArtist(artistNameInput.getText(), artistBiographyInput.getText(), p, new ArrayList<>());
             save(groupArtist);
         }
     }

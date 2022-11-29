@@ -17,16 +17,11 @@ public class Artist {
         this.biography = biography;
         this.picture = picture;
     }
-
-    public Artist(Integer id, String name, String biography) {
-        this.id = id;
+    public Artist(String name, String biography, Picture picture, Integer id){
         this.name = name;
         this.biography = biography;
-    }
-
-    public Artist(Integer id, String name, String biography, Picture picture) {
-        this(id, name, biography);
         this.picture = picture;
+        this.id = id;
     }
 
     public String getName() {
