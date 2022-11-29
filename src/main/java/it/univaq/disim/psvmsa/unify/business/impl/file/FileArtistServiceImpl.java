@@ -3,9 +3,7 @@ package it.univaq.disim.psvmsa.unify.business.impl.file;
 import it.univaq.disim.psvmsa.unify.business.ArtistService;
 import it.univaq.disim.psvmsa.unify.business.BusinessException;
 import it.univaq.disim.psvmsa.unify.business.PictureService;
-import it.univaq.disim.psvmsa.unify.model.Artist;
-import it.univaq.disim.psvmsa.unify.model.Genre;
-import it.univaq.disim.psvmsa.unify.model.Picture;
+import it.univaq.disim.psvmsa.unify.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,16 +15,42 @@ public class FileArtistServiceImpl implements ArtistService {
         public static int ARTIST_NAME = 1;
         public static int ARTIST_BIOGRAPHY = 2;
         public static int PICTURE_ID = 3;
+
+        public static int ARTIST_TYPE = 4;
+    }
+
+    private enum ArtistType {
+        Single(0),
+        Group(1);
+
+        private final int id;
+
+        ArtistType(int id) {
+            this.id = id;
+        }
+
+        public int toInt (ArtistType type) {
+            return id;
+        }
+
+        public static ArtistType fromInt (int id) {
+            if (id == Single.id) return Single;
+            if (id == Group.id) return Group;
+            throw new RuntimeException("Artist type cannot be converted to enum because it's not defined");
+        }
+
     }
 
     private final String SEPARATOR = "|";
     private final IndexedFileLoader loader;
     private final PictureService pictureService;
+    private final ArtistService artistService;
 
 
-    public FileArtistServiceImpl(String path, PictureService pictureService) {
+    public FileArtistServiceImpl(String path, PictureService pictureService, ArtistService artistService) {
         this.loader = new IndexedFileLoader(path, this.SEPARATOR, Schema.ARTIST_ID);
         this.pictureService = pictureService;
+        this.artistService = artistService;
     }
 
     @Override
@@ -35,6 +59,16 @@ public class FileArtistServiceImpl implements ArtistService {
         IndexedFile file = loader.load();
         List<IndexedFile.Row> rows = file.getRows();
         for (IndexedFile.Row row : rows) {
+            ArtistType artistType = ArtistType.fromInt(row.getIntAt(Schema.ARTIST_TYPE));
+            if (artistType == ArtistType.Single) {
+                artists.add(new SingleArtist(
+                        row.getIntAt(Schema.ARTIST_ID),
+                        row.getStringAt(Schema.ARTIST_NAME),
+                        row.getStringAt(Schema.ARTIST_BIOGRAPHY),
+                        pictureService.getById(row.getIntAt(Schema.PICTURE_ID)),
+                        artistService.getById(row.getIntAt(ArtistType.Single.toInt(artistType)))
+                ));
+            }
             artists.add(new Artist(
                     row.getIntAt(Schema.ARTIST_ID),
                     row.getStringAt(Schema.ARTIST_NAME),
