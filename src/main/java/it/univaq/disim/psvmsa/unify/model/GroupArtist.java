@@ -7,11 +7,11 @@ public class GroupArtist extends Artist {
 
     private List<Artist> artists;
 
-    public GroupArtist(String name, String biography, Picture picture, List<Artist> artists) {
+    public GroupArtist(String name, String biography, List<Picture> picture, List<Artist> artists) {
         super(name, biography, picture);
         this.artists = artists;
     }
-    public GroupArtist(String name, String biography, Picture picture, List<Artist> artists, Integer id) {
+    public GroupArtist(String name, String biography, List<Picture> picture, List<Artist> artists, Integer id) {
         super(name, biography, picture, id);
         this.artists = artists;
     }

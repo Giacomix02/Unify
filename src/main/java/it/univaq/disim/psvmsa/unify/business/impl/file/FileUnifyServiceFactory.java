@@ -23,6 +23,7 @@ public class FileUnifyServiceFactory extends UnifyServiceFactory {
         fileArtistService = new FileArtistServiceImpl(
                 BASE_PATH + "artists.txt",
                 BASE_PATH + "group_artists.txt",
+                BASE_PATH + "images_relation.txt",
                 filePictureService
         );
         fileSongService = new FileSongServiceImpl(

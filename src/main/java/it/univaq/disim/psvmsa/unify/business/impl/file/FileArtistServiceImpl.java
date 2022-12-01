@@ -33,8 +33,7 @@ public class FileArtistServiceImpl implements ArtistService {
         public static int ARTIST_ID = 0;
         public static int ARTIST_NAME = 1;
         public static int ARTIST_BIOGRAPHY = 2;
-        public static int PICTURE_ID = 3;
-        public static int ARTIST_TYPE = 4;
+        public static int ARTIST_TYPE = 3;
     }
 
     private static class GroupSchema {
@@ -42,16 +41,23 @@ public class FileArtistServiceImpl implements ArtistService {
         public static int GROUP_ID = 1;
         public static int ARTIST_ID = 2;
     }
-
+    private static class ImagesSchema {
+        public static int RELATION_ID = 0;
+        public static int ARTIST_ID = 1;
+        public static int IMAGE_ID = 2;
+    }
     private final String SEPARATOR = "|";
     private final IndexedFileLoader loader;
-    private final IndexedFileLoader groupLoader;
+    private final IndexedFileLoader groupRelationsLoader;
+
+    private final IndexedFileLoader imagesRelationsLoader;
     private final PictureService pictureService;
 
 
-    public FileArtistServiceImpl(String path, String groupPath, PictureService pictureService) {
+    public FileArtistServiceImpl(String path, String groupPath, String picturesPath ,PictureService pictureService) {
         this.loader = new IndexedFileLoader(path, this.SEPARATOR, Schema.ARTIST_ID);
-        this.groupLoader = new IndexedFileLoader(groupPath, this.SEPARATOR, GroupSchema.RELATION_ID);
+        this.groupRelationsLoader = new IndexedFileLoader(groupPath, this.SEPARATOR, GroupSchema.RELATION_ID);
+        this.imagesRelationsLoader = new IndexedFileLoader(picturesPath, this.SEPARATOR, ImagesSchema.RELATION_ID);
         this.pictureService = pictureService;
     }
 
@@ -60,7 +66,7 @@ public class FileArtistServiceImpl implements ArtistService {
         List<Artist> artists = new ArrayList<>();
         IndexedFile file = loader.load();
         List<IndexedFile.Row> rows = file.getRows();
-        IndexedFile groupFile = groupLoader.load();
+        IndexedFile groupFile = groupRelationsLoader.load();
         for (IndexedFile.Row row : rows) {
             artists.add(parseArtist(row, groupFile));
 
@@ -70,18 +76,23 @@ public class FileArtistServiceImpl implements ArtistService {
 
     @Override
     public Artist getById(Integer id) {
+        return getById(id, groupRelationsLoader.load());
+    }
+    //to prevent reloading of group relations everytime
+    private Artist getById(Integer id, IndexedFile relations){
         IndexedFile file = loader.load();
         IndexedFile.Row row = file.findRowById(id);
         if (row == null) return null;
-        return parseArtist(row, groupLoader.load());
+        return parseArtist(row, relations);
     }
 
     @Override
     public void deleteById(Integer id) throws BusinessException {
         IndexedFile file = loader.load();
         IndexedFile.Row deleted = file.deleteRowById(id);
-        Artist parsed = parseArtist(deleted, groupLoader.load());
+        Artist parsed = parseArtist(deleted, groupRelationsLoader.load());
         if(parsed instanceof GroupArtist) removeGroupRelations((GroupArtist) parsed);
+        deleteImagesRelations(parsed);
         loader.save(file);
     }
 
@@ -89,11 +100,12 @@ public class FileArtistServiceImpl implements ArtistService {
     //re read everytime
     private Artist parseArtist(IndexedFile.Row row, IndexedFile relations){
         ArtistType kind = ArtistType.fromInt(row.getIntAt(Schema.ARTIST_TYPE));
+        List<Picture> pictures = getArtistPicturesFromId(row.getIntAt(Schema.ARTIST_ID));
         if(kind == ArtistType.Single){
             return new Artist(
                     row.getStringAt(Schema.ARTIST_NAME),
                     row.getStringAt(Schema.ARTIST_BIOGRAPHY),
-                    pictureService.getById(row.getIntAt(Schema.PICTURE_ID)),
+                    pictures,
                     row.getIntAt(Schema.ARTIST_ID)
             );
         }else if(kind == ArtistType.Group){
@@ -103,18 +115,49 @@ public class FileArtistServiceImpl implements ArtistService {
             );
             //recursively parses each member
             for(IndexedFile.Row memberRow: membersRows){
-                members.add(parseArtist(memberRow, relations));
+                members.add(getById(memberRow.getIntAt(GroupSchema.ARTIST_ID), relations));
             }
             return new GroupArtist(
                     row.getStringAt(Schema.ARTIST_NAME),
                     row.getStringAt(Schema.ARTIST_BIOGRAPHY),
-                    pictureService.getById(row.getIntAt(Schema.PICTURE_ID)),
+                    pictures,
                     members,
                     row.getIntAt(Schema.ARTIST_ID)
             );
         }else {
             throw new RuntimeException("Invalid artist kind");
         }
+    }
+
+    private List<Picture> getArtistPicturesFromId(int id){
+        IndexedFile imagesRelations = imagesRelationsLoader.load();
+        List<IndexedFile.Row> images = imagesRelations.filterRows(row -> row.getIntAt(ImagesSchema.ARTIST_ID) == id);
+        List<Picture> pictures = new ArrayList<>();
+        for(IndexedFile.Row row: images){
+            pictures.add(pictureService.getById(row.getIntAt(ImagesSchema.IMAGE_ID)));
+        }
+        return pictures;
+    }
+    private void addImagesRelations(Artist artist){
+        IndexedFile relationFile = imagesRelationsLoader.load();
+        for(Picture picture: artist.getPictures()){
+            IndexedFile.Row row = new IndexedFile.Row(this.SEPARATOR);
+            row.set(ImagesSchema.RELATION_ID, relationFile.incrementId())
+                    .set(ImagesSchema.IMAGE_ID, picture.getId())
+                    .set(ImagesSchema.ARTIST_ID, artist.getId());
+            relationFile.appendRow(row);
+        }
+        imagesRelationsLoader.save(relationFile);
+    }
+    private void deleteImagesRelations(Artist artist) throws BusinessException{
+        IndexedFile relationFile = imagesRelationsLoader.load();
+        List<IndexedFile.Row> rows = relationFile.filterRows(
+                r -> r.getIntAt(ImagesSchema.ARTIST_ID) == artist.getId()
+        );
+        for (IndexedFile.Row row : rows) {
+            relationFile.deleteRowById(row.getIntAt(ImagesSchema.RELATION_ID));
+        }
+        imagesRelationsLoader.save(relationFile);
     }
     @Override
     public Artist add(Artist artist) {
@@ -124,8 +167,8 @@ public class FileArtistServiceImpl implements ArtistService {
         artist.setId(id);
         row.set(Schema.ARTIST_ID, artist.getId())
                 .set(Schema.ARTIST_NAME, artist.getName())
-                .set(Schema.ARTIST_BIOGRAPHY, artist.getBiography())
-                .set(Schema.PICTURE_ID, artist.getPicture().getId());
+                .set(Schema.ARTIST_BIOGRAPHY, artist.getBiography());
+        addImagesRelations(artist);
         if(artist instanceof GroupArtist){
             GroupArtist group = (GroupArtist) artist;
             row.set(Schema.ARTIST_TYPE, ArtistType.Group.toInt());
@@ -144,8 +187,9 @@ public class FileArtistServiceImpl implements ArtistService {
         IndexedFile.Row row = new IndexedFile.Row(this.SEPARATOR);
         row.set(Schema.ARTIST_ID, artist.getId())
                 .set(Schema.ARTIST_NAME, artist.getName())
-                .set(Schema.ARTIST_BIOGRAPHY, artist.getBiography())
-                .set(Schema.PICTURE_ID, artist.getPicture().getId());
+                .set(Schema.ARTIST_BIOGRAPHY, artist.getBiography());
+        deleteImagesRelations(artist);
+        addImagesRelations(artist);
         if(artist instanceof GroupArtist){
             GroupArtist group = (GroupArtist) artist;
             removeGroupRelations(group);
@@ -178,7 +222,7 @@ public class FileArtistServiceImpl implements ArtistService {
     }
 
     public void addGroupRelations(GroupArtist group){
-        IndexedFile file = groupLoader.load();
+        IndexedFile file = groupRelationsLoader.load();
         for(Artist member: group.getArtists()){
             IndexedFile.Row row = new IndexedFile.Row(this.SEPARATOR);
             int id = file.incrementId();
@@ -187,17 +231,17 @@ public class FileArtistServiceImpl implements ArtistService {
                     .set(GroupSchema.ARTIST_ID, member.getId());
             file.appendRow(row);
         }
-        groupLoader.save(file);
+        groupRelationsLoader.save(file);
     }
 
     private void removeGroupRelations(GroupArtist group) throws BusinessException{
-        IndexedFile file = groupLoader.load();
+        IndexedFile file = groupRelationsLoader.load();
         List<IndexedFile.Row> members = file.filterRows(
                 relationRow -> relationRow.getIntAt(GroupSchema.GROUP_ID) == group.getId()
         );
         for(IndexedFile.Row r : members){
             file.deleteRowById(r.getIntAt(GroupSchema.GROUP_ID));
         }
-        groupLoader.save(file);
+        groupRelationsLoader.save(file);
     }
 }

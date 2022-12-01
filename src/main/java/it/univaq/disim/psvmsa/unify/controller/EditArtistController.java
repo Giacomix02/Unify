@@ -41,11 +41,6 @@ public class EditArtistController implements Initializable, DataInitializable {
         Artist artist = (Artist) data;
         artistNameInput.setText(artist.getName());
         artistBiographyInput.setText(artist.getBiography());
-
-        Picture picture = artist.getPicture();
-        Image image = new Image(picture.toStream());
-        artistImage.setImage(image);
-
     }
 
     @Override

@@ -43,14 +43,18 @@ public class ViewArtist extends HBox {
 
             label.setText(artist.getName());
 
-            Image image = new Image(artist.getPicture().toStream());
-            Rectangle rectangle = new Rectangle(0,0,50,50);
-            rectangle.setArcHeight(14);
-            rectangle.setArcWidth(14);
-            ImagePattern pattern = new ImagePattern(image);
-            rectangle.setFill(pattern);
-            artistImage.setClip(rectangle);
-            artistImage.setImage(image);
+            if(artist.getPictures().size() > 0){
+                Picture pfp = artist.getPictures().get(0);
+                Image image = new Image(pfp.toStream());
+                Rectangle rectangle = new Rectangle(0,0,50,50);
+                rectangle.setArcHeight(14);
+                rectangle.setArcWidth(14);
+                ImagePattern pattern = new ImagePattern(image);
+                rectangle.setFill(pattern);
+                artistImage.setClip(rectangle);
+                artistImage.setImage(image);
+            }
+
 
         } catch (Exception e) {
             e.printStackTrace();

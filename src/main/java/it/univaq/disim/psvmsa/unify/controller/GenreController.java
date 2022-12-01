@@ -3,7 +3,8 @@ package it.univaq.disim.psvmsa.unify.controller;
 import it.univaq.disim.psvmsa.unify.business.GenreService;
 import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.model.Genre;
-import it.univaq.disim.psvmsa.unify.view.components.AddGenre;
+import it.univaq.disim.psvmsa.unify.view.Pages;
+import it.univaq.disim.psvmsa.unify.view.components.AddLinkButton;
 import it.univaq.disim.psvmsa.unify.view.components.SearchBar;
 import it.univaq.disim.psvmsa.unify.view.components.ViewGenre;
 import javafx.fxml.FXML;
@@ -26,7 +27,6 @@ public class GenreController implements Initializable, DataInitializable {
     private VBox viewList;
 
     private SearchBar searchBar;
-    private AddGenre addGenre;
     private ViewGenre viewGenre;
 
     public GenreController(){
@@ -36,14 +36,13 @@ public class GenreController implements Initializable, DataInitializable {
 
     public void initialize(URL location, ResourceBundle resources){
         searchBar = new SearchBar("Search by Genre");
-        addGenre = new AddGenre();
 
         searchBar.setOnSearch(text ->{
             showSearch(text);
         });
 
         searchBox.getChildren().add(searchBar);
-        addBox.getChildren().add(addGenre);
+        addBox.getChildren().add(new AddLinkButton(Pages.ADDGENRE));
 
         List<Genre> genres = genreService.getGenres();
 

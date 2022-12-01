@@ -3,7 +3,8 @@ package it.univaq.disim.psvmsa.unify.controller;
 import it.univaq.disim.psvmsa.unify.business.AlbumService;
 import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.model.Album;
-import it.univaq.disim.psvmsa.unify.view.components.AddAlbum;
+import it.univaq.disim.psvmsa.unify.view.Pages;
+import it.univaq.disim.psvmsa.unify.view.components.AddLinkButton;
 import it.univaq.disim.psvmsa.unify.view.components.SearchBar;
 import it.univaq.disim.psvmsa.unify.view.components.ViewAlbum;
 import javafx.fxml.FXML;
@@ -29,7 +30,6 @@ public class AlbumController implements Initializable, DataInitializable {
     @FXML
     private SearchBar searchBar;
 
-    private AddAlbum addAlbum;
 
     private AlbumService albumService;
 
@@ -41,14 +41,13 @@ public class AlbumController implements Initializable, DataInitializable {
     }
     public void initialize(URL location, ResourceBundle resources) {
         searchBar = new SearchBar("Search by Album");
-        addAlbum = new AddAlbum();
 
         searchBar.setOnSearch(text ->{
             showSearch(text);
         });
 
         searchBox.getChildren().add(searchBar);
-        addBox.getChildren().add(addAlbum);
+        addBox.getChildren().add(new AddLinkButton(Pages.ADDALBUM));
 
         List<Album> albums = albumService.getAlbums();
 

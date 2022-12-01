@@ -4,7 +4,8 @@ import it.univaq.disim.psvmsa.unify.business.BusinessException;
 import it.univaq.disim.psvmsa.unify.business.SongService;
 import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.model.*;
-import it.univaq.disim.psvmsa.unify.view.components.AddSong;
+import it.univaq.disim.psvmsa.unify.view.Pages;
+import it.univaq.disim.psvmsa.unify.view.components.AddLinkButton;
 import it.univaq.disim.psvmsa.unify.view.components.SearchBar;
 import it.univaq.disim.psvmsa.unify.view.components.SongRowCell;
 import javafx.collections.FXCollections;
@@ -31,7 +32,6 @@ public class SongController implements Initializable, DataInitializable {
 
 
     private SearchBar searchBar;
-    private AddSong addSong;
 
     private SongService songService;
 
@@ -43,10 +43,9 @@ public class SongController implements Initializable, DataInitializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         searchBar = new SearchBar("Search by Song");
-        addSong = new AddSong();
 
         searchBox.getChildren().add(searchBar);
-        addBox.getChildren().add(addSong);
+        addBox.getChildren().add(new AddLinkButton(Pages.ADDSONG));
 
         searchBar.setOnSearch(text ->{
             showSearch(text);

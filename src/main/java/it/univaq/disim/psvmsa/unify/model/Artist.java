@@ -1,5 +1,6 @@
 package it.univaq.disim.psvmsa.unify.model;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Artist {
@@ -10,17 +11,17 @@ public class Artist {
 
     private String biography;
 
-    private Picture picture;
+    private List<Picture> pictures;
 
-    public Artist(String name, String biography, Picture picture){
+    public Artist(String name, String biography, List<Picture> pictures){
         this.name = name;
         this.biography = biography;
-        this.picture = picture;
+        this.pictures = pictures;
     }
-    public Artist(String name, String biography, Picture picture, Integer id){
+    public Artist(String name, String biography, List<Picture> pictures, Integer id){
         this.name = name;
         this.biography = biography;
-        this.picture = picture;
+        this.pictures = pictures;
         this.id = id;
     }
 
@@ -48,12 +49,12 @@ public class Artist {
         this.biography = biography;
     }
 
-    public Picture getPicture() {
-        return picture;
+    public List<Picture> getPictures() {
+        return pictures;
     }
 
-    public void setPicture(Picture picture) {
-        this.picture = picture;
+    public void setPictures( List<Picture> pictures) {
+        this.pictures = pictures;
     }
 
 
@@ -66,10 +67,10 @@ public class Artist {
         return Objects.equals(name,artist.name) &&
                 Objects.equals(id, artist.id) &&
                 Objects.equals(biography, artist.biography) &&
-                Objects.equals(picture, artist.picture);
+                Objects.equals(pictures, artist.pictures);
     }
     @Override
     public int hashCode() {
-        return Objects.hash(name, id, biography, picture);
+        return Objects.hash(name, id, biography, pictures);
     }
 }

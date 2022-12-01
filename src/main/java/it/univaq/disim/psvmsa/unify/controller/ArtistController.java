@@ -3,11 +3,10 @@ package it.univaq.disim.psvmsa.unify.controller;
 import it.univaq.disim.psvmsa.unify.business.ArtistService;
 import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.model.Artist;
-import it.univaq.disim.psvmsa.unify.model.Genre;
-import it.univaq.disim.psvmsa.unify.view.components.AddArtist;
+import it.univaq.disim.psvmsa.unify.view.Pages;
+import it.univaq.disim.psvmsa.unify.view.components.AddLinkButton;
 import it.univaq.disim.psvmsa.unify.view.components.SearchBar;
 import it.univaq.disim.psvmsa.unify.view.components.ViewArtist;
-import it.univaq.disim.psvmsa.unify.view.components.ViewGenre;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.HBox;
@@ -28,8 +27,6 @@ public class ArtistController implements Initializable, DataInitializable {
     @FXML
     private SearchBar searchBar;
 
-    private AddArtist addArtist;
-
     private ArtistService artistService;
 
     private ViewArtist viewArtist;
@@ -44,13 +41,9 @@ public class ArtistController implements Initializable, DataInitializable {
 
     public void initialize(URL location, ResourceBundle resources) {
         searchBar = new SearchBar("Search by Artist");
-        addArtist = new AddArtist();
-
         searchBox.getChildren().add(searchBar);
-        addBox.getChildren().add(addArtist);
-
+        addBox.getChildren().add(new AddLinkButton(Pages.ADDARTIST));
         List<Artist> artists = artistService.getArtists();
-
         for(Artist artist : artists) {
             viewArtist = new ViewArtist(artist);
             viewList.getChildren().add(viewArtist);

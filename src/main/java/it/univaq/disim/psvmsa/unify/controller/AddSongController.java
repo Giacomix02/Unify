@@ -84,72 +84,56 @@ public class AddSongController implements Initializable, DataInitializable {
     public void initialize(URL location, ResourceBundle resources) {
         DEFAULT_IMAGE = songImage.getImage();
         saveSongLabel.setVisible(false);
-        List<Genre> genres = genreService.getGenres();
-        List<Artist> artists = artistService.getArtists();
-        List<Album> albums = albumService.getAlbums();
-
-
         genreBoxChoice.setConverter(new StringConverter<>() {
             @Override
             public String toString(Genre genre) {
-                if (genre != null) {
-                    return genre.getName();
-                }
-                return "";
+                if(genre == null) return "";
+                return genre.getName();
             }
 
             @Override
             public Genre fromString(String s) {
-                List<Genre> genres = genreService.searchByName(s);
-                return genres.get(0);
+                for(Genre g: genreBoxChoice.getItems()){
+                    if(g.getName().equals(s)) return g;
+                }
+                return null;
             }
         });
         artistBoxChoice.setConverter(new StringConverter<>() {
             @Override
             public String toString(Artist artist) {
-                if (artist != null) {
-                    return artist.getName();
-                }
-                return "";
+                //TODO might add the ID at the beginning to help with name clashing
+                if(artist == null) return "";
+                return artist.getName();
             }
 
             @Override
             public Artist fromString(String s) {
-                List<Artist> a = artistService.searchArtistsByName(s);
-                return a.get(0);
+                for(Artist a: artistBoxChoice.getItems()){
+                    if(a.getName().equals(s)) return a;
+                }
+                return null;
             }
         });
 
         albumBoxChoice.setConverter(new StringConverter<>() {
             @Override
             public String toString(Album album) {
-                if (album != null) {
-                    return album.getName();
-                }
-                return "";
+                if(album == null) return "";
+                return album.getName();
             }
 
             @Override
             public Album fromString(String s) {
-                List<Album> a = albumService.searchAlbumsByName(s);
-                return a.get(0);
+                for(Album a: albumBoxChoice.getItems()){
+                    if(a.getName().equals(s)) return a;
+                }
+                return null;
             }
         });
-
-
-        for (Genre genre : genres) {
-            genreBoxChoice.getItems().add(genre);
-        }
-
-        for (Artist artist : artists) {
-            artistBoxChoice.getItems().add(artist);
-        }
-
-        for (Album album : albums) {
-            albumBoxChoice.getItems().add(album);
-        }
-
-
+        genreBoxChoice.getItems().addAll(genreService.getGenres());
+        artistBoxChoice.getItems().addAll(artistService.getArtists());
+        albumBoxChoice.getItems().addAll(albumService.getAlbums());
     }
 
     public void uploadImage() throws FileNotFoundException {
@@ -198,7 +182,7 @@ public class AddSongController implements Initializable, DataInitializable {
     }
 
     public void saveSong() {
-        ArrayList<Genre> genres = new ArrayList<>(genreBoxChoice.getCheckModel().getCheckedItems());
+        List<Genre> genres = genreBoxChoice.getCheckModel().getCheckedItems();
         Picture picture = pictureService.add(this.picture);
         try{
             Song song = new Song(
