@@ -20,7 +20,6 @@ public class ViewGenre extends VBox {
 
     private Label label;
 
-    private Button removeButton;
     private Genre genre;
     private HBox songsBox;
 
@@ -40,7 +39,6 @@ public class ViewGenre extends VBox {
             getChildren().add(root);
 
             label = (Label) root.lookup("#label");
-            removeButton = (Button) root.lookup("#removeButton");
 
             songsBox = (HBox) root.lookup("#songs");
             songsBox = (HBox) root.lookup("#albums");
@@ -62,32 +60,6 @@ public class ViewGenre extends VBox {
           e.printStackTrace();
         }
 
-        removeGenre();
-    }
-
-    @FXML
-    public void removeGenre(){
-        this.removeButton.setOnAction(event -> {
-            try {
-                UnifyServiceFactory factoryInstance = UnifyServiceFactory.getInstance();
-                this.genreService = factoryInstance.getGenreService();
-                this.songService = factoryInstance.getSongService();
-
-                genreService.delete(genre);
-                List<Song> songs = songService.getAllSongs();
-                for(Song song : songs){
-                    if(song.getGenres().contains(genre)){
-                        song.getGenres().remove(genre);
-                        songService.update(song);
-                    }
-                }
-
-                ViewDispatcher.getInstance().navigateTo(Pages.GENRES);
-            }
-            catch (Exception e){
-                System.out.println(e.getMessage());
-            }
-        });
     }
 }
 
