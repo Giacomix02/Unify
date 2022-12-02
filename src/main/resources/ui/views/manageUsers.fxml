@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.psvmsa.unify.controller.ManageUserController">
+<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.psvmsa.unify.controller.UserController">
     <HBox alignment="CENTER">
         <children>
-            <HBox fx:id="searchBox" alignment="CENTER_RIGHT" maxHeight="50.0" styleClass="searchBox">
+            <HBox fx:id="searchBox" alignment="CENTER_LEFT" maxHeight="50.0" styleClass="searchBox">
                 <HBox.margin>
                     <Insets />
                 </HBox.margin>
             </HBox>
             <HBox alignment="CENTER" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="addBox" alignment="CENTER_LEFT" />
+            <HBox fx:id="addBox" alignment="CENTER_RIGHT" />
         </children>
         <VBox.margin>
             <Insets bottom="10.0" />
         </VBox.margin>
     </HBox>
-    <Label styleClass="title-text" text="Manage users" />
+    <Label styleClass="title-text" text="Manage users">
+      <VBox.margin>
+         <Insets bottom="15.0" />
+      </VBox.margin></Label>
     <VBox fx:id="viewList" alignment="TOP_CENTER" spacing="10.0" VBox.vgrow="ALWAYS" />
 </VBox>

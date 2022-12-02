@@ -5,6 +5,7 @@ import it.univaq.disim.psvmsa.unify.business.PlaylistService;
 import it.univaq.disim.psvmsa.unify.business.UserService;
 import it.univaq.disim.psvmsa.unify.model.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FileUserServiceImpl implements UserService {
@@ -90,6 +91,16 @@ public class FileUserServiceImpl implements UserService {
 
     @Override
     public List<User> getUsers() {
-        return null;
+        List<User> users = new ArrayList<>();
+        IndexedFile file = loader.load();
+        List<IndexedFile.Row> rows = file.getRows();
+        for (IndexedFile.Row row : rows) {
+            users.add(new User(
+                    row.getStringAt(Schema.USER_NAME),
+                    row.getStringAt(Schema.PASSWORD),
+                    row.getIntAt(Schema.USER_ID)
+            ));
+        }
+        return users;
     }
 }

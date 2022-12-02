@@ -15,8 +15,10 @@ public enum Pages {
     ADDSONG("addSong"),
     ADDALBUM("addAlbum"),
     ADDARTIST("addArtist"),
+    ADDUSER("addUser"),
     EDITSONG("editSong"),
-    EDITALBUM("editAlbum");
+    EDITALBUM("editAlbum"),
+    EDITUSER("editUser");
     private final String name;
 
     Pages(String name) {

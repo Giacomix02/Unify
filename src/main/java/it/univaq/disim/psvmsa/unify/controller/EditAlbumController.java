@@ -38,7 +38,7 @@ public class EditAlbumController implements Initializable, DataInitializable {
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize(URL location, ResourceBundle resources) {
         exceptionLabel.setText("");
 
         this.editButton
