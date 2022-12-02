@@ -29,6 +29,8 @@ public class LayoutController implements Initializable, DataInitializable<User> 
     private static final String SONG_IMAGE = IMAGE_PATH+"note.png";
     private static final String GENRE_IMAGE = IMAGE_PATH+"tag.png";
     private static final String PLAYLIST_IMAGE = IMAGE_PATH+"playlist.png";
+    private static final String USER_IMAGE = IMAGE_PATH+"person.png";
+
     private MenuLink MENU_LINKS[] = {
         new MenuLink("Artists", Pages.ARTISTS, new Image(ARTIST_IMAGE)),
         new MenuLink("Albums", Pages.ALBUMS, new Image(ALBUM_IMAGE)),
@@ -37,6 +39,10 @@ public class LayoutController implements Initializable, DataInitializable<User> 
     };
     private MenuLink USER_LINKS[] = {
             new MenuLink("Playlists", Pages.PLAYLISTS, new Image(PLAYLIST_IMAGE))
+    };
+
+    private MenuLink ADMIN_LINKS[] = {
+            new MenuLink("Manage users", Pages.MANAGE_USERS, new Image(USER_IMAGE))
     };
 
     private MusicBar musicBar;
@@ -52,6 +58,9 @@ public class LayoutController implements Initializable, DataInitializable<User> 
 
     @FXML
     private VBox userMenu;
+
+    @FXML
+    private VBox adminMenu;
 
     @FXML
     private ScrollPane layoutRoot;
@@ -85,6 +94,10 @@ public class LayoutController implements Initializable, DataInitializable<User> 
         }
         for(MenuLink menuLink : USER_LINKS){
             userMenu.getChildren().add(menuLink);
+            menuLink.setOnMouseClicked(event -> setCurrentPage(menuLink.getPage()));
+        }
+        for(MenuLink menuLink : ADMIN_LINKS){
+            adminMenu.getChildren().add(menuLink);
             menuLink.setOnMouseClicked(event -> setCurrentPage(menuLink.getPage()));
         }
     }

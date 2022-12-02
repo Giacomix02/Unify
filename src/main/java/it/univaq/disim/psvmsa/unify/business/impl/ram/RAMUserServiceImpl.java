@@ -5,6 +5,7 @@ import it.univaq.disim.psvmsa.unify.business.UserService;
 import it.univaq.disim.psvmsa.unify.model.User;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RAMUserServiceImpl implements UserService   {
@@ -42,6 +43,12 @@ public class RAMUserServiceImpl implements UserService   {
         users.put(user.getId(), user);
         return user;
     }
+
+    @Override
+    public List<User> getUsers() {
+        return null;
+    }
+
     @Override
     public User getByUsername(String username) {
         for (User user : users.values()) {

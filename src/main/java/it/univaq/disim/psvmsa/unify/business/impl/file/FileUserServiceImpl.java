@@ -5,6 +5,8 @@ import it.univaq.disim.psvmsa.unify.business.PlaylistService;
 import it.univaq.disim.psvmsa.unify.business.UserService;
 import it.univaq.disim.psvmsa.unify.model.User;
 
+import java.util.List;
+
 public class FileUserServiceImpl implements UserService {
     private static class Schema{
         public static int USER_ID = 0;
@@ -84,5 +86,10 @@ public class FileUserServiceImpl implements UserService {
         file.appendRow(row);
         loader.save(file);
         return user;
+    }
+
+    @Override
+    public List<User> getUsers() {
+        return null;
     }
 }

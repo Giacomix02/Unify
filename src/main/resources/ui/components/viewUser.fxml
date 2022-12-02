@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+
+<HBox alignment="CENTER" styleClass="background" stylesheets="@viewUser.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox alignment="CENTER">
+         <children>
+            <Label id="userName" fx:id="userName" alignment="CENTER" styleClass="text" stylesheets="@viewUser.css" text="Label" textFill="WHITE" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" />
+      <HBox alignment="CENTER">
+         <children>
+            <Button id="editButton" alignment="CENTER" mnemonicParsing="false" style="-fx-background-color: transparent;" styleClass="text" text="Edit">
+               <graphic>
+                  <ImageView pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/icons/pencil-alt.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </HBox>
+   </children>
+</HBox>

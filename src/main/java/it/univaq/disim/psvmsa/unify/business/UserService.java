@@ -2,6 +2,8 @@ package it.univaq.disim.psvmsa.unify.business;
 
 import it.univaq.disim.psvmsa.unify.model.User;
 
+import java.util.List;
+
 public interface UserService {
 
     User getById(Integer id);
@@ -15,5 +17,7 @@ public interface UserService {
     void update(User user) throws BusinessException;
 
     User add(User user) throws BusinessException;
+
+    List<User> getUsers();
 
 }

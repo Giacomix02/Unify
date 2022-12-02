@@ -10,6 +10,7 @@ public enum Pages {
     ARTISTS("artists"),
     GENRES("genres"),
     PLAYLISTS("playlists"),
+    MANAGE_USERS("manageUsers"),
     ADDGENRE("addGenre"),
     ADDSONG("addSong"),
     ADDALBUM("addAlbum"),
