@@ -22,6 +22,7 @@ import java.util.ResourceBundle;
 
 
 public class EditSongController implements Initializable, DataInitializable {
+
     private Image DEFAULT_IMAGE = null;
     private final SongService songService;
 
@@ -98,7 +99,6 @@ public class EditSongController implements Initializable, DataInitializable {
         picture = inputPicture;
 
         songInputStream = song.toStream();
-
 
 
 

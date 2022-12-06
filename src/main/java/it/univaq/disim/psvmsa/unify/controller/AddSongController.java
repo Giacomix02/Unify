@@ -4,6 +4,7 @@ import it.univaq.disim.psvmsa.unify.business.*;
 import it.univaq.disim.psvmsa.unify.model.*;
 import it.univaq.disim.psvmsa.unify.view.Pages;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
+import javafx.beans.value.ObservableBooleanValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -82,6 +83,15 @@ public class AddSongController implements Initializable, DataInitializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        saveButton.disableProperty().bind(
+                songNameInput.textProperty().isEmpty()
+                        .or(songNameInput.textProperty().isEmpty())
+                        .or(albumBoxChoice.valueProperty().isNull())
+                        .or(artistBoxChoice.valueProperty().isNull())
+                        .or(songLyricsInput.textProperty().isEmpty())
+        );
+
         DEFAULT_IMAGE = songImage.getImage();
         saveSongLabel.setVisible(false);
         genreBoxChoice.setConverter(new StringConverter<>() {

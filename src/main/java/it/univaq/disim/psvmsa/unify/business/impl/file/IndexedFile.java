@@ -136,7 +136,7 @@ public class IndexedFile {
         ListIterator<Row> listIterator = this.rows.listIterator();
         while (listIterator.hasNext()) {
             Row current = listIterator.next();
-            if (listIterator.next().getIntAt(ID_POSITION) == id) {
+            if (current.getIntAt(ID_POSITION) == id) {
                 listIterator.remove();
                 return current;
             }
