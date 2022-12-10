@@ -66,5 +66,3 @@ public class GenreController implements Initializable, DataInitializable {
 
 }
 
-// TODO show albums
-

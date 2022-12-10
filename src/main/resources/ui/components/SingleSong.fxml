@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
@@ -14,7 +13,4 @@
          </viewport></ImageView>
       <Label id="label" styleClass="text" />
    </children>
-   <padding>
-      <Insets left="10.0" right="10.0" />
-   </padding>
 </VBox>

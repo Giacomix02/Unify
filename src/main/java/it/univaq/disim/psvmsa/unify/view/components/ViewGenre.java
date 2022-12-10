@@ -2,17 +2,23 @@ package it.univaq.disim.psvmsa.unify.view.components;
 import it.univaq.disim.psvmsa.unify.business.GenreService;
 import it.univaq.disim.psvmsa.unify.business.SongService;
 import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
+import it.univaq.disim.psvmsa.unify.model.Album;
 import it.univaq.disim.psvmsa.unify.model.Genre;
 import it.univaq.disim.psvmsa.unify.model.Song;
 import it.univaq.disim.psvmsa.unify.view.Pages;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+
+import java.util.ArrayList;
 import java.util.List;
 public class ViewGenre extends VBox {
 
@@ -21,6 +27,10 @@ public class ViewGenre extends VBox {
     private Button removeButton;
     private Genre genre;
     private HBox songsBox;
+    private HBox albumBox;
+    private ScrollPane songsScroll;
+    private ScrollPane albumsScroll;
+
 
     private GenreService genreService;
     private SongService songService;
@@ -39,15 +49,26 @@ public class ViewGenre extends VBox {
             removeButton = (Button) root.lookup("#removeButton");
 
             songsBox = (HBox) root.lookup("#songs");
-            songsBox = (HBox) root.lookup("#albums");
+            albumBox = (HBox) root.lookup("#albums");
+
             label.setText(genre.getName());
             songService = UnifyServiceFactory.getInstance().getSongService();
             List<Song> songs = songService.getAllSongs();
+            ArrayList<Album> albums = new ArrayList<>();
             for(Song song : songs){
                 if(song.getGenres().contains(genre)){
                     SingleSong singleSong = new SingleSong(song);
                     songsBox.getChildren().add(singleSong);
+
+                    if(!albums.contains(song.getAlbum())){
+                        albums.add(song.getAlbum());
+                    }
                 }
+            }
+            for(Album album : albums){
+                SingleAlbum singleAlbum = new SingleAlbum(album);
+                albumBox.getChildren().add(singleAlbum);
+
             }
         }
         catch (Exception e){

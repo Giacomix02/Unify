@@ -25,7 +25,7 @@
                   </Label>
                </children>
             </HBox>
-            <HBox alignment="CENTER" fillHeight="false" HBox.hgrow="ALWAYS" />
+            <HBox alignment="CENTER" HBox.hgrow="ALWAYS" />
             <HBox alignment="CENTER_RIGHT">
                <children>
                   <Button id="removeButton" mnemonicParsing="false" style="-fx-background-color: transparent;" styleClass="text" text="Remove">
@@ -41,24 +41,21 @@
             </HBox>
          </children>
          <VBox.margin>
-            <Insets />
+            <Insets bottom="10.0" />
          </VBox.margin>
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" />
-         </padding>
       </HBox>
-      <HBox id="songs" alignment="BOTTOM_LEFT" VBox.vgrow="ALWAYS">
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
-      </HBox>
-      <HBox id="albums" alignment="CENTER_LEFT" VBox.vgrow="ALWAYS">
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
+      <HBox id="songs" alignment="CENTER_LEFT" spacing="20.0">
          <VBox.margin>
-            <Insets />
+            <Insets bottom="10.0" left="10.0" right="10.0" />
+         </VBox.margin>
+      </HBox>
+      <HBox id="albums" alignment="CENTER_LEFT" spacing="20.0">
+         <VBox.margin>
+            <Insets bottom="20.0" left="10.0" right="10.0" />
          </VBox.margin>
       </HBox>
    </children>
+   <padding>
+      <Insets left="20.0" right="20.0" />
+   </padding>
 </VBox>
