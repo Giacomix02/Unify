@@ -28,10 +28,6 @@ public class ViewGenre extends VBox {
     private Genre genre;
     private HBox songsBox;
     private HBox albumBox;
-    private ScrollPane songsScroll;
-    private ScrollPane albumsScroll;
-
-
     private GenreService genreService;
     private SongService songService;
     public ViewGenre(Genre genre) {

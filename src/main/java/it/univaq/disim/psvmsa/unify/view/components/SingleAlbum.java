@@ -11,7 +11,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
@@ -54,7 +53,7 @@ public class SingleAlbum extends HBox {
             if(picture != null){
                 Image i = new Image(picture.toStream());
 
-                Rectangle rectangle = new Rectangle(0, 0, 100, 100);
+                Rectangle rectangle = new Rectangle(0, 0, 30, 30);
                 rectangle.setArcWidth(14);   // Corner radius
                 rectangle.setArcHeight(14);
                 ImagePattern pattern = new ImagePattern(i);
