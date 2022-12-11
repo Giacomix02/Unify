@@ -5,6 +5,7 @@ import it.univaq.disim.psvmsa.unify.business.UserService;
 import it.univaq.disim.psvmsa.unify.model.User;
 import it.univaq.disim.psvmsa.unify.view.Pages;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -22,6 +23,9 @@ public class EditUserController implements Initializable, DataInitializable {
 
     @FXML
     private Button editButton;
+
+    @FXML
+    private Button removeButton;
 
     @FXML
     private Label exceptionLabel;
@@ -70,6 +74,15 @@ public class EditUserController implements Initializable, DataInitializable {
             exit();
         }
         catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void removeUser(){
+        try{
+            userService.delete(user);
+            exit();
+        } catch (Exception e){
             e.printStackTrace();
         }
     }

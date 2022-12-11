@@ -52,7 +52,7 @@ public class ViewUser extends HBox {
                 ViewDispatcher.getInstance().navigateTo(Pages.EDITUSER, user);
             }
             catch (Exception e) {
-                System.out.println(e.getMessage());
+                e.printStackTrace();
             }
         });
     }
