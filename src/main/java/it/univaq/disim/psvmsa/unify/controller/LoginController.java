@@ -55,7 +55,7 @@ public class LoginController implements Initializable, DataInitializable{
             User user = this.userService.validate(username.getText(),password.getText());
             ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
             viewDispatcher.loggedIn(user);
-            viewDispatcher.navigateTo(Pages.HOME);
+            viewDispatcher.navigateTo(Pages.HOME, user);
         }catch(ViewDispatcherException e){
             System.out.println(e.getMessage());
             logLabel.setText("Error logging in");

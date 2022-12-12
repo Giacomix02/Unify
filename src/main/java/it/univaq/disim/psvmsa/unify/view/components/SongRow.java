@@ -24,14 +24,16 @@ public class SongRow extends HBox {
     private ImageView picture;
     private Text songName;
 
+    private boolean editable;
     private Text genreName;
 
     private Text artistName;
 
     private Button editButton;
 
-    public SongRow (Song song){
+    public SongRow (Song song, boolean editable){
         super();
+        this.editable=editable;
         init(song);
     }
     public void init(Song song) {
@@ -45,6 +47,10 @@ public class SongRow extends HBox {
             artistName = (Text) root.lookup("#artistName");
             picture = (ImageView) root.lookup("#picture");
             editButton = (Button) root.lookup("#editButton");
+
+
+            editButton.visibleProperty().set(editable);
+
 
             List<Genre> genres = song.getGenres();
 

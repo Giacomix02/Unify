@@ -1,4 +1,5 @@
 package it.univaq.disim.psvmsa.unify.controller;
+import it.univaq.disim.psvmsa.unify.model.Admin;
 import it.univaq.disim.psvmsa.unify.model.User;
 import it.univaq.disim.psvmsa.unify.view.Pages;
 import it.univaq.disim.psvmsa.unify.view.View;
@@ -66,7 +67,7 @@ public class LayoutController implements Initializable, DataInitializable<User> 
     private ScrollPane layoutRoot;
     @FXML
     private void gotoHome(){
-        setCurrentPage(Pages.HOME);
+        setCurrentPage(Pages.HOME, user);
     }
     @FXML
     private void logout(){
@@ -85,20 +86,21 @@ public class LayoutController implements Initializable, DataInitializable<User> 
     public void initializeData(User user) {
         this.user = user;
         usernameLabel.setText(user.getUsername());
+        adminMenu.visibleProperty().set(user instanceof Admin);
     }
     private void createMenu(){
         navigationMenu.getChildren().clear();
         for(MenuLink menuLink : MENU_LINKS){
             navigationMenu.getChildren().add(menuLink);
-            menuLink.setOnMouseClicked(event -> setCurrentPage(menuLink.getPage()));
+            menuLink.setOnMouseClicked(event -> setCurrentPage(menuLink.getPage(), user));
         }
         for(MenuLink menuLink : USER_LINKS){
             userMenu.getChildren().add(menuLink);
-            menuLink.setOnMouseClicked(event -> setCurrentPage(menuLink.getPage()));
+            menuLink.setOnMouseClicked(event -> setCurrentPage(menuLink.getPage(), user));
         }
         for(MenuLink menuLink : ADMIN_LINKS){
             adminMenu.getChildren().add(menuLink);
-            menuLink.setOnMouseClicked(event -> setCurrentPage(menuLink.getPage()));
+            menuLink.setOnMouseClicked(event -> setCurrentPage(menuLink.getPage(), user));
         }
     }
 
@@ -107,13 +109,12 @@ public class LayoutController implements Initializable, DataInitializable<User> 
         layoutRoot.setContent(view.getView());
     }
 
-
-    private void setCurrentPage(Pages page){
+    private void setCurrentPage(Pages page, User user){
         try{
-            ViewDispatcher.getInstance().navigateTo(page);
+            ViewDispatcher.getInstance().navigateTo(page, user);
             currentPage = page;
         }catch(ViewDispatcherException e){
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         for(MenuLink menuLink : MENU_LINKS){
             menuLink.setActive(menuLink.getPage() == currentPage);

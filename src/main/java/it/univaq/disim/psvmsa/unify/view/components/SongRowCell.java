@@ -5,6 +5,10 @@ import javafx.scene.control.ListCell;
 
 public class SongRowCell extends ListCell<Song> {
 
+    boolean editable;
+    public SongRowCell(boolean editable){
+        this.editable = editable;
+    }
 
     @Override
     protected void updateItem(Song song,boolean empty){
@@ -13,7 +17,7 @@ public class SongRowCell extends ListCell<Song> {
             this.setGraphic(null);
         }
         else {
-            this.setGraphic(new SongRow(song));
+            this.setGraphic(new SongRow(song,editable));
         }
     }
 }

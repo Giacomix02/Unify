@@ -34,12 +34,14 @@ public class ViewAlbum extends HBox {
 
     private SongService songService;
 
+    private  boolean editable;
     private Album album;
 
     private AlbumService albumService;
 
-    public ViewAlbum(Album album){
+    public ViewAlbum(Album album,boolean editable){
         super();
+        this.editable = editable;
         this.album = album;
         init();
     }
@@ -54,6 +56,7 @@ public class ViewAlbum extends HBox {
             label = (Label) root.lookup("#albumName");
             editButton = (Button) root.lookup("#editButton");
 
+            editButton.visibleProperty().set(editable);
 
             label.setText(album.getName());
 

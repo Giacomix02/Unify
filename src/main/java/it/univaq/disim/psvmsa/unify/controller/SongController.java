@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class SongController implements Initializable, DataInitializable {
+public class SongController implements Initializable, DataInitializable<User> {
 
     @FXML
     private ListView listView;
@@ -30,7 +30,7 @@ public class SongController implements Initializable, DataInitializable {
     @FXML
     private HBox addBox;
 
-
+    private User user;
     private SearchBar searchBar;
 
     private SongService songService;
@@ -40,24 +40,31 @@ public class SongController implements Initializable, DataInitializable {
         this.songService = factoryInstance.getSongService();
     }
 
+    @Override
+    public void initializeData(User data) {
+        this.user = data;
+        if(user instanceof Admin){
+            addBox.getChildren().add(new AddLinkButton(Pages.ADDSONG));
+        }
+        try{
+            ObservableList<Song> songs = FXCollections.observableList(songService.getAllSongs());
+            listView.setItems(songs);
+            listView.setCellFactory(song -> new SongRowCell(user instanceof Admin));
+        }catch(BusinessException e){
+            e.printStackTrace();
+        }
+    }
+
     public void initialize(URL location, ResourceBundle resources) {
 
         searchBar = new SearchBar("Search by Song");
 
         searchBox.getChildren().add(searchBar);
-        addBox.getChildren().add(new AddLinkButton(Pages.ADDSONG));
+
 
         searchBar.setOnSearch(text ->{
             showSearch(text);
         });
-
-        try{
-            ObservableList<Song> songs = FXCollections.observableList(songService.getAllSongs());
-            listView.setItems(songs);
-            listView.setCellFactory(song -> new SongRowCell());
-        }catch(BusinessException e){
-            e.printStackTrace();
-        }
     }
 
     public void showSearch(String text){

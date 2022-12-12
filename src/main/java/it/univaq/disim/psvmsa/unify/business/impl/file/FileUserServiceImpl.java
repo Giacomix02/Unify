@@ -3,16 +3,37 @@ package it.univaq.disim.psvmsa.unify.business.impl.file;
 import it.univaq.disim.psvmsa.unify.business.BusinessException;
 import it.univaq.disim.psvmsa.unify.business.PlaylistService;
 import it.univaq.disim.psvmsa.unify.business.UserService;
+import it.univaq.disim.psvmsa.unify.model.Admin;
 import it.univaq.disim.psvmsa.unify.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FileUserServiceImpl implements UserService {
+
+    private enum UserType {
+        Normal(0),
+        Admin(1);
+
+        private final int id;
+
+        UserType(int id) {
+            this.id = id;
+        }
+        public int toInt () {
+            return id;
+        }
+        public static UserType fromInt (int id) {
+            if (id == Admin.id) return Admin;
+            if (id == Normal.id) return Normal;
+            throw new RuntimeException("Invalid artist kind");
+        }
+    }
     private static class Schema{
         public static int USER_ID = 0;
         public static int USER_NAME = 1;
         public static int PASSWORD = 2;
+        public static int USER_TYPE = 3;
     }
     private final String separator = "|";
     private final IndexedFileLoader loader;
@@ -25,22 +46,29 @@ public class FileUserServiceImpl implements UserService {
         IndexedFile file = loader.load();
         IndexedFile.Row row = file.findRowById(id);
         if (row == null) return null;
-        return new User(
-                row.getStringAt(Schema.USER_NAME),
-                row.getStringAt(Schema.PASSWORD),
-                row.getIntAt(Schema.USER_ID)
-        );
+        return userFromRow(row);
     }
-
+    private User userFromRow(IndexedFile.Row row){
+        UserType type = UserType.fromInt(row.getIntAt(Schema.USER_TYPE));
+        if(type == UserType.Normal){
+            return new User(
+                    row.getStringAt(Schema.USER_NAME),
+                    row.getStringAt(Schema.PASSWORD),
+                    row.getIntAt(Schema.USER_ID)
+            );
+        }else{
+            return new Admin(
+                    row.getStringAt(Schema.USER_NAME),
+                    row.getStringAt(Schema.PASSWORD),
+                    row.getIntAt(Schema.USER_ID)
+            );
+        }
+    }
     public User getByUsername(String username) {
         IndexedFile file = loader.load();
         IndexedFile.Row row = file.findRow(r -> r.getStringAt(Schema.USER_NAME).equals(username));
         if(row == null) return null;
-        return new User(
-                row.getStringAt(Schema.USER_NAME),
-                row.getStringAt(Schema.PASSWORD),
-                row.getIntAt(Schema.USER_ID)
-        );
+        return userFromRow(row);
     }
 
     @Override
@@ -66,9 +94,12 @@ public class FileUserServiceImpl implements UserService {
     public void update(User user) throws BusinessException {
         IndexedFile file = loader.load();
         IndexedFile.Row row = new IndexedFile.Row(this.separator);
+        UserType type = UserType.Normal;
+        if(user instanceof Admin) type = UserType.Admin;
         row.set(Schema.USER_ID, user.getId())
                 .set(Schema.USER_NAME, user.getUsername())
-                .set(Schema.PASSWORD, user.getPassword());
+                .set(Schema.PASSWORD, user.getPassword())
+                .set(Schema.USER_TYPE, type.toInt());
         file.updateRow(row);
         loader.save(file);
     }
@@ -81,9 +112,13 @@ public class FileUserServiceImpl implements UserService {
         IndexedFile.Row row = new IndexedFile.Row(this.separator);
         int id = file.incrementId();
         user.setId(id);
+        UserType type = UserType.Normal;
+        if(user instanceof Admin) type = UserType.Admin;
         row.set(Schema.USER_ID,user.getId())
             .set(Schema.USER_NAME,user.getUsername())
-            .set(Schema.PASSWORD,user.getPassword());
+            .set(Schema.PASSWORD,user.getPassword())
+            .set(Schema.USER_TYPE, type.toInt());
+
         file.appendRow(row);
         loader.save(file);
         return user;
@@ -95,11 +130,7 @@ public class FileUserServiceImpl implements UserService {
         IndexedFile file = loader.load();
         List<IndexedFile.Row> rows = file.getRows();
         for (IndexedFile.Row row : rows) {
-            users.add(new User(
-                    row.getStringAt(Schema.USER_NAME),
-                    row.getStringAt(Schema.PASSWORD),
-                    row.getIntAt(Schema.USER_ID)
-            ));
+            users.add(userFromRow(row));
         }
         return users;
     }

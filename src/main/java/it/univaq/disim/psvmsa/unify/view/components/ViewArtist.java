@@ -26,7 +26,7 @@ public class ViewArtist extends HBox {
 
     private ArtistService artistService;
 
-    public ViewArtist(Artist artist) {
+    public ViewArtist(Artist artist, boolean editable) {
         super();
         this.artist = artist;
         init();

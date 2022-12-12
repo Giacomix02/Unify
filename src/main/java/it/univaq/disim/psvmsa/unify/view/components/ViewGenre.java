@@ -5,6 +5,7 @@ import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.model.Album;
 import it.univaq.disim.psvmsa.unify.model.Genre;
 import it.univaq.disim.psvmsa.unify.model.Song;
+import it.univaq.disim.psvmsa.unify.model.User;
 import it.univaq.disim.psvmsa.unify.view.Pages;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import javafx.fxml.FXML;
@@ -23,16 +24,17 @@ import java.util.List;
 public class ViewGenre extends VBox {
 
     private Label label;
-
+    private boolean editable;
     private Button removeButton;
     private Genre genre;
     private HBox songsBox;
     private HBox albumBox;
     private GenreService genreService;
     private SongService songService;
-    public ViewGenre(Genre genre) {
+    public ViewGenre(Genre genre, boolean editable) {
         super();
         this.genre = genre;
+        this.editable=editable;
         init();
 }
     public void init(){
@@ -46,6 +48,8 @@ public class ViewGenre extends VBox {
 
             songsBox = (HBox) root.lookup("#songs");
             albumBox = (HBox) root.lookup("#albums");
+
+            removeButton.visibleProperty().set(editable);
 
             label.setText(genre.getName());
             songService = UnifyServiceFactory.getInstance().getSongService();
