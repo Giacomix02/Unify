@@ -50,6 +50,15 @@ public class AddAlbumController implements Initializable, DataInitializable {
         Album album = new Album(albumInput.getText());
         albumService.add(album);
         albumInput.clear();
+        exit();
+    }
+
+    public void exit() {
+        try {
+            ViewDispatcher.getInstance().navigateTo(Pages.ALBUMS);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -91,7 +91,7 @@ public class EditUserController implements Initializable, DataInitializable {
         try {
             ViewDispatcher.getInstance().navigateTo(Pages.MANAGE_USERS);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 }

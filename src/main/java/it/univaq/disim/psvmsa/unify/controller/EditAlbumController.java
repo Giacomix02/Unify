@@ -3,6 +3,8 @@ package it.univaq.disim.psvmsa.unify.controller;
 import it.univaq.disim.psvmsa.unify.business.AlbumService;
 import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.model.Album;
+import it.univaq.disim.psvmsa.unify.view.Pages;
+import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -18,6 +20,9 @@ public class EditAlbumController implements Initializable, DataInitializable {
 
     @FXML
     private Button editButton;
+
+    @FXML
+    private Button removeButton;
 
     @FXML
     private TextField albumInput;
@@ -53,10 +58,30 @@ public class EditAlbumController implements Initializable, DataInitializable {
         try{
         album.setName(albumInput.getText());
         albumService.update(album);
+        exit();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void removeAlbum(){
+        try{
+            albumService.delete(album);
+            exit();
         }
         catch (Exception e) {
             e.printStackTrace();
         }
 
     }
+    public void exit() {
+        try {
+            ViewDispatcher.getInstance().navigateTo(Pages.ALBUMS);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
