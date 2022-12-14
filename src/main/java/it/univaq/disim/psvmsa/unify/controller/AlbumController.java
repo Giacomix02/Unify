@@ -45,7 +45,7 @@ public class AlbumController implements Initializable, DataInitializable<User> {
     @Override
     public void initializeData(User data) {
         this.user = data;
-        if(user instanceof Admin){
+        if (user instanceof Admin){
             addBox.getChildren().add(new AddLinkButton(Pages.ADDALBUM));
         }
 

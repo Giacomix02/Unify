@@ -219,7 +219,7 @@ public class EditSongController implements Initializable, DataInitializable {
         }catch(Exception e){
             e.printStackTrace();
         }
-        goHome();
+        exit();
     }
 
     public void saveSong() {
@@ -235,19 +235,18 @@ public class EditSongController implements Initializable, DataInitializable {
                     genres,
                     songInputStream.readAllBytes(),
                     this.song.getId()
-
             );
             songService.update(song);
         }catch(Exception e){
             e.printStackTrace();
         }
-        goHome();
+        exit();
     }
-    private void goHome(){
+    private void exit(){
         try {
             ViewDispatcher.getInstance().navigateTo(Pages.SONGS);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 }

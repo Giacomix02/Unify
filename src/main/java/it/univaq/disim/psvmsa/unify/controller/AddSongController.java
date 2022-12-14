@@ -160,7 +160,7 @@ public class AddSongController implements Initializable, DataInitializable {
             picture = new Picture(inputStream.readAllBytes());
             songImage.setImage(new Image(picture.toStream()));
         }catch(IOException e){
-            System.out.println(e);
+            e.printStackTrace();
         }
 
     }
@@ -183,11 +183,10 @@ public class AddSongController implements Initializable, DataInitializable {
     }
 
     public void exit() {
-
         try {
             ViewDispatcher.getInstance().navigateTo(Pages.SONGS);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -209,6 +208,7 @@ public class AddSongController implements Initializable, DataInitializable {
             songNameInput.clear();
             songLyricsInput.clear();
             songImage.setImage(DEFAULT_IMAGE);
+            exit();
         }catch(Exception e){
             e.printStackTrace();
         }

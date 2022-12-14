@@ -81,7 +81,7 @@ public class MusicBar extends HBox {
 
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 }

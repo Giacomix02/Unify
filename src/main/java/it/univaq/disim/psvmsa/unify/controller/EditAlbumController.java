@@ -3,6 +3,7 @@ package it.univaq.disim.psvmsa.unify.controller;
 import it.univaq.disim.psvmsa.unify.business.AlbumService;
 import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.model.Album;
+import it.univaq.disim.psvmsa.unify.model.User;
 import it.univaq.disim.psvmsa.unify.view.Pages;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import javafx.fxml.FXML;
@@ -31,6 +32,7 @@ public class EditAlbumController implements Initializable, DataInitializable {
     private Label exceptionLabel;
 
     private Album album;
+
 
     public EditAlbumController(){
         UnifyServiceFactory factoryInstance = UnifyServiceFactory.getInstance();

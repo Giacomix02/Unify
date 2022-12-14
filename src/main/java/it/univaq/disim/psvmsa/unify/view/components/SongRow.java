@@ -79,7 +79,7 @@ public class SongRow extends HBox {
 
         }
         catch (Exception e){
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
         editSong(song);
     }
@@ -89,7 +89,7 @@ public class SongRow extends HBox {
             try {
                 ViewDispatcher.getInstance().navigateTo(Pages.EDITSONG,song);
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                e.printStackTrace();
             }
         });
     }
