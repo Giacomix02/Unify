@@ -3,24 +3,30 @@ package it.univaq.disim.psvmsa.unify.controller;
 
 import it.univaq.disim.psvmsa.unify.business.PlaylistService;
 import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
+import it.univaq.disim.psvmsa.unify.model.Playlist;
 import it.univaq.disim.psvmsa.unify.model.User;
 
 import it.univaq.disim.psvmsa.unify.view.Pages;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
-import it.univaq.disim.psvmsa.unify.view.components.AddLinkButton;
-import it.univaq.disim.psvmsa.unify.view.components.SearchBar;
+import it.univaq.disim.psvmsa.unify.view.components.ViewPlaylist;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
-public class PlaylistController implements Initializable, DataInitializable<User>{
+public class PlaylistsController implements Initializable, DataInitializable<User>{
     private User user;
     private PlaylistService playlistService;
 
-    public PlaylistController(){
+    private List<Playlist> playlists;
+
+    @FXML
+    private VBox playlistsBox;
+
+    public PlaylistsController(){
         UnifyServiceFactory factoryInstance = UnifyServiceFactory.getInstance();
         this.playlistService = factoryInstance.getPlaylistService();
     }
@@ -30,13 +36,20 @@ public class PlaylistController implements Initializable, DataInitializable<User
         this.user = data;
 
         try {
-            playlistService.getPlaylistsByUser(data);
+            playlists = playlistService.getPlaylistsByUser(data);
         }catch (Exception e){
             e.printStackTrace();
+        }
+
+        if (playlists!=null) {
+            for (Playlist playlist : playlists) {
+                playlistsBox.getChildren().add(new ViewPlaylist(playlist));
+            }
         }
     }
 
     public void initialize(URL location, ResourceBundle resources) {
+
     }
 
     @FXML

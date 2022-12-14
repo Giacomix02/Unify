@@ -21,7 +21,7 @@ public class App extends Application {
 		ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
 		viewDispatcher.setStage(stage);
 		viewDispatcher.showLogin();
-		User testUser = new Admin("admin","admin");
+		User testUser = new Admin("admin","admin",1);
 		viewDispatcher.loggedIn(testUser);
 		stage.getIcons().add(new Image(getClass().getResource(UNIFY_ICON).toString()));
 		stage.show();

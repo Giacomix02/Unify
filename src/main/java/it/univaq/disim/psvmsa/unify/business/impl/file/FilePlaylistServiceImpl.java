@@ -45,7 +45,6 @@ public class FilePlaylistServiceImpl implements PlaylistService {
         IndexedFile relationFile = loaderRelation.load();
         IndexedFile playlistFile = loader.load();
         List<IndexedFile.Row> rows = playlistFile.filterRows(row -> row.getIntAt(Schema.USER_ID) == user.getId());
-
         for (IndexedFile.Row row : rows) {
             Playlist playlist = new Playlist(
                     row.getStringAt(Schema.PLAYLIST_NAME),
