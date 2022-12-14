@@ -2,6 +2,7 @@ package it.univaq.disim.psvmsa.unify.controller;
 
 import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.business.UserService;
+import it.univaq.disim.psvmsa.unify.model.Admin;
 import it.univaq.disim.psvmsa.unify.model.User;
 import it.univaq.disim.psvmsa.unify.view.Pages;
 import it.univaq.disim.psvmsa.unify.view.components.AddLinkButton;
@@ -40,9 +41,10 @@ public class UserController implements Initializable, DataInitializable {
         addBox.getChildren().add(new AddLinkButton(Pages.ADDUSER));
 
         for (User user : users) {
-            viewUser = new ViewUser(user);
-            viewList.getChildren().add(viewUser);
-
+            if(!(user instanceof Admin)){
+                viewUser = new ViewUser(user);
+                viewList.getChildren().add(viewUser);
+            }
         }
     }
 }
