@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox minWidth="700.0" stylesheets="@../css/home.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.psvmsa.unify.controller.ArtistDetailsController">
+    <children>
+        <VBox alignment="TOP_CENTER" spacing="10.0" VBox.vgrow="ALWAYS">
+            <children>
+                <HBox alignment="CENTER_LEFT" spacing="15.0">
+                    <children>
+                        <TextField fx:id="artistNameInput" HBox.hgrow="ALWAYS">
+                            <padding>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                            </padding>
+                        </TextField>
+                        <Label text="Artist type:" />
+                  <Label id="artistType" fx:id="artistType">
+                     <HBox.margin>
+                        <Insets right="25.0" />
+                     </HBox.margin></Label>
+                        <HBox fx:id="membersPickerBox" alignment="CENTER_LEFT" spacing="15.0">
+                            <children>
+                                <Label fx:id="membersLabel" text="Members:" />
+                        <ChoiceBox fx:id="artistMembersChoiceBox" prefWidth="120.0" stylesheets="@../app.css" />
+                            </children>
+                        </HBox>
+                    </children>
+                </HBox>
+                <TextArea fx:id="artistBiographyInput" minHeight="150.0" prefHeight="181.0" prefWidth="200.0" />
+                <VBox VBox.vgrow="ALWAYS">
+                    <children>
+                        <HBox alignment="CENTER_LEFT" spacing="20.0" VBox.vgrow="NEVER">
+                            <children>
+                                <Label style="-fx-font-size: 16;" text="Pictures" />
+                            </children>
+                        </HBox>
+                        <HBox fx:id="artistPictures" minHeight="150.0" spacing="10.0">
+                            <padding>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                            </padding></HBox>
+                    </children>
+                </VBox>
+                <HBox>
+                    <children>
+                        <HBox HBox.hgrow="ALWAYS">
+                            <HBox.margin>
+                                <Insets />
+                            </HBox.margin>
+                        </HBox>
+                    </children>
+                    <VBox.margin>
+                        <Insets />
+                    </VBox.margin>
+                </HBox>
+            </children>
+            <VBox.margin>
+                <Insets />
+            </VBox.margin>
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+        </VBox>
+    </children>
+</VBox>
