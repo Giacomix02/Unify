@@ -47,6 +47,7 @@ public class ViewAlbum extends HBox {
     }
 
     public void init() {
+
         try{
             HBox root = FXMLLoader.load(getClass().getResource("/ui/components/viewAlbum.fxml"));
             HBox.setHgrow(root, Priority.ALWAYS);
@@ -57,37 +58,32 @@ public class ViewAlbum extends HBox {
             editButton = (Button) root.lookup("#editButton");
 
             editButton.visibleProperty().set(editable);
-
+            this.editButton.setOnAction(event -> {
+                try{
+                    ViewDispatcher.getInstance().navigateTo(Pages.EDITALBUM, album);
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
             label.setText(album.getName());
-
-            Image image = new Image(getAlbumPicture().toStream());
+            Picture pic = getAlbumPicture();
+            if(pic == null) return;
+            Image image = new Image(pic.toStream());
             Rectangle rectangle = new Rectangle(0, 0, 50, 50);
             rectangle.setArcWidth(14);   // Corner radius
             rectangle.setArcHeight(14);
             ImagePattern pattern = new ImagePattern(image);
             rectangle.setFill(pattern);
             albumImage.setClip(rectangle);
-
             albumImage.setImage(image);
-
         }
         catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
-        editAlbum(album);
+
     }
 
-    @FXML
-    public void editAlbum(Album album){
-        this.editButton.setOnAction(event -> {
-            try{
-                ViewDispatcher.getInstance().navigateTo(Pages.EDITALBUM, album);
-            }
-            catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-        });
-    }
 
     public Picture getAlbumPicture() {
         try {

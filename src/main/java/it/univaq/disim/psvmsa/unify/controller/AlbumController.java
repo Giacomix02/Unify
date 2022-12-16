@@ -46,7 +46,7 @@ public class AlbumController implements Initializable, DataInitializable<User> {
     public void initializeData(User data) {
         this.user = data;
         if (user instanceof Admin){
-            addBox.getChildren().add(new AddLinkButton(Pages.ADDALBUM));
+            addBox.getChildren().add(new AddLinkButton(Pages.EDITALBUM));
         }
 
         List<Album> albums = albumService.getAlbums();

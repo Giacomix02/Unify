@@ -15,7 +15,7 @@ import javafx.scene.control.TextField;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class EditAlbumController implements Initializable, DataInitializable {
+public class EditAlbumController implements Initializable, DataInitializable<Album> {
 
     private final AlbumService albumService;
 
@@ -39,15 +39,18 @@ public class EditAlbumController implements Initializable, DataInitializable {
         this.albumService = factoryInstance.getAlbumService();
     }
 
-    public void initializeData(Object data){
-        this.album = (Album) data;
-        albumInput.setText(album.getName());
+    public void initializeData(Album data){
+        this.album = data;
+        if(data != null){
+            removeButton.visibleProperty().set(true);
+            albumInput.setText(album.getName());
+        }
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         exceptionLabel.setText("");
-
+        removeButton.visibleProperty().set(false);
         this.editButton
                 .disableProperty()
                 .bind(albumInput
@@ -58,9 +61,17 @@ public class EditAlbumController implements Initializable, DataInitializable {
     @FXML
     public void updateAlbum(){
         try{
-        album.setName(albumInput.getText());
-        albumService.update(album);
-        exit();
+            Album a = this.album;
+            if(a == null){
+               a = new Album(albumInput.getText());
+               albumService.add(a);
+               exceptionLabel.setText("Saved album");
+               albumInput.clear();
+            }else{
+                a.setName(albumInput.getText());
+                albumService.update(album);
+                exceptionLabel.setText("Edited album");
+            }
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -71,19 +82,12 @@ public class EditAlbumController implements Initializable, DataInitializable {
     public void removeAlbum(){
         try{
             albumService.delete(album);
-            exit();
+            exceptionLabel.setText("Removed album");
+
         }
         catch (Exception e) {
             e.printStackTrace();
         }
 
     }
-    public void exit() {
-        try {
-            ViewDispatcher.getInstance().navigateTo(Pages.ALBUMS);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
 }
