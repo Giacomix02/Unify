@@ -19,7 +19,7 @@ public enum Pages {
     EDITALBUM("editAlbum"),
     EDITUSER("editUser"),
     ARTISTDETAILS("artistDetails"),
-    ADDPLAYLIST("addPlaylist");
+    EDITPLAYLIST("editPlaylist");
     private final String name;
 
     Pages(String name) {
