@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" minHeight="400.0" minWidth="600.0" stylesheets="@../css/home.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.psvmsa.unify.controller.AddPlaylistController">
+<VBox alignment="CENTER" minHeight="400.0" minWidth="600.0" stylesheets="@../css/home.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.psvmsa.unify.controller.EditPlaylistController">
    <children>
       <VBox alignment="CENTER" fillWidth="false" VBox.vgrow="ALWAYS">
          <children>
@@ -23,7 +23,8 @@
                         <Insets />
                      </VBox.margin>
                   </TextField>
-                  <Button fx:id="saveButton" minWidth="200.0" mnemonicParsing="false" onAction="#saveGenre" prefWidth="200.0" styleClass="custom-button" text="Save" />
+                  <Button fx:id="saveButton" minWidth="200.0" mnemonicParsing="false" onAction="#savePlaylist" prefWidth="200.0" styleClass="custom-button" text="Save" />
+                  <Button id="delete" fx:id="deleteButton" minWidth="200.0" mnemonicParsing="false" onAction="#deletePlaylist" prefWidth="200.0" styleClass="custom-button" text="Delete" />
                </children>
             </VBox>
             <Label fx:id="exceptionLabel" />
