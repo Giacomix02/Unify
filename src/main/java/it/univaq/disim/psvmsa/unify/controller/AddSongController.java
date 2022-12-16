@@ -208,7 +208,6 @@ public class AddSongController implements Initializable, DataInitializable {
             songNameInput.clear();
             songLyricsInput.clear();
             songImage.setImage(DEFAULT_IMAGE);
-            exit();
         }catch(Exception e){
             e.printStackTrace();
         }

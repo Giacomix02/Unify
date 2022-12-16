@@ -1,20 +1,19 @@
 package it.univaq.disim.psvmsa.unify.view.components;
 
 import it.univaq.disim.psvmsa.unify.business.ArtistService;
-import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.model.Artist;
 import it.univaq.disim.psvmsa.unify.model.Picture;
+import it.univaq.disim.psvmsa.unify.view.Pages;
+import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
-import java.util.List;
 
 public class ViewArtist extends HBox {
 
@@ -53,6 +52,15 @@ public class ViewArtist extends HBox {
                 rectangle.setFill(pattern);
                 artistImage.setClip(rectangle);
                 artistImage.setImage(image);
+
+                artistImage.setOnMouseClicked(mouseEvent -> {
+                    try{
+                        ViewDispatcher.getInstance().navigateTo(Pages.ARTISTDETAILS, artist);
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+                });
+
             }
 
 

@@ -18,6 +18,7 @@ public enum Pages {
     EDITSONG("editSong"),
     EDITALBUM("editAlbum"),
     EDITUSER("editUser"),
+    ARTISTDETAILS("artistDetails"),
     ADDPLAYLIST("addPlaylist");
     private final String name;
 
