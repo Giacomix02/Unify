@@ -38,7 +38,7 @@ public class UserController implements Initializable, DataInitializable {
     public void initialize(URL location, ResourceBundle resources){
         List<User> users = userService.getUsers();
 
-        addBox.getChildren().add(new AddLinkButton(Pages.ADDUSER));
+        addBox.getChildren().add(new AddLinkButton(Pages.EDITUSER));
 
         for (User user : users) {
             if(!(user instanceof Admin)){

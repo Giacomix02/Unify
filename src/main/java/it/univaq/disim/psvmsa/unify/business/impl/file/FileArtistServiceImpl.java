@@ -35,7 +35,6 @@ public class FileArtistServiceImpl implements ArtistService {
         public static int ARTIST_BIOGRAPHY = 2;
         public static int ARTIST_TYPE = 3;
     }
-
     private static class GroupSchema {
         public static int RELATION_ID = 0;
         public static int GROUP_ID = 1;
@@ -240,7 +239,7 @@ public class FileArtistServiceImpl implements ArtistService {
                 relationRow -> relationRow.getIntAt(GroupSchema.GROUP_ID) == group.getId()
         );
         for(IndexedFile.Row r : members){
-            file.deleteRowById(r.getIntAt(GroupSchema.GROUP_ID));
+            file.deleteRowById(r.getIntAt(GroupSchema.RELATION_ID));
         }
         groupRelationsLoader.save(file);
     }

@@ -44,7 +44,7 @@ public class SongController implements Initializable, DataInitializable<User> {
     public void initializeData(User data) {
         this.user = data;
         if(user instanceof Admin){
-            addBox.getChildren().add(new AddLinkButton(Pages.ADDSONG));
+            addBox.getChildren().add(new AddLinkButton(Pages.EDITSONG));
         }
         try{
             ObservableList<Song> songs = FXCollections.observableList(songService.getAllSongs());

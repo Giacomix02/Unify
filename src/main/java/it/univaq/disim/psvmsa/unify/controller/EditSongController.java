@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 
-public class EditSongController implements Initializable, DataInitializable {
+public class EditSongController implements Initializable, DataInitializable<Song> {
 
     private Image DEFAULT_IMAGE = null;
     private final SongService songService;
@@ -81,92 +81,74 @@ public class EditSongController implements Initializable, DataInitializable {
     }
     @Override
     public void initialize(URL location, ResourceBundle resources) {    } //not used
-    public void initializeData(Object data) {
+    public void initializeData(Song data) {
+        this.song = data;
         saveSongLabel.setVisible(false);
-
         List<Genre> genres = genreService.getGenres();
         List<Artist> artists = artistService.getArtists();
         List<Album> albums = albumService.getAlbums();
-
-        Song song = (Song) data;
-        this.song = song;
-        songNameInput.setText(song.getName());
-        songLyricsInput.setText(song.getLyrics());
-
-        inputPicture = song.getPicture();
-        Image image = new Image(inputPicture.toStream());
-        songImage.setImage(image);
-        picture = inputPicture;
-
-        songInputStream = song.toStream();
-
-
-
         genreBoxChoice.setConverter(new StringConverter<>() {
             @Override
             public String toString(Genre genre) {
-                if (genre != null) {
-                    return genre.getName();
-                }
-                return "";
+                if (genre == null) return "";
+                return genre.getName();
             }
 
             @Override
             public Genre fromString(String s) {
-                List<Genre> genres = genreService.searchByName(s);
-                return genres.get(0);
+                for(Genre genre : genres){
+                    if(genre.getName().equals(s)) return genre;
+                }
+                return null;
             }
         });
         artistBoxChoice.setConverter(new StringConverter<>() {
             @Override
             public String toString(Artist artist) {
-                if (artist != null) {
-                    return artist.getName();
-                }
-                return "";
-            }
+                if (artist == null) return "";
+                return artist.getName();
 
+            }
             @Override
             public Artist fromString(String s) {
-                List<Artist> a = artistService.searchArtistsByName(s);
-                return a.get(0);
+                for (Artist artist : artists) {
+                    if (artist.getName().equals(s)) return artist;
+                }
+                return null;
             }
         });
 
         albumBoxChoice.setConverter(new StringConverter<>() {
             @Override
             public String toString(Album album) {
-                if (album != null) {
-                    return album.getName();
-                }
-                return "";
+                if (album == null) return "";
+                return album.getName();
             }
-
             @Override
             public Album fromString(String s) {
-                List<Album> a = albumService.searchAlbumsByName(s);
-                return a.get(0);
+                for (Album album : albums) {
+                    if (album.getName().equals(s)) return album;
+                }
+                return null;
             }
         });
-
-        for (Genre genre : genres) {
-            genreBoxChoice.getItems().add(genre);
+        genreBoxChoice.getItems().addAll(genres);
+        artistBoxChoice.getItems().addAll(artists);
+        albumBoxChoice.getItems().addAll(albums);
+        if(song != null){
+            songNameInput.setText(song.getName());
+            songLyricsInput.setText(song.getLyrics());
+            inputPicture = song.getPicture();
+            Image image = new Image(inputPicture.toStream());
+            songImage.setImage(image);
+            picture = inputPicture;
+            songInputStream = song.toStream();
+            for (Genre genre : song.getGenres()) {
+                genreBoxChoice.getCheckModel().check(genre); //set previous song genres
+            }
+            albumBoxChoice.setValue(song.getAlbum());
+            artistBoxChoice.setValue(song.getArtist());
         }
-
-        for (Artist artist : artists) {
-            artistBoxChoice.getItems().add(artist);
-        }
-
-        for (Album album : albums) {
-            albumBoxChoice.getItems().add(album);
-        }
-
-        for (Genre genre : song.getGenres()) {
-             genreBoxChoice.getCheckModel().check(genre); //set previous song genres
-        }
-
-        albumBoxChoice.setValue(song.getAlbum());
-        artistBoxChoice.setValue(song.getArtist());
     }
 
     public void uploadImage() throws IOException {
@@ -185,16 +167,13 @@ public class EditSongController implements Initializable, DataInitializable {
     }
 
     public void uploadSong() throws FileNotFoundException {
-
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-
         fileChooser.setTitle("Choose a song");
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Image Files", "*.mp3", "*.wav")
         );
         Stage stage = new Stage();
-
         File file = fileChooser.showOpenDialog(stage);
         songInputStream = new FileInputStream(file);
         //TODO song input stream
@@ -202,24 +181,12 @@ public class EditSongController implements Initializable, DataInitializable {
     }
 
     public void delete() {
-        ArrayList<Genre> genres = new ArrayList<>(genreBoxChoice.getCheckModel().getCheckedItems());
-        Picture picture = pictureService.add(this.picture);
         try{
-            Song song = new Song(
-                    songNameInput.getText(),
-                    albumService.getById(albumBoxChoice.getSelectionModel().getSelectedItem().getId()),
-                    artistService.getById(artistBoxChoice.getSelectionModel().getSelectedItem().getId()),
-                    songLyricsInput.getText(),
-                    picture,
-                    genres,
-                    songInputStream.readAllBytes(),
-                    this.song.getId()
-            );
-            songService.delete(song);
+            songService.deleteById(song.getId());
         }catch(Exception e){
             e.printStackTrace();
         }
-        exit();
+        clear();
     }
 
     public void saveSong() {
@@ -236,17 +203,21 @@ public class EditSongController implements Initializable, DataInitializable {
                     songInputStream.readAllBytes(),
                     this.song.getId()
             );
-            songService.update(song);
+            if(this.song != null) {
+                songService.update(song);
+            }else{
+                songService.add(song);
+            }
         }catch(Exception e){
             e.printStackTrace();
         }
-        exit();
     }
-    private void exit(){
-        try {
-            ViewDispatcher.getInstance().navigateTo(Pages.SONGS);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private void clear(){
+        songNameInput.clear();
+        songLyricsInput.clear();
+        songImage.setImage(null);
+        genreBoxChoice.getCheckModel().clearChecks();
+        albumBoxChoice.setValue(null);
+        artistBoxChoice.setValue(null);
     }
 }
