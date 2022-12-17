@@ -8,7 +8,7 @@
     <children>
         <VBox alignment="CENTER" fillWidth="false" VBox.vgrow="ALWAYS">
             <children>
-                <Label styleClass="title-text" text="Create user">
+                <Label fx:id="label" styleClass="title-text">
                     <padding>
                         <Insets bottom="25.0" />
                     </padding>

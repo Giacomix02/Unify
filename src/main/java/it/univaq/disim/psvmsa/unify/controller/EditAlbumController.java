@@ -31,6 +31,9 @@ public class EditAlbumController implements Initializable, DataInitializable<Alb
     @FXML
     private Label exceptionLabel;
 
+    @FXML
+    private Label label;
+
     private Album album;
 
 
@@ -44,6 +47,7 @@ public class EditAlbumController implements Initializable, DataInitializable<Alb
         if(data != null){
             removeButton.visibleProperty().set(true);
             albumInput.setText(album.getName());
+            label.setText("Edit album");
         }
     }
 
@@ -51,6 +55,7 @@ public class EditAlbumController implements Initializable, DataInitializable<Alb
     public void initialize(URL location, ResourceBundle resources) {
         exceptionLabel.setText("");
         removeButton.visibleProperty().set(false);
+        label.setText("Add album");
         this.editButton
                 .disableProperty()
                 .bind(albumInput

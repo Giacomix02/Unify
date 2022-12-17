@@ -35,19 +35,24 @@ public class EditArtistController implements Initializable, DataInitializable<Ar
     private PictureService pictureService;
     @FXML
     private Button actionButton;
+
     private Artist existingArtist;
+
     @FXML
     private Button addPicture;
 
     @FXML
     private Button delete;
+
     @FXML
     private HBox artistPictures;
 
     @FXML
     private HBox membersPickerBox;
+
     @FXML
     private CheckComboBox<Artist> membersPicker;
+
     @FXML
     private TextField artistNameInput;
 
@@ -60,6 +65,8 @@ public class EditArtistController implements Initializable, DataInitializable<Ar
     private ObservableList<String> options = FXCollections.observableArrayList("Single","Group");
 
     private List<Picture> images = new ArrayList<>();
+
+
     public EditArtistController() {
         UnifyServiceFactory factoryInstance = UnifyServiceFactory.getInstance();
         this.artistService = factoryInstance.getArtistService();
@@ -71,7 +78,6 @@ public class EditArtistController implements Initializable, DataInitializable<Ar
         existingArtist = artist;
         artistNameInput.setText(artist.getName());
         artistBiographyInput.setText(artist.getBiography());
-        actionButton.setText("Update");
         delete.visibleProperty().set(true);
         boolean isGroup = artist instanceof GroupArtist;
         artistTypeChoiceBox.setValue(isGroup ? "Group" : "Single");
@@ -84,6 +90,7 @@ public class EditArtistController implements Initializable, DataInitializable<Ar
         images = artist.getPictures();
         setImages(artist.getPictures());
     }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         artistTypeChoiceBox.getItems().addAll(options);
@@ -152,6 +159,7 @@ public class EditArtistController implements Initializable, DataInitializable<Ar
             artistPictures.getChildren().add(img);
         }
     }
+
     @FXML
     private void onAction() {
         for (Picture picture: images){
@@ -181,6 +189,7 @@ public class EditArtistController implements Initializable, DataInitializable<Ar
             e.printStackTrace();
         }
     }
+
     @FXML
     private void delete() {
         try{

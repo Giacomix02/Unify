@@ -20,17 +20,25 @@ public class EditPlaylistController implements Initializable, DataInitializable{
 
     @FXML
     private TextField playlistInput;
+
     @FXML
     private Button saveButton;
+
     @FXML
     private Button deleteButton;
 
     private Playlist playlist;
+
     private User user;
+
     @FXML
     private Label exceptionLabel;
 
+    @FXML
+    private Label label;
+
     private PlaylistService playlistService;
+
 
     public EditPlaylistController(){
         UnifyServiceFactory factoryInstance = UnifyServiceFactory.getInstance();
@@ -43,12 +51,14 @@ public class EditPlaylistController implements Initializable, DataInitializable{
             this.playlist = (Playlist) data;
             this.playlistInput.setText(playlist.getName());
             this.deleteButton.setVisible(true);
-            this.saveButton.setText("Edit");
+            label.setText("Edit playlist");
         }else if(data instanceof User){
             this.user = (User) data;
             this.deleteButton.setVisible(false);
             this.saveButton.setText("Save");
+            label.setText("Add playlist");
         }
+
     }
 
     @Override

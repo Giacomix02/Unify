@@ -80,7 +80,7 @@ public class EditSongController implements Initializable, DataInitializable<Song
         this.pictureService = factoryInstance.getPictureService();
     }
     @Override
-    public void initialize(URL location, ResourceBundle resources) {    } //not used
+    public void initialize(URL location, ResourceBundle resources) { saveSongLabel.setVisible(false); }
     public void initializeData(Song data) {
         this.song = data;
         saveSongLabel.setVisible(false);
@@ -148,6 +148,7 @@ public class EditSongController implements Initializable, DataInitializable<Song
             }
             albumBoxChoice.setValue(song.getAlbum());
             artistBoxChoice.setValue(song.getArtist());
+
         }
     }
 

@@ -33,6 +33,9 @@ public class EditUserController implements Initializable, DataInitializable<User
     @FXML
     private TextField passwordInput;
 
+    @FXML
+    private Label label;
+
 
     public EditUserController() {
         UnifyServiceFactory factoryInstance = UnifyServiceFactory.getInstance();
@@ -45,12 +48,14 @@ public class EditUserController implements Initializable, DataInitializable<User
         usernameInput.setText(user.getUsername());
         passwordInput.setText(user.getPassword());
         removeButton.visibleProperty().set(true);
+        label.setText("Edit user");
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         removeButton.visibleProperty().set(false);
         exceptionLabel.setText("");
+        label.setText("Create user");
         this.actionButton
                 .disableProperty()
                 .bind(usernameInput
@@ -62,6 +67,7 @@ public class EditUserController implements Initializable, DataInitializable<User
                         )
                 );
     }
+
     public void updateUser(){
         try{
             if(user != null){
