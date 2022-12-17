@@ -6,6 +6,7 @@ import it.univaq.disim.psvmsa.unify.model.Picture;
 import it.univaq.disim.psvmsa.unify.view.Pages;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -25,6 +26,7 @@ public class ViewArtist extends HBox {
 
     private ArtistService artistService;
 
+    private Button actionButton;
     public ViewArtist(Artist artist, boolean editable) {
         super();
         this.artist = artist;
@@ -36,12 +38,10 @@ public class ViewArtist extends HBox {
             HBox root = FXMLLoader.load(getClass().getResource("/ui/components/viewArtist.fxml"));
             HBox.setHgrow(root, Priority.ALWAYS);
             getChildren().add(root);
-
             artistImage = (ImageView) root.lookup("#artistImage");
             label = (Label) root.lookup("#artistName");
-
+            actionButton = (Button) root.lookup("#actionButton");
             label.setText(artist.getName());
-
             if(artist.getPictures().size() > 0){
                 Picture pfp = artist.getPictures().get(0);
                 Image image = new Image(pfp.toStream());
@@ -52,7 +52,6 @@ public class ViewArtist extends HBox {
                 rectangle.setFill(pattern);
                 artistImage.setClip(rectangle);
                 artistImage.setImage(image);
-
                 artistImage.setOnMouseClicked(mouseEvent -> {
                     try{
                         ViewDispatcher.getInstance().navigateTo(Pages.ARTISTDETAILS, artist);
@@ -60,10 +59,14 @@ public class ViewArtist extends HBox {
                         e.printStackTrace();
                     }
                 });
-
             }
-
-
+            actionButton.setOnAction(actionEvent -> {
+                try{
+                    ViewDispatcher.getInstance().navigateTo(Pages.EDITARTIST, artist);
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }

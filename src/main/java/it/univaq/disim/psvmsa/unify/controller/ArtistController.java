@@ -46,7 +46,7 @@ public class ArtistController implements Initializable, DataInitializable<User> 
     public void initializeData(User data) {
         this.user = data;
         if (user instanceof Admin) {
-            addBox.getChildren().add(new AddLinkButton(Pages.ADDARTIST));
+            addBox.getChildren().add(new AddLinkButton(Pages.EDITARTIST));
         }
         List<Artist> artists = artistService.getArtists();
         for(Artist artist : artists) {

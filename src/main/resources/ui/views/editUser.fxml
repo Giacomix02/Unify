@@ -29,7 +29,7 @@
                               <Insets right="70.0" />
                            </padding>
                         </HBox>
-                              <Button fx:id="editButton" minWidth="75.0" mnemonicParsing="false" onAction="#updateUser" prefWidth="75.0" styleClass="custom-button" text="Save" />
+                              <Button fx:id="actionButton" minWidth="75.0" mnemonicParsing="false" onAction="#updateUser" prefWidth="75.0" styleClass="custom-button" text="Save" />
                      </children>
                   </HBox>
                     </children>
