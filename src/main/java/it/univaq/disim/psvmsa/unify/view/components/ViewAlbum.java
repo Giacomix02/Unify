@@ -3,9 +3,11 @@ package it.univaq.disim.psvmsa.unify.view.components;
 import it.univaq.disim.psvmsa.unify.business.AlbumService;
 import it.univaq.disim.psvmsa.unify.business.SongService;
 import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
+import it.univaq.disim.psvmsa.unify.controller.UserWithData;
 import it.univaq.disim.psvmsa.unify.model.Album;
 import it.univaq.disim.psvmsa.unify.model.Picture;
 import it.univaq.disim.psvmsa.unify.model.Song;
+import it.univaq.disim.psvmsa.unify.model.User;
 import it.univaq.disim.psvmsa.unify.view.Pages;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import javafx.fxml.FXML;
@@ -36,13 +38,15 @@ public class ViewAlbum extends HBox {
 
     private  boolean editable;
     private Album album;
+    private User user;
 
     private AlbumService albumService;
 
-    public ViewAlbum(Album album,boolean editable){
+    public ViewAlbum(UserWithData data, boolean editable){
         super();
         this.editable = editable;
-        this.album = album;
+        this.album = (Album) data.getData();
+        this.user = data.getUser();
         init();
     }
 
@@ -60,12 +64,14 @@ public class ViewAlbum extends HBox {
             editButton.visibleProperty().set(editable);
             this.editButton.setOnAction(event -> {
                 try{
-                    ViewDispatcher.getInstance().navigateTo(Pages.EDITALBUM, album);
+                    UserWithData userWithData = new UserWithData(user, album);
+                    ViewDispatcher.getInstance().navigateTo(Pages.EDITALBUM, userWithData);
                 }
                 catch (Exception e) {
                     e.printStackTrace();
                 }
             });
+
             label.setText(album.getName());
             Picture pic = getAlbumPicture();
             if(pic == null) return;

@@ -6,6 +6,9 @@ import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.model.Artist;
 import it.univaq.disim.psvmsa.unify.model.GroupArtist;
 import it.univaq.disim.psvmsa.unify.model.Picture;
+import it.univaq.disim.psvmsa.unify.model.User;
+import it.univaq.disim.psvmsa.unify.view.Pages;
+import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -30,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class EditArtistController implements Initializable, DataInitializable<Artist> {
+public class EditArtistController implements Initializable, DataInitializable<UserWithData> {
     private ArtistService artistService;
     private PictureService pictureService;
     @FXML
@@ -38,6 +41,8 @@ public class EditArtistController implements Initializable, DataInitializable<Ar
 
     private Artist existingArtist;
 
+    private ViewDispatcher dispatcher;
+    private User user;
     @FXML
     private Button addPicture;
 
@@ -74,27 +79,30 @@ public class EditArtistController implements Initializable, DataInitializable<Ar
 
     }
 
-    public void initializeData(Artist artist){
-        existingArtist = artist;
-        artistNameInput.setText(artist.getName());
-        artistBiographyInput.setText(artist.getBiography());
+    public void initializeData(UserWithData data) {
+        this.existingArtist = (Artist) data.getData();
+        this.user = data.getUser();
+
+        artistNameInput.setText(existingArtist.getName());
+        artistBiographyInput.setText(existingArtist.getBiography());
         delete.visibleProperty().set(true);
-        boolean isGroup = artist instanceof GroupArtist;
+        boolean isGroup = existingArtist instanceof GroupArtist;
         artistTypeChoiceBox.setValue(isGroup ? "Group" : "Single");
         if(isGroup){
             membersPicker.getCheckModel().clearChecks();
-            for (Artist member : ((GroupArtist) artist).getArtists()) {
+            for (Artist member : ((GroupArtist) existingArtist).getArtists()) {
                 membersPicker.getCheckModel().check(member);
             }
         }
-        images = artist.getPictures();
-        setImages(artist.getPictures());
+        images = existingArtist.getPictures();
+        setImages(existingArtist.getPictures());
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         artistTypeChoiceBox.getItems().addAll(options);
         artistTypeChoiceBox.setValue(options.get(0));
+        dispatcher = ViewDispatcher.getInstance();
         delete.visibleProperty().set(false);
         //TODO finish this
         this.actionButton
@@ -182,6 +190,7 @@ public class EditArtistController implements Initializable, DataInitializable<Ar
             } else {
                 artist.setId(existingArtist.getId());
                 artistService.update(artist);
+                dispatcher.navigateTo(Pages.ARTISTS,this.user);
             }
 
             clearFields();
@@ -194,10 +203,10 @@ public class EditArtistController implements Initializable, DataInitializable<Ar
     private void delete() {
         try{
             artistService.delete(existingArtist);
+            dispatcher.navigateTo(Pages.ARTISTS,this.user);
         }catch(Exception e){
             e.printStackTrace();
         }
-        clearFields();
     }
     private void clearFields(){
         artistNameInput.clear();

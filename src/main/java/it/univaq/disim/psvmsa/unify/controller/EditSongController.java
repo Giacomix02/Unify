@@ -79,15 +79,23 @@ public class EditSongController implements Initializable, DataInitializable<Song
         this.genreService = factoryInstance.getGenreService();
         this.pictureService = factoryInstance.getPictureService();
     }
+
     @Override
-    public void initialize(URL location, ResourceBundle resources) { saveSongLabel.setVisible(false); }
+    public void initialize(URL location, ResourceBundle resources) {
+        System.out.println("initialize");
+        saveSongLabel.setVisible(false);
+        initializeData(null);
+    }
     public void initializeData(Song data) {
+
+        System.out.println("initializeData");
+
         this.song = data;
         saveSongLabel.setVisible(false);
         List<Genre> genres = genreService.getGenres();
         List<Artist> artists = artistService.getArtists();
         List<Album> albums = albumService.getAlbums();
-        genreBoxChoice.setConverter(new StringConverter<>() {
+        genreBoxChoice.setConverter(new StringConverter<>() {   // Convert Genre to String
             @Override
             public String toString(Genre genre) {
                 if (genre == null) return "";
@@ -102,7 +110,7 @@ public class EditSongController implements Initializable, DataInitializable<Song
                 return null;
             }
         });
-        artistBoxChoice.setConverter(new StringConverter<>() {
+        artistBoxChoice.setConverter(new StringConverter<>() {  // Convert Artist to String
             @Override
             public String toString(Artist artist) {
                 if (artist == null) return "";
@@ -118,7 +126,7 @@ public class EditSongController implements Initializable, DataInitializable<Song
             }
         });
 
-        albumBoxChoice.setConverter(new StringConverter<>() {
+        albumBoxChoice.setConverter(new StringConverter<>() {   // Convert Album to String
             @Override
             public String toString(Album album) {
                 if (album == null) return "";
@@ -132,9 +140,12 @@ public class EditSongController implements Initializable, DataInitializable<Song
                 return null;
             }
         });
+
         genreBoxChoice.getItems().addAll(genres);
         artistBoxChoice.getItems().addAll(artists);
         albumBoxChoice.getItems().addAll(albums);
+
+
         if(song != null){
             songNameInput.setText(song.getName());
             songLyricsInput.setText(song.getLyrics());
@@ -172,13 +183,11 @@ public class EditSongController implements Initializable, DataInitializable<Song
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
         fileChooser.setTitle("Choose a song");
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Image Files", "*.mp3", "*.wav")
+                new FileChooser.ExtensionFilter("Song Files", "*.mp3", "*.wav")
         );
         Stage stage = new Stage();
         File file = fileChooser.showOpenDialog(stage);
         songInputStream = new FileInputStream(file);
-        //TODO song input stream
-
     }
 
     public void delete() {
@@ -201,10 +210,11 @@ public class EditSongController implements Initializable, DataInitializable<Song
                     songLyricsInput.getText(),
                     picture,
                     genres,
-                    songInputStream.readAllBytes(),
-                    this.song.getId()
+                    songInputStream.readAllBytes()
             );
+
             if(this.song != null) {
+                song.setId(this.song.getId());
                 songService.update(song);
             }else{
                 songService.add(song);

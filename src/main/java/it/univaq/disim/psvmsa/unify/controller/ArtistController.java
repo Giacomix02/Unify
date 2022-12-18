@@ -50,7 +50,8 @@ public class ArtistController implements Initializable, DataInitializable<User> 
         }
         List<Artist> artists = artistService.getArtists();
         for(Artist artist : artists) {
-            viewArtist = new ViewArtist(artist,user instanceof Admin);
+            UserWithData userWithData = new UserWithData<>(user, artist);
+            viewArtist = new ViewArtist(userWithData,user instanceof Admin);
             viewList.getChildren().add(viewArtist);
         }
 

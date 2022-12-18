@@ -1,9 +1,6 @@
 package it.univaq.disim.psvmsa.unify.view;
 
 public enum Pages {
-    ALBUM("album"),
-    SONG("song"),
-    ARTIST("artist"),
     HOME("home"),
     ALBUMS("albums"),
     SONGS("songs"),

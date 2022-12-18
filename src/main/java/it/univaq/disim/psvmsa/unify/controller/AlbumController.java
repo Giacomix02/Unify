@@ -9,6 +9,7 @@ import it.univaq.disim.psvmsa.unify.view.Pages;
 import it.univaq.disim.psvmsa.unify.view.components.AddLinkButton;
 import it.univaq.disim.psvmsa.unify.view.components.SearchBar;
 import it.univaq.disim.psvmsa.unify.view.components.ViewAlbum;
+import it.univaq.disim.psvmsa.unify.view.components.ViewUser;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.HBox;
@@ -52,7 +53,8 @@ public class AlbumController implements Initializable, DataInitializable<User> {
         List<Album> albums = albumService.getAlbums();
 
         for (Album album : albums) {
-            viewAlbum = new ViewAlbum(album,user instanceof Admin);
+            UserWithData userWithData = new UserWithData(user, album);
+            viewAlbum = new ViewAlbum(userWithData,user instanceof Admin);
             viewList.getChildren().add(viewAlbum);
         }
 
@@ -75,7 +77,8 @@ public class AlbumController implements Initializable, DataInitializable<User> {
         viewList.getChildren().clear();
 
         for (Album album : albums) {
-            viewAlbum = new ViewAlbum(album, user instanceof Admin);
+            UserWithData userWithData = new UserWithData(user, album);
+            viewAlbum = new ViewAlbum(userWithData, user instanceof Admin);
             viewList.getChildren().add(viewAlbum);
         }
     }

@@ -15,9 +15,10 @@ import javafx.scene.control.TextField;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class EditAlbumController implements Initializable, DataInitializable<Album> {
+public class EditAlbumController implements Initializable, DataInitializable<UserWithData> {
 
-    private final AlbumService albumService;
+    private AlbumService albumService;
+    private ViewDispatcher viewDispatcher;
 
     @FXML
     private Button editButton;
@@ -35,6 +36,7 @@ public class EditAlbumController implements Initializable, DataInitializable<Alb
     private Label label;
 
     private Album album;
+    private User user;
 
 
     public EditAlbumController(){
@@ -42,9 +44,13 @@ public class EditAlbumController implements Initializable, DataInitializable<Alb
         this.albumService = factoryInstance.getAlbumService();
     }
 
-    public void initializeData(Album data){
-        this.album = data;
-        if(data != null){
+    public void initializeData(UserWithData data){
+        this.album = (Album) data.getData();
+        this.user = data.getUser();
+
+        System.out.println(this.album);
+
+        if(this.album != null){
             removeButton.visibleProperty().set(true);
             albumInput.setText(album.getName());
             label.setText("Edit album");
@@ -53,6 +59,7 @@ public class EditAlbumController implements Initializable, DataInitializable<Alb
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        viewDispatcher = ViewDispatcher.getInstance();
         exceptionLabel.setText("");
         removeButton.visibleProperty().set(false);
         label.setText("Add album");
@@ -88,6 +95,7 @@ public class EditAlbumController implements Initializable, DataInitializable<Alb
         try{
             albumService.delete(album);
             exceptionLabel.setText("Removed album");
+            viewDispatcher.navigateTo(Pages.ALBUMS, user);
 
         }
         catch (Exception e) {
