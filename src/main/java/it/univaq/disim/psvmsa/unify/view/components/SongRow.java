@@ -1,7 +1,9 @@
 package it.univaq.disim.psvmsa.unify.view.components;
 
+import it.univaq.disim.psvmsa.unify.controller.UserWithData;
 import it.univaq.disim.psvmsa.unify.model.Genre;
 import it.univaq.disim.psvmsa.unify.model.Song;
+import it.univaq.disim.psvmsa.unify.model.User;
 import it.univaq.disim.psvmsa.unify.view.Pages;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcherException;
@@ -24,6 +26,10 @@ public class SongRow extends HBox {
     private ImageView picture;
     private Text songName;
 
+    private User user;
+    private Song song;
+
+    private UserWithData userWithData;
     private boolean editable;
     private Text genreName;
 
@@ -31,9 +37,12 @@ public class SongRow extends HBox {
 
     private Button editButton;
 
-    public SongRow (Song song, boolean editable){
+    public SongRow (UserWithData data, boolean editable){
         super();
-        this.editable=editable;
+        this.userWithData = data;
+        this.editable = editable;
+        this.user = data.getUser();
+        this.song = (Song) data.getData();
         init(song);
     }
     public void init(Song song) {
@@ -81,13 +90,33 @@ public class SongRow extends HBox {
         catch (Exception e){
             e.printStackTrace();
         }
-        editSong(song);
+        editSong();
+
+        songDetails();
     }
 
-    public void editSong(Song song){
+    public void editSong(){
         this.editButton.setOnMouseClicked(event -> {
             try {
-                ViewDispatcher.getInstance().navigateTo(Pages.EDITSONG,song);
+                ViewDispatcher.getInstance().navigateTo(Pages.EDITSONG,userWithData);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public void songDetails(){
+        this.picture.setOnMouseClicked(event -> {
+            try {
+                ViewDispatcher.getInstance().navigateTo(Pages.SONGDETAILS,userWithData);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+        this.songName.setOnMouseClicked(event -> {
+            try {
+                ViewDispatcher.getInstance().navigateTo(Pages.SONGDETAILS,userWithData);
             } catch (Exception e) {
                 e.printStackTrace();
             }

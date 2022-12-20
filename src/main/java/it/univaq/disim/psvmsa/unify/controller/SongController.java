@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class SongController implements Initializable, DataInitializable<User> {
+public class SongController implements Initializable, DataInitializable<Object> {
 
     @FXML
     private ListView listView;
@@ -33,7 +33,11 @@ public class SongController implements Initializable, DataInitializable<User> {
     private User user;
     private SearchBar searchBar;
 
+    private List<Song> songs;
+
     private SongService songService;
+
+    ObservableList<Song> songsObservable = FXCollections.observableArrayList();
 
     public SongController(){
         UnifyServiceFactory factoryInstance = UnifyServiceFactory.getInstance();
@@ -41,15 +45,28 @@ public class SongController implements Initializable, DataInitializable<User> {
     }
 
     @Override
-    public void initializeData(User data) {
-        this.user = data;
-        if(user instanceof Admin){
-            addBox.getChildren().add(new AddLinkButton(Pages.EDITSONG));
+    public void initializeData(Object t) {
+        if(t instanceof User){
+            this.user = (User) t;
+        }else{
+            UserWithData userWithData = (UserWithData) t;
+            this.user = userWithData.getUser();
+            songs = (List<Song>) userWithData.getData();
         }
+
+        if(user instanceof Admin){
+            addBox.getChildren().add(new AddLinkButton(Pages.EDITSONG, new UserWithData(user, null)));
+        }
+
         try{
-            ObservableList<Song> songs = FXCollections.observableList(songService.getAllSongs());
-            listView.setItems(songs);
-            listView.setCellFactory(song -> new SongRowCell(user instanceof Admin));
+            if(this.songs == null){
+                songsObservable = FXCollections.observableList(songService.getAllSongs());
+            }else{
+                songsObservable.addAll(songs);
+            }
+
+            listView.setItems(songsObservable);
+            listView.setCellFactory(song -> new SongRowCell(user));
         }catch(BusinessException e){
             e.printStackTrace();
         }

@@ -1,5 +1,6 @@
 package it.univaq.disim.psvmsa.unify.view.components;
 
+import it.univaq.disim.psvmsa.unify.controller.UserWithData;
 import it.univaq.disim.psvmsa.unify.view.Pages;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import javafx.fxml.FXMLLoader;
@@ -27,4 +28,25 @@ public class AddLinkButton extends HBox {
             e.printStackTrace();
         }
     }
+    public AddLinkButton(Pages page, UserWithData userWithData) {
+        super();
+        try {
+            HBox root = FXMLLoader.load(getClass().getResource("/ui/components/Add.fxml"));
+            HBox.setHgrow(root, Priority.ALWAYS);
+            getChildren().add(root);
+            Button addButton = (Button) root.lookup("#button");
+            addButton.setOnAction(event -> {
+                try{
+                    ViewDispatcher.getInstance().navigateTo(page,userWithData);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            });
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
 }

@@ -15,9 +15,12 @@
             <Insets right="10.0" />
          </HBox.margin>
          <cursor>
-            <Cursor fx:constant="DEFAULT" />
+            <Cursor fx:constant="HAND" />
          </cursor></ImageView>
-      <Text id="songName" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="song-text" text="Text" />
+      <Text id="songName" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="song-text" text="Text">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Text>
       <HBox HBox.hgrow="ALWAYS" />
       <Text id="genreName" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
       <HBox HBox.hgrow="ALWAYS" />
@@ -35,6 +38,9 @@
                      </image>
                   </ImageView>
                </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </Button>
          </children>
          <HBox.margin>

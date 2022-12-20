@@ -43,7 +43,7 @@ public class PlaylistsController implements Initializable, DataInitializable<Use
 
         if (playlists!=null) {
             for (Playlist playlist : playlists) {
-                playlistsBox.getChildren().add(new ViewPlaylist(playlist));
+                playlistsBox.getChildren().add(new ViewPlaylist(playlist,user));
             }
         }
     }

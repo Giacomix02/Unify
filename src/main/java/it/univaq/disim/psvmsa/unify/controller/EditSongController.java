@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 
-public class EditSongController implements Initializable, DataInitializable<Song> {
+public class EditSongController implements Initializable, DataInitializable<UserWithData> {
 
     private Image DEFAULT_IMAGE = null;
     private final SongService songService;
@@ -30,6 +30,8 @@ public class EditSongController implements Initializable, DataInitializable<Song
     private final ArtistService artistService;
     private final GenreService genreService;
     private final PictureService pictureService;
+
+    private ViewDispatcher viewDispatcher;
 
     @FXML
     private TextField songNameInput;
@@ -70,6 +72,7 @@ public class EditSongController implements Initializable, DataInitializable<Song
 
     private Song song;
 
+    private User user;
 
     public EditSongController() {
         UnifyServiceFactory factoryInstance = UnifyServiceFactory.getInstance();
@@ -78,20 +81,21 @@ public class EditSongController implements Initializable, DataInitializable<Song
         this.albumService = factoryInstance.getAlbumService();
         this.genreService = factoryInstance.getGenreService();
         this.pictureService = factoryInstance.getPictureService();
+        viewDispatcher = ViewDispatcher.getInstance();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("initialize");
-        saveSongLabel.setVisible(false);
-
-        initializeData(null);
     }
-    public void initializeData(Song data) {
+    public void initializeData(UserWithData data) {
+        this.user = data.getUser();
 
-        System.out.println("initializeData ______");
-
-        this.song = data;
+        if(data.getData()!=null) {
+            this.song = (Song) data.getData();
+            exit.visibleProperty().set(true);
+        }else {
+            exit.visibleProperty().set(false);
+        }
         saveSongLabel.setVisible(false);
 
         List<Genre> genres = genreService.getGenres();
@@ -196,15 +200,16 @@ public class EditSongController implements Initializable, DataInitializable<Song
         Stage stage = new Stage();
         File file = fileChooser.showOpenDialog(stage);
         songInputStream = new FileInputStream(file);
+        saveSongLabel.setVisible(true);
     }
 
     public void delete() {
         try{
             songService.deleteById(song.getId());
+            viewDispatcher.navigateTo(Pages.SONGS, user);
         }catch(Exception e){
             e.printStackTrace();
         }
-        clear();
     }
 
     public void saveSong() {
@@ -224,12 +229,15 @@ public class EditSongController implements Initializable, DataInitializable<Song
             if(this.song != null) {
                 song.setId(this.song.getId());
                 songService.update(song);
+                viewDispatcher.navigateTo(Pages.SONGS, user);
             }else{
                 songService.add(song);
+                clear();
             }
         }catch(Exception e){
             e.printStackTrace();
         }
+        saveSongLabel.setVisible(false);
     }
     private void clear(){
         songNameInput.clear();

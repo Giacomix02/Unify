@@ -63,6 +63,7 @@ public class LayoutController implements Initializable, DataInitializable<User> 
     @FXML
     private VBox adminMenu;
 
+
     @FXML
     private ScrollPane layoutRoot;
     @FXML

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" stylesheets="@../css/home.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.psvmsa.unify.controller.SongDetailsController">
+   <children>
+      <VBox alignment="TOP_CENTER" minWidth="700.0" VBox.vgrow="NEVER">
+         <children>
+            <HBox VBox.vgrow="NEVER">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <TextField fx:id="songName" promptText="Song name">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </TextField>
+                        <HBox alignment="CENTER" fillHeight="false" spacing="10.0" VBox.vgrow="NEVER">
+                           <children>
+                              <VBox alignment="CENTER" fillWidth="false" prefWidth="100.0" HBox.hgrow="NEVER">
+                                 <children>
+                                    <Label text="Artist:" />
+                                    <Label fx:id="artistLabel" />
+                                 </children>
+                              </VBox>
+                              <HBox HBox.hgrow="ALWAYS" />
+                              <VBox alignment="CENTER" fillWidth="false" prefWidth="100.0" HBox.hgrow="NEVER">
+                                 <children>
+                                    <Label text="Album:" />
+                                    <Label fx:id="albumLabel" />
+                                 </children>
+                              </VBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <Label text="Genres:" />
+                        <HBox fillHeight="false" spacing="10.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <Label fx:id="genresLabel" />
+                           </children>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </padding>
+                  </VBox>
+                  <VBox alignment="CENTER" HBox.hgrow="NEVER">
+                     <children>
+                        <ImageView fx:id="songImage" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/music-placeholder.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </padding>
+                  </VBox>
+               </children>
+            </HBox>
+            <VBox alignment="TOP_CENTER">
+               <children>
+                  <TextArea fx:id="songLyrics" minHeight="150.0" promptText="Song lyrics">
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </TextArea>
+               </children>
+            </VBox>
+            <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
+               <children>
+                  <VBox alignment="CENTER" />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox>
+               <children>
+                  <HBox HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </HBox>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="9.0" left="10.0" right="10.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</VBox>
