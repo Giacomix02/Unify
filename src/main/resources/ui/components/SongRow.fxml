@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -12,7 +13,10 @@
       <ImageView id="picture" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" styleClass="image" HBox.hgrow="NEVER">
          <HBox.margin>
             <Insets right="10.0" />
-         </HBox.margin></ImageView>
+         </HBox.margin>
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor></ImageView>
       <Text id="songName" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="song-text" text="Text" />
       <HBox HBox.hgrow="ALWAYS" />
       <Text id="genreName" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
