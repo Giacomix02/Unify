@@ -84,17 +84,21 @@ public class EditSongController implements Initializable, DataInitializable<Song
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("initialize");
         saveSongLabel.setVisible(false);
+
         initializeData(null);
     }
     public void initializeData(Song data) {
 
-        System.out.println("initializeData");
+        System.out.println("initializeData ______");
 
         this.song = data;
         saveSongLabel.setVisible(false);
+
         List<Genre> genres = genreService.getGenres();
         List<Artist> artists = artistService.getArtists();
         List<Album> albums = albumService.getAlbums();
+
+
         genreBoxChoice.setConverter(new StringConverter<>() {   // Convert Genre to String
             @Override
             public String toString(Genre genre) {
@@ -140,6 +144,10 @@ public class EditSongController implements Initializable, DataInitializable<Song
                 return null;
             }
         });
+
+        genreBoxChoice.getItems().removeAll(genreBoxChoice.getItems());
+        artistBoxChoice.getItems().removeAll(artistBoxChoice.getItems());
+        albumBoxChoice.getItems().removeAll(albumBoxChoice.getItems());
 
         genreBoxChoice.getItems().addAll(genres);
         artistBoxChoice.getItems().addAll(artists);
