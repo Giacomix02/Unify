@@ -126,6 +126,9 @@ public class FilePlaylistServiceImpl implements PlaylistService {
                 .set(Schema.USER_ID,playlist.getUser().getId());
         this.deleteSongRelationsInPlaylist(playlist);
         this.addSongRelationInPlaylist(playlist);
+
+        System.out.println(row.getValues());
+
         file.updateRow(row);
         loader.save(file);
     }
@@ -151,5 +154,6 @@ public class FilePlaylistServiceImpl implements PlaylistService {
                     .set(RelationSchema.PLAYLIST_ID,playlist.getId());
             relationFile.appendRow(row);
         }
+        loaderRelation.save(relationFile);
     }
 }

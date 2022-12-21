@@ -2,6 +2,7 @@ package it.univaq.disim.psvmsa.unify.view.components;
 
 import it.univaq.disim.psvmsa.unify.controller.UserWithData;
 import it.univaq.disim.psvmsa.unify.model.Playlist;
+import it.univaq.disim.psvmsa.unify.model.Song;
 import it.univaq.disim.psvmsa.unify.model.User;
 import it.univaq.disim.psvmsa.unify.view.Pages;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
@@ -28,6 +29,7 @@ public class ViewPlaylist extends HBox {
     }
 
     public void init(){
+
         try {
             HBox root = FXMLLoader.load(getClass().getResource("/ui/components/viewPlaylist.fxml"));
             HBox.setHgrow(root, Priority.ALWAYS);
