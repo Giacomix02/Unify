@@ -22,6 +22,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ViewAlbum extends HBox {
@@ -52,6 +53,8 @@ public class ViewAlbum extends HBox {
 
     public void init() {
 
+        songService = UnifyServiceFactory.getInstance().getSongService();
+
         try{
             HBox root = FXMLLoader.load(getClass().getResource("/ui/components/viewAlbum.fxml"));
             HBox.setHgrow(root, Priority.ALWAYS);
@@ -68,6 +71,24 @@ public class ViewAlbum extends HBox {
                     ViewDispatcher.getInstance().navigateTo(Pages.EDITALBUM, userWithData);
                 }
                 catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+
+            this.albumImage.setOnMouseClicked(event -> {
+                try {
+                    List<Song> songs = songService.getAllSongs();
+                    ArrayList<Song> albumSongs = new ArrayList<>();
+                    for(Song song : songs){
+                        if(song.getAlbum().getId().equals(album.getId())){
+                            albumSongs.add(song);
+                        }
+                    }
+
+                    UserWithData userWithData = new UserWithData(user, albumSongs);
+
+                    ViewDispatcher.getInstance().navigateTo(Pages.SONGS,userWithData);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             });
