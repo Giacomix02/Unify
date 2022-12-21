@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
@@ -31,7 +32,7 @@ public class EditUserController implements Initializable, DataInitializable<User
     private TextField usernameInput;
 
     @FXML
-    private TextField passwordInput;
+    private PasswordField passwordInput;
 
     @FXML
     private Label label;

@@ -20,7 +20,7 @@
                                 <Insets />
                             </VBox.margin>
                         </TextField>
-                        <TextField fx:id="passwordInput" prefHeight="30.0" prefWidth="244.0" promptText="" style="-fx-background-radius: 7;" />
+                  <PasswordField fx:id="passwordInput" prefHeight="30.0" prefWidth="244.0" style="-fx-background-radius: 7;" />
                   <HBox>
                      <children>
                         <Button fx:id="removeButton" minWidth="75.0" mnemonicParsing="false" onAction="#removeUser" prefWidth="75.0" styleClass="custom-button" text="Remove" />
