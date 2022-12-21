@@ -1,53 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import org.controlsfx.control.CheckComboBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import org.controlsfx.control.*?>
 
-<VBox alignment="CENTER" stylesheets="@../app.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.psvmsa.unify.controller.SongDetailsController">
+<VBox alignment="CENTER" stylesheets="@../" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.psvmsa.unify.controller.SongDetailsController">
    <children>
       <VBox alignment="TOP_CENTER" minWidth="700.0" VBox.vgrow="NEVER">
          <children>
             <HBox VBox.vgrow="NEVER">
                <children>
-                  <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                  <VBox HBox.hgrow="ALWAYS">
                      <children>
                         <TextField fx:id="songName" promptText="Song name">
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                         </TextField>
-                        <HBox alignment="CENTER" fillHeight="false" spacing="10.0" VBox.vgrow="NEVER">
+                        <VBox prefHeight="58.0" prefWidth="420.0" />
+                        <HBox>
                            <children>
-                              <VBox alignment="CENTER" fillWidth="false" prefWidth="100.0" HBox.hgrow="NEVER">
+                              <VBox>
                                  <children>
-                                    <Label text="Artist:" />
-                                    <Label fx:id="artistLabel" />
+                                    <Label text="Artists: " />
+                                    <Label fx:id="artistLabel">
+                                       <padding>
+                                          <Insets left="5.0" />
+                                       </padding></Label>
+                                 </children>
+                                 <padding>
+                                    <Insets right="10.0" />
+                                 </padding>
+                              </VBox>
+                              <VBox>
+                                 <children>
+                                    <Label text="Albums: " />
+                                    <Label fx:id="albumLabel">
+                                       <padding>
+                                          <Insets left="5.0" />
+                                       </padding></Label>
+                                 </children>
+                                 <padding>
+                                    <Insets right="10.0" />
+                                 </padding>
+                              </VBox>
+                              <VBox>
+                                 <children>
+                                    <Label text="Genres: " />
+                                    <Label fx:id="genresLabel">
+                                       <padding>
+                                          <Insets left="5.0" />
+                                       </padding></Label>
                                  </children>
                               </VBox>
-                              <HBox HBox.hgrow="ALWAYS" />
-                              <VBox alignment="CENTER" fillWidth="false" prefWidth="100.0" HBox.hgrow="NEVER">
-                                 <children>
-                                    <Label text="Album:" />
-                                    <Label fx:id="albumLabel" />
-                                 </children>
-                              </VBox>
-                           </children>
-                           <VBox.margin>
-                              <Insets top="20.0" />
-                           </VBox.margin>
-                        </HBox>
-                        <Label text="Genres:" />
-                        <HBox fillHeight="false" spacing="10.0" VBox.vgrow="ALWAYS">
-                           <children>
-                              <Label fx:id="genresLabel" />
                            </children>
                         </HBox>
                      </children>
