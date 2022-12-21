@@ -2,10 +2,8 @@ package it.univaq.disim.psvmsa.unify.view.components;
 import it.univaq.disim.psvmsa.unify.business.GenreService;
 import it.univaq.disim.psvmsa.unify.business.SongService;
 import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
-import it.univaq.disim.psvmsa.unify.model.Album;
-import it.univaq.disim.psvmsa.unify.model.Genre;
-import it.univaq.disim.psvmsa.unify.model.Song;
-import it.univaq.disim.psvmsa.unify.model.User;
+import it.univaq.disim.psvmsa.unify.controller.UserWithData;
+import it.univaq.disim.psvmsa.unify.model.*;
 import it.univaq.disim.psvmsa.unify.view.Pages;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import javafx.fxml.FXML;
@@ -25,6 +23,7 @@ public class ViewGenre extends VBox {
 
     private Label label;
     private boolean editable;
+    private User user;
     private Button removeButton;
     private Genre genre;
     private HBox songsBox;
@@ -32,10 +31,11 @@ public class ViewGenre extends VBox {
     private GenreService genreService;
     private SongService songService;
 
-    public ViewGenre(Genre genre, boolean editable) {
+    public ViewGenre(Genre genre, User user) {
         super();
         this.genre = genre;
-        this.editable = editable;
+        this.user = user;
+        this.editable = user instanceof Admin;
         init();
 }
     public void init(){
@@ -67,7 +67,8 @@ public class ViewGenre extends VBox {
                 }
             }
             for(Album album : albums){
-                SingleAlbum singleAlbum = new SingleAlbum(album);
+                UserWithData userWithData = new UserWithData(user, album);
+                SingleAlbum singleAlbum = new SingleAlbum(userWithData);
                 albumBox.getChildren().add(singleAlbum);
 
             }

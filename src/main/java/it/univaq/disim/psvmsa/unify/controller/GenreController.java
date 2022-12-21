@@ -47,7 +47,7 @@ public class GenreController implements Initializable, DataInitializable<User> {
         List<Genre> genres = genreService.getGenres();
 
         for(Genre genre : genres){
-            viewGenre = new ViewGenre(genre,user instanceof Admin);
+            viewGenre = new ViewGenre(genre,user);
             viewList.getChildren().add(viewGenre);
         }
 
@@ -74,7 +74,7 @@ public class GenreController implements Initializable, DataInitializable<User> {
         viewList.getChildren().clear();
 
         for(Genre genre : genres){
-            viewGenre = new ViewGenre(genre,user instanceof Admin);
+            viewGenre = new ViewGenre(genre,user);
             viewList.getChildren().add(viewGenre);
         }
     }

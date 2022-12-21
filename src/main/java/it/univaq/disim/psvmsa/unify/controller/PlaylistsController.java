@@ -55,7 +55,8 @@ public class PlaylistsController implements Initializable, DataInitializable<Use
     @FXML
     private void addPlaylist(){
         try {
-            ViewDispatcher.getInstance().navigateTo(Pages.EDITPLAYLIST, this.user);
+            UserWithData userWithData = new UserWithData(user,null);
+            ViewDispatcher.getInstance().navigateTo(Pages.EDITPLAYLIST, userWithData);
         }catch (Exception e){
             e.printStackTrace();
         }

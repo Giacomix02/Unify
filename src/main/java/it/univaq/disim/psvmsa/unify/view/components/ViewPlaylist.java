@@ -50,7 +50,8 @@ public class ViewPlaylist extends HBox {
 
             this.editButton.setOnMouseClicked(event -> {
                 try {
-                    ViewDispatcher.getInstance().navigateTo(Pages.EDITPLAYLIST,playlist);
+                    UserWithData userWithData = new UserWithData(user, playlist);
+                    ViewDispatcher.getInstance().navigateTo(Pages.EDITPLAYLIST,userWithData);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

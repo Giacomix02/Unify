@@ -113,14 +113,6 @@ public class SongRow extends HBox {
                 e.printStackTrace();
             }
         });
-
-        this.songName.setOnMouseClicked(event -> {
-            try {
-                ViewDispatcher.getInstance().navigateTo(Pages.SONGDETAILS,userWithData);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
     }
 
 }

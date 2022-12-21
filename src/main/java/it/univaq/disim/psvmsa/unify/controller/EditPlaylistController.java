@@ -5,6 +5,8 @@ import it.univaq.disim.psvmsa.unify.business.PlaylistService;
 import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.model.Playlist;
 import it.univaq.disim.psvmsa.unify.model.User;
+import it.univaq.disim.psvmsa.unify.view.Pages;
+import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -15,7 +17,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 
-public class EditPlaylistController implements Initializable, DataInitializable{
+public class EditPlaylistController implements Initializable, DataInitializable<UserWithData> {
 
     @FXML
     private TextField playlistInput;
@@ -26,6 +28,7 @@ public class EditPlaylistController implements Initializable, DataInitializable{
     @FXML
     private Button deleteButton;
 
+    private ViewDispatcher viewDispatcher;
     private Playlist playlist;
 
     private User user;
@@ -42,17 +45,18 @@ public class EditPlaylistController implements Initializable, DataInitializable{
     public EditPlaylistController(){
         UnifyServiceFactory factoryInstance = UnifyServiceFactory.getInstance();
         this.playlistService = factoryInstance.getPlaylistService();
+        viewDispatcher = ViewDispatcher.getInstance();
     }
 
-    public void initializeData(Object data) {
+    public void initializeData(UserWithData data) {
+        user = data.getUser();
+        playlist = (Playlist) data.getData();
 
-        if(data instanceof Playlist){
-            this.playlist = (Playlist) data;
+        if(playlist!=null){
             this.playlistInput.setText(playlist.getName());
             this.deleteButton.setVisible(true);
             label.setText("Edit playlist");
-        }else if(data instanceof User){
-            this.user = (User) data;
+        }else{
             this.deleteButton.setVisible(false);
             this.saveButton.setText("Save");
             label.setText("Add playlist");
@@ -74,7 +78,7 @@ public class EditPlaylistController implements Initializable, DataInitializable{
     }
 
     public void savePlaylist(){
-        if (user != null) {
+        if (playlist == null) {
             Playlist playlist = new Playlist(playlistInput.getText(),user);
             playlistService.add(playlist);
             playlistInput.clear();
@@ -88,6 +92,7 @@ public class EditPlaylistController implements Initializable, DataInitializable{
             }
             exceptionLabel.setText("Playlist edited");
         }
+
     }
 
     public void deletePlaylist(){
@@ -97,6 +102,11 @@ public class EditPlaylistController implements Initializable, DataInitializable{
             e.printStackTrace();
         }
         exceptionLabel.setText("Playlist deleted");
+        try {
+            viewDispatcher.navigateTo(Pages.PLAYLISTS,user);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 

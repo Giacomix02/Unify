@@ -54,4 +54,6 @@ public class SingleSong extends VBox {
             e.printStackTrace();
         }
     }
+
+    //TODO form here song can be only played
 }
