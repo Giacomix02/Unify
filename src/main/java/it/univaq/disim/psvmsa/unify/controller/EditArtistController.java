@@ -13,10 +13,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -35,14 +32,18 @@ import java.util.ResourceBundle;
 
 public class EditArtistController implements Initializable, DataInitializable<UserWithData> {
     private ArtistService artistService;
+
     private PictureService pictureService;
+
     @FXML
     private Button actionButton;
 
     private Artist existingArtist;
 
     private ViewDispatcher dispatcher;
+
     private User user;
+
     @FXML
     private Button addPicture;
 
@@ -76,7 +77,6 @@ public class EditArtistController implements Initializable, DataInitializable<Us
         UnifyServiceFactory factoryInstance = UnifyServiceFactory.getInstance();
         this.artistService = factoryInstance.getArtistService();
         this.pictureService = factoryInstance.getPictureService();
-
     }
 
     public void initializeData(UserWithData data) {

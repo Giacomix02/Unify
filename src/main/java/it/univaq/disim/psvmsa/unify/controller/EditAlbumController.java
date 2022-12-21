@@ -18,6 +18,7 @@ import java.util.ResourceBundle;
 public class EditAlbumController implements Initializable, DataInitializable<UserWithData> {
 
     private AlbumService albumService;
+
     private ViewDispatcher viewDispatcher;
 
     @FXML
@@ -36,6 +37,7 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
     private Label label;
 
     private Album album;
+
     private User user;
 
 
@@ -44,11 +46,10 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
         this.albumService = factoryInstance.getAlbumService();
     }
 
+
     public void initializeData(UserWithData data){
         this.album = (Album) data.getData();
         this.user = data.getUser();
-
-        System.out.println(this.album);
 
         if(this.album != null){
             removeButton.visibleProperty().set(true);
@@ -56,6 +57,7 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
             label.setText("Edit album");
         }
     }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -69,6 +71,7 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
                         .textProperty()
                         .isEmpty());
     }
+
 
     @FXML
     public void updateAlbum(){

@@ -31,10 +31,11 @@ public class ViewGenre extends VBox {
     private HBox albumBox;
     private GenreService genreService;
     private SongService songService;
+
     public ViewGenre(Genre genre, boolean editable) {
         super();
         this.genre = genre;
-        this.editable=editable;
+        this.editable = editable;
         init();
 }
     public void init(){

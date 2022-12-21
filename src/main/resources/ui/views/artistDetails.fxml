@@ -40,6 +40,30 @@
                             <padding>
                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                             </padding></HBox>
+                  <HBox>
+                     <children>
+                        <Label fx:id="albumLabel" style="-fx-font-size: 16;" text="Albums:" />
+                     </children>
+                     <padding>
+                        <Insets top="20.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox fx:id="artistAlbums" />
+                  <HBox>
+                     <children>
+                        <Label fx:id="songLabel" style="-fx-font-size: 16;" text="Songs:" />
+                     </children>
+                     <padding>
+                        <Insets top="20.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox fx:id="artistSongs" />
                     </children>
                 </VBox>
                 <HBox>
