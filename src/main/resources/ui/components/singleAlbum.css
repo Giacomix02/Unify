@@ -2,3 +2,8 @@
     -fx-text-fill: #fff;
     -fx-font-size: 14;
 }
+
+.backgound{
+    -fx-background-color: #F25668;
+    -fx-background-radius: 7;
+}

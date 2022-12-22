@@ -109,7 +109,7 @@ public class EditArtistController implements Initializable, DataInitializable<Us
                         .textProperty()
                         .isEmpty()
                 );
-        //show only if the artisty type is Group
+        //show only if the artist type is Group
         membersPickerBox.visibleProperty().bind(
                 artistTypeChoiceBox.valueProperty().isEqualTo("Group")
         );
@@ -185,6 +185,8 @@ public class EditArtistController implements Initializable, DataInitializable<Us
         try{
             if (existingArtist == null) {
                 artistService.add(artist);
+                images.clear();
+
             } else {
                 artist.setId(existingArtist.getId());
                 artistService.update(artist);
@@ -210,5 +212,8 @@ public class EditArtistController implements Initializable, DataInitializable<Us
         artistNameInput.clear();
         artistBiographyInput.clear();
         artistPictures.getChildren().clear();
+        images.clear();
+        artistTypeChoiceBox.setValue(options.get(0));
+        membersPicker.getCheckModel().clearChecks();
     }
 }

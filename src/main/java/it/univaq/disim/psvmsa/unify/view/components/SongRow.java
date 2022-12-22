@@ -1,13 +1,10 @@
 package it.univaq.disim.psvmsa.unify.view.components;
-
 import it.univaq.disim.psvmsa.unify.controller.UserWithData;
 import it.univaq.disim.psvmsa.unify.model.Genre;
 import it.univaq.disim.psvmsa.unify.model.Song;
 import it.univaq.disim.psvmsa.unify.model.User;
 import it.univaq.disim.psvmsa.unify.view.Pages;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
-import it.univaq.disim.psvmsa.unify.view.ViewDispatcherException;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -17,7 +14,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +31,12 @@ public class SongRow extends HBox {
 
     private boolean editable;
 
+    private Text genreName;
+
+    private Text artistName;
+
     private Button editButton;
+
 
     public SongRow (UserWithData data, boolean editable){
         super();
@@ -46,6 +47,7 @@ public class SongRow extends HBox {
         init(song);
     }
 
+
     public void init(Song song) {
         try {
             HBox root = FXMLLoader.load(getClass().getResource("/ui/components/SongRow.fxml"));
@@ -53,13 +55,30 @@ public class SongRow extends HBox {
             getChildren().add(root);
 
             songName = (Text) root.lookup("#songName");
+            genreName = (Text) root.lookup("#genreName");
+            artistName = (Text) root.lookup("#artistName");
             picture = (ImageView) root.lookup("#picture");
             editButton = (Button) root.lookup("#editButton");
 
 
             editButton.visibleProperty().set(editable);
 
+
+            List<Genre> genres = song.getGenres();
+
+
+            ArrayList<String> genresNames = new ArrayList<>();
+
+            for (Genre genre : genres) {
+                if (genre != null) {
+                    genresNames.add(genre.getName());
+                }
+            }
+            String allGenres = String.join(", ", genresNames);
+
             this.songName.setText(song.getName());
+            this.genreName.setText(allGenres);
+            this.artistName.setText(song.getArtist().getName());
 
             Image image = new Image(song.getPicture().toStream());
             Rectangle rectangle = new Rectangle(0, 0, 50, 50);
@@ -69,15 +88,14 @@ public class SongRow extends HBox {
             rectangle.setFill(pattern);
             picture.setClip(rectangle);
             this.picture.setImage(image);
-
         }
         catch (Exception e){
             e.printStackTrace();
         }
         editSong();
-
         songDetails();
     }
+
 
     public void editSong(){
         this.editButton.setOnMouseClicked(event -> {
@@ -88,6 +106,7 @@ public class SongRow extends HBox {
             }
         });
     }
+
 
     public void songDetails(){
         this.picture.setOnMouseClicked(event -> {

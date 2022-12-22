@@ -55,7 +55,7 @@
                         <Insets />
                      </VBox.margin>
                   </HBox>
-                  <HBox fx:id="artistAlbums" VBox.vgrow="ALWAYS" />
+                  <HBox fx:id="artistAlbums" spacing="15.0" VBox.vgrow="ALWAYS" />
                   <HBox>
                      <children>
                         <Label fx:id="songLabel" style="-fx-font-size: 16;" text="Songs:" />
@@ -67,7 +67,7 @@
                         <Insets />
                      </VBox.margin>
                   </HBox>
-                  <HBox fx:id="artistSongs" VBox.vgrow="ALWAYS" />
+                  <VBox fx:id="artistSongs" spacing="10.0" VBox.vgrow="ALWAYS" />
                     </children>
                 </VBox>
                 <HBox>

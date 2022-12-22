@@ -4,6 +4,7 @@ import it.univaq.disim.psvmsa.unify.business.AlbumService;
 import it.univaq.disim.psvmsa.unify.business.SongService;
 import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.model.*;
+import it.univaq.disim.psvmsa.unify.view.components.SingleAlbum;
 import it.univaq.disim.psvmsa.unify.view.components.SongRow;
 import it.univaq.disim.psvmsa.unify.view.components.ViewAlbum;
 import javafx.fxml.FXML;
@@ -12,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -29,7 +31,7 @@ public class ArtistDetailsController implements Initializable, DataInitializable
     private HBox artistAlbums;
 
     @FXML
-    private HBox artistSongs;
+    private VBox artistSongs;
 
     @FXML
     private Label artistType;
@@ -129,7 +131,8 @@ public class ArtistDetailsController implements Initializable, DataInitializable
                 for (Album album : albums) {
                     if (song.getAlbum().getId().equals(album.getId())) {
                         albumLabel.visibleProperty().set(true);
-                        artistAlbums.getChildren().add(new ViewAlbum(new UserWithData(user, album), user instanceof Admin));
+                        //artistAlbums.getChildren().add(new ViewAlbum(new UserWithData(user, album), user instanceof Admin));
+                        artistAlbums.getChildren().add(new SingleAlbum(new UserWithData(user, album)));
                     }
                 }
 
