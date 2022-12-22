@@ -24,16 +24,16 @@ import java.util.List;
 public class SongRow extends HBox {
 
     private ImageView picture;
+
     private Text songName;
 
     private User user;
+
     private Song song;
 
     private UserWithData userWithData;
-    private boolean editable;
-    private Text genreName;
 
-    private Text artistName;
+    private boolean editable;
 
     private Button editButton;
 
@@ -45,6 +45,7 @@ public class SongRow extends HBox {
         this.song = (Song) data.getData();
         init(song);
     }
+
     public void init(Song song) {
         try {
             HBox root = FXMLLoader.load(getClass().getResource("/ui/components/SongRow.fxml"));
@@ -52,30 +53,13 @@ public class SongRow extends HBox {
             getChildren().add(root);
 
             songName = (Text) root.lookup("#songName");
-            genreName = (Text) root.lookup("#genreName");
-            artistName = (Text) root.lookup("#artistName");
             picture = (ImageView) root.lookup("#picture");
             editButton = (Button) root.lookup("#editButton");
 
 
             editButton.visibleProperty().set(editable);
 
-
-            List<Genre> genres = song.getGenres();
-
-
-            ArrayList<String> genresNames = new ArrayList<>();
-
-            for (Genre genre : genres) {
-                if (genre != null) {
-                    genresNames.add(genre.getName());
-                }
-            }
-            String allGenres = String.join(", ", genresNames);
-
             this.songName.setText(song.getName());
-            this.genreName.setText(allGenres);
-            this.artistName.setText(song.getArtist().getName());
 
             Image image = new Image(song.getPicture().toStream());
             Rectangle rectangle = new Rectangle(0, 0, 50, 50);
