@@ -122,17 +122,19 @@ public class ArtistDetailsController implements Initializable, DataInitializable
     private void getSongsAndAlbums(List<Album> albums) {
         artistSongs.getChildren().clear();
         try{
+            ArrayList<Album> iterated = new ArrayList<>();
             for (Song song : songService.getAllSongs()) {
                 if (song.getArtist().getId().equals(existingArtist.getId())) {
                     songLabel.visibleProperty().set(true);
                     artistSongs.getChildren().add(new SongRow(new UserWithData(user, song), user instanceof Admin));
                 }
-
                 for (Album album : albums) {
                     if (song.getAlbum().getId().equals(album.getId())) {
                         albumLabel.visibleProperty().set(true);
-                        //artistAlbums.getChildren().add(new ViewAlbum(new UserWithData(user, album), user instanceof Admin));
-                        artistAlbums.getChildren().add(new SingleAlbum(new UserWithData(user, album)));
+                        if(!iterated.contains(album)) {
+                            artistAlbums.getChildren().add(new SingleAlbum(new UserWithData(user, album)));
+                        }
+                        iterated.add(album);
                     }
                 }
 
