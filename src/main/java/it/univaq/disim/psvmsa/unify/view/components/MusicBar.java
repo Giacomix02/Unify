@@ -1,5 +1,7 @@
 package it.univaq.disim.psvmsa.unify.view.components;
 
+import it.univaq.disim.psvmsa.unify.business.impl.file.IndexedFile;
+import it.univaq.disim.psvmsa.unify.model.Song;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
@@ -8,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.media.MediaPlayer;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -27,7 +30,10 @@ public class MusicBar extends HBox {
     private int songLength = 100;
     private int currentPosition = 0;
 
+    private static Song currentSong;
+
     private boolean isPlaying = false;
+    MusicPlayer musicPlayer = new MusicPlayer();
 
     public MusicBar() {
         super();
@@ -38,6 +44,8 @@ public class MusicBar extends HBox {
         isPlaying = true;
         playPauseButton.setImage(pauseImage);
         playTick(++playId);
+        musicPlayer = musicPlayer.getInstance();
+        musicPlayer.resume();
     }
 
     private void playTick(int id) {
@@ -48,6 +56,8 @@ public class MusicBar extends HBox {
         isPlaying = false;
         playId++;
         playPauseButton.setImage(playImage);
+        musicPlayer = musicPlayer.getInstance();
+        musicPlayer.pause();
     }
 
     private void init() {

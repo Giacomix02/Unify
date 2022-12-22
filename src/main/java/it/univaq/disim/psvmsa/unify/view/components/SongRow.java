@@ -1,4 +1,6 @@
 package it.univaq.disim.psvmsa.unify.view.components;
+import it.univaq.disim.psvmsa.unify.business.SongService;
+import it.univaq.disim.psvmsa.unify.controller.LayoutController;
 import it.univaq.disim.psvmsa.unify.controller.UserWithData;
 import it.univaq.disim.psvmsa.unify.model.Genre;
 import it.univaq.disim.psvmsa.unify.model.Song;
@@ -11,9 +13,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +28,7 @@ public class SongRow extends HBox {
     private ImageView picture;
 
     private Text songName;
+    private Button playButton;
 
     private User user;
 
@@ -36,6 +43,7 @@ public class SongRow extends HBox {
     private Text artistName;
 
     private Button editButton;
+    private MusicPlayer musicPlayer = new MusicPlayer();
 
 
     public SongRow (UserWithData data, boolean editable){
@@ -59,6 +67,7 @@ public class SongRow extends HBox {
             artistName = (Text) root.lookup("#artistName");
             picture = (ImageView) root.lookup("#picture");
             editButton = (Button) root.lookup("#editButton");
+            playButton = (Button) root.lookup("#playButton");
 
 
             editButton.visibleProperty().set(editable);
@@ -94,6 +103,7 @@ public class SongRow extends HBox {
         }
         editSong();
         songDetails();
+        playSong();
     }
 
 
@@ -115,6 +125,12 @@ public class SongRow extends HBox {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        });
+    }
+
+    public void playSong(){
+        this.playButton.setOnMouseClicked(event -> {
+            musicPlayer.playOne(song);
         });
     }
 

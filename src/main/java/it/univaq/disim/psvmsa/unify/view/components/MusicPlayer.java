@@ -4,6 +4,7 @@ import it.univaq.disim.psvmsa.unify.model.Song;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,9 +12,11 @@ import java.util.*;
 
 public class MusicPlayer {
 
-    private MusicPlayer instance = new MusicPlayer();
-    private MediaPlayer player;
-    LinkedList<Song> queue = new LinkedList<>();
+    private static MusicPlayer instance = new MusicPlayer(); //Singleton
+    private static MediaPlayer player;
+
+
+    private LinkedList<Song> queue = new LinkedList<>();
 
     public MusicPlayer() {
     }
@@ -26,7 +29,7 @@ public class MusicPlayer {
     }
     public void playOne(Song song){
         queue.clear();
-        queue.add(song);
+        play(song);
     }
     private void play(Song song){
         try {
@@ -35,8 +38,9 @@ public class MusicPlayer {
                 player.setOnEndOfMedia(null);
             }
             if(song == null) return;
-            Media media = new Media(createTempFile(song).toString());
-            player = new MediaPlayer(media);
+            Media media = new Media(createTempFile(song).toUri().toString());
+            this.player = new MediaPlayer(media);
+            player.setAutoPlay(false);
             player.play();
             player.setOnEndOfMedia(() -> {
                 play(queue.poll());
@@ -53,7 +57,9 @@ public class MusicPlayer {
         return false;
     }
     private Path createTempFile(Song song) throws IOException {
-        return Files.createTempFile(song.getId().toString(), ".mp3");
+        Path path = Files.createTempFile(song.getId().toString(), ".mp3");
+        Files.write(path, song.toStream().readAllBytes());
+        return path;
     }
     public void pause(){
         player.pause();
@@ -70,5 +76,9 @@ public class MusicPlayer {
     }
     public MusicPlayer getInstance() {
         return instance;
+    }
+
+    public String getSongName(){
+        return player.getMedia().getSource();
     }
 }
