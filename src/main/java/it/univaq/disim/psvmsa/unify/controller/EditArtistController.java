@@ -3,10 +3,7 @@ package it.univaq.disim.psvmsa.unify.controller;
 import it.univaq.disim.psvmsa.unify.business.ArtistService;
 import it.univaq.disim.psvmsa.unify.business.PictureService;
 import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
-import it.univaq.disim.psvmsa.unify.model.Artist;
-import it.univaq.disim.psvmsa.unify.model.GroupArtist;
-import it.univaq.disim.psvmsa.unify.model.Picture;
-import it.univaq.disim.psvmsa.unify.model.User;
+import it.univaq.disim.psvmsa.unify.model.*;
 import it.univaq.disim.psvmsa.unify.view.Pages;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import javafx.collections.FXCollections;
@@ -80,6 +77,7 @@ public class EditArtistController implements Initializable, DataInitializable<Us
     }
 
     public void initializeData(UserWithData data) {
+
         this.existingArtist = (Artist) data.getData();
         this.user = data.getUser();
 

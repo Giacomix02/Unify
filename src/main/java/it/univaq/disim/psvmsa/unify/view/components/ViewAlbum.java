@@ -33,15 +33,14 @@ public class ViewAlbum extends HBox {
 
     private Button editButton;
 
-    private Song song;
-
     private SongService songService;
 
-    private  boolean editable;
+    private boolean editable;
+
     private Album album;
+
     private User user;
 
-    private AlbumService albumService;
 
     public ViewAlbum(UserWithData data, boolean editable){
         super();
@@ -67,8 +66,8 @@ public class ViewAlbum extends HBox {
             editButton.visibleProperty().set(editable);
             this.editButton.setOnAction(event -> {
                 try{
-                    UserWithData userWithData = new UserWithData(user, album);
-                    ViewDispatcher.getInstance().navigateTo(Pages.EDITALBUM, userWithData);
+                    UserWithData data = new UserWithData(user, album);
+                    ViewDispatcher.getInstance().navigateTo(Pages.EDITALBUM, data);
                 }
                 catch (Exception e) {
                     e.printStackTrace();

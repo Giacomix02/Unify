@@ -1,13 +1,11 @@
 package it.univaq.disim.psvmsa.unify.controller;
 
 import it.univaq.disim.psvmsa.unify.business.AlbumService;
-import it.univaq.disim.psvmsa.unify.business.GenreService;
 import it.univaq.disim.psvmsa.unify.business.SongService;
 import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.model.*;
 import it.univaq.disim.psvmsa.unify.view.components.SongRow;
 import it.univaq.disim.psvmsa.unify.view.components.ViewAlbum;
-import it.univaq.disim.psvmsa.unify.view.components.ViewGenre;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -20,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class ArtistDetailsController implements Initializable, DataInitializable<Artist> {
+public class ArtistDetailsController implements Initializable, DataInitializable<UserWithData> {
 
     public HBox membersPickerBox;
 
@@ -60,7 +58,7 @@ public class ArtistDetailsController implements Initializable, DataInitializable
 
     private AlbumService albumService;
 
-    private Artist artist;
+    private Artist existingArtist;
 
     private User user;
 
@@ -72,15 +70,15 @@ public class ArtistDetailsController implements Initializable, DataInitializable
     }
 
 
-    public void initializeData(Artist data) {
+    public void initializeData(UserWithData data) {
 
-        this.artist = data;
-
+        this.existingArtist = (Artist) data.getData();
+        this.user = data.getUser();
         List<Album> albums = albumService.getAlbums();
 
-        artistNameInput.setText(data.getName());
-        artistBiographyInput.setText(data.getBiography());
-        images = (data.getPictures());
+        artistNameInput.setText(existingArtist.getName());
+        artistBiographyInput.setText(existingArtist.getBiography());
+        images = (existingArtist.getPictures());
         songLabel.visibleProperty().set(false);
         albumLabel.visibleProperty().set(false);
         getImages(images);
@@ -89,10 +87,10 @@ public class ArtistDetailsController implements Initializable, DataInitializable
         artistNameInput.setEditable(false);
         artistBiographyInput.setEditable(false);
 
-        if (data instanceof GroupArtist) {
+        if (existingArtist instanceof GroupArtist) {
             artistType.setText("Group");
 
-            for (Artist artist : ((GroupArtist) data).getArtists()) {
+            for (Artist artist : ((GroupArtist) existingArtist).getArtists()) {
                 artistMembersChoiceBox.getItems().add(artist.getName());
             }
 
@@ -101,7 +99,6 @@ public class ArtistDetailsController implements Initializable, DataInitializable
             membersLabel.setDisable(true);
             artistMembersChoiceBox.setDisable(true);
         }
-
     }
 
 
@@ -124,7 +121,7 @@ public class ArtistDetailsController implements Initializable, DataInitializable
         artistSongs.getChildren().clear();
         try{
             for (Song song : songService.getAllSongs()) {
-                if (song.getArtist().getId().equals(artist.getId())) {
+                if (song.getArtist().getId().equals(existingArtist.getId())) {
                     songLabel.visibleProperty().set(true);
                     artistSongs.getChildren().add(new SongRow(new UserWithData(user, song), user instanceof Admin));
                 }

@@ -1,7 +1,7 @@
 package it.univaq.disim.psvmsa.unify.view.components;
 
-import it.univaq.disim.psvmsa.unify.business.ArtistService;
 import it.univaq.disim.psvmsa.unify.controller.UserWithData;
+import it.univaq.disim.psvmsa.unify.model.Admin;
 import it.univaq.disim.psvmsa.unify.model.Artist;
 import it.univaq.disim.psvmsa.unify.model.Picture;
 import it.univaq.disim.psvmsa.unify.model.User;
@@ -25,13 +25,17 @@ public class ViewArtist extends HBox {
     private Label label;
 
     private Artist artist;
+
     private User user;
 
-    private ArtistService artistService;
-
     private Button actionButton;
+
+    private boolean editable;
+
+
     public ViewArtist(UserWithData data, boolean editable) {
         super();
+        this.editable = editable;
         this.artist = (Artist) data.getData();
         this.user = data.getUser();
         init();
@@ -58,16 +62,19 @@ public class ViewArtist extends HBox {
                 artistImage.setImage(image);
                 artistImage.setOnMouseClicked(mouseEvent -> {
                     try{
-                        ViewDispatcher.getInstance().navigateTo(Pages.ARTISTDETAILS, artist);
+                        UserWithData data = new UserWithData<>(user, artist);
+                        ViewDispatcher.getInstance().navigateTo(Pages.ARTISTDETAILS, data);
                     } catch (Exception e){
                         e.printStackTrace();
                     }
                 });
             }
+
+            actionButton.visibleProperty().set(editable);
             actionButton.setOnAction(actionEvent -> {
                 try{
                     UserWithData data = new UserWithData<>(user, artist);
-                    ViewDispatcher.getInstance().navigateTo(Pages.EDITARTIST, data);
+                        ViewDispatcher.getInstance().navigateTo(Pages.EDITARTIST, data);
                 } catch (Exception e){
                     e.printStackTrace();
                 }
