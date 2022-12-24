@@ -1,6 +1,7 @@
 package it.univaq.disim.psvmsa.unify.view.components;
 
 import it.univaq.disim.psvmsa.unify.business.impl.file.IndexedFile;
+import it.univaq.disim.psvmsa.unify.model.Picture;
 import it.univaq.disim.psvmsa.unify.model.Song;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,11 +19,11 @@ import java.util.TimerTask;
 public class MusicBar extends HBox {
     //TODO maybe make this into a controller and make a static method that creates the music bar and
     //returns the FXML loader to the caller, so that we can get both the component and it's controller
-    private Image playImage = new Image("ui/images/icons/play.png");
-    private Image pauseImage = new Image("ui/images/icons/pause.png");
-    private Label songName;
-    private ImageView songImage;
-    private ImageView playPauseButton;
+    private static Image playImage = new Image("ui/images/icons/play.png");
+    private static Image pauseImage = new Image("ui/images/icons/pause.png");
+    private static Label songName;
+    private static ImageView songImage;
+    private static ImageView playPauseButton;
     private ImageView nextButton;
     private ImageView previousButton;
     private Slider sliderBar;
@@ -32,7 +33,7 @@ public class MusicBar extends HBox {
 
     private static Song currentSong;
 
-    private boolean isPlaying = false;
+    private static boolean isPlaying = false;
     MusicPlayer musicPlayer = new MusicPlayer();
 
     public MusicBar() {
@@ -93,5 +94,18 @@ public class MusicBar extends HBox {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    static public void setButtonImage(boolean change) {
+        if (change) {
+            playPauseButton.setImage(pauseImage);
+            isPlaying = true;
+        }
+    }
+
+    static public void setSong(Song song) {
+        songName.setText(song.getName());
+        Image image = new Image(song.getPicture().toStream());
+        songImage.setImage(image);
     }
 }

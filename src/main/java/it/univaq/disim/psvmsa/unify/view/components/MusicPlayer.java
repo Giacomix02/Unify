@@ -77,8 +77,4 @@ public class MusicPlayer {
     public MusicPlayer getInstance() {
         return instance;
     }
-
-    public String getSongName(){
-        return player.getMedia().getSource();
-    }
 }

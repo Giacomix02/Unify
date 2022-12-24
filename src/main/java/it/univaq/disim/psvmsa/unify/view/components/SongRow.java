@@ -130,6 +130,8 @@ public class SongRow extends HBox {
 
     public void playSong(){
         this.playButton.setOnMouseClicked(event -> {
+            MusicBar.setButtonImage(true);
+            MusicBar.setSong(song);
             musicPlayer.playOne(song);
         });
     }

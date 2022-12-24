@@ -20,7 +20,7 @@
                               <Insets />
                            </HBox.margin>
                         </ImageView>
-                        <Label id="songLabel" maxWidth="140.0" minWidth="27.0" text="This is a song name very long">
+                        <Label id="songName" maxWidth="140.0" minWidth="27.0" text="This is a song name very long">
                            <HBox.margin>
                               <Insets left="15.0" />
                            </HBox.margin>
