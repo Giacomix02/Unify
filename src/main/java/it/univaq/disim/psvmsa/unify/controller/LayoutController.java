@@ -7,6 +7,7 @@ import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcherException;
 import it.univaq.disim.psvmsa.unify.view.components.MenuLink;
 import it.univaq.disim.psvmsa.unify.view.components.MusicBar;
+import it.univaq.disim.psvmsa.unify.view.components.MusicPlayer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -33,10 +34,10 @@ public class LayoutController implements Initializable, DataInitializable<User> 
     private static final String USER_IMAGE = IMAGE_PATH+"person.png";
 
     private MenuLink MENU_LINKS[] = {
-        new MenuLink("Artists", Pages.ARTISTS, new Image(ARTIST_IMAGE)),
-        new MenuLink("Albums", Pages.ALBUMS, new Image(ALBUM_IMAGE)),
-        new MenuLink("Songs", Pages.SONGS, new Image(SONG_IMAGE)) ,
-        new MenuLink("Genres", Pages.GENRES, new Image(GENRE_IMAGE))
+            new MenuLink("Artists", Pages.ARTISTS, new Image(ARTIST_IMAGE)),
+            new MenuLink("Albums", Pages.ALBUMS, new Image(ALBUM_IMAGE)),
+            new MenuLink("Songs", Pages.SONGS, new Image(SONG_IMAGE)) ,
+            new MenuLink("Genres", Pages.GENRES, new Image(GENRE_IMAGE))
     };
     private MenuLink USER_LINKS[] = {
             new MenuLink("Playlists", Pages.PLAYLISTS, new Image(PLAYLIST_IMAGE))
@@ -47,8 +48,10 @@ public class LayoutController implements Initializable, DataInitializable<User> 
     };
 
     private MusicBar musicBar;
+
     @FXML
     private BorderPane borderPane;
+
     @FXML
     private VBox navigationMenu;
 
@@ -80,7 +83,8 @@ public class LayoutController implements Initializable, DataInitializable<User> 
     }
     public void initialize(URL location, ResourceBundle resources) {
         createMenu();
-        musicBar = new MusicBar();
+        MusicPlayer musicPlayer = new MusicPlayer();
+        musicBar = new MusicBar(musicPlayer.getInstance());
         borderPane.setBottom(musicBar);
     }
 

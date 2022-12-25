@@ -27,11 +27,17 @@ import java.util.List;
 
 public class ViewAlbum extends HBox {
 
+    @FXML
     private ImageView albumImage;
 
+    @FXML
     private Label label;
 
+    @FXML
     private Button editButton;
+
+    @FXML
+    private Button playButton;
 
     private SongService songService;
 
@@ -125,5 +131,9 @@ public class ViewAlbum extends HBox {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void playAlbum() {
+
     }
 }

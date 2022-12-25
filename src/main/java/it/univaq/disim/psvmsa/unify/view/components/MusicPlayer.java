@@ -9,12 +9,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.function.Consumer;
 
 public class MusicPlayer {
 
+
+    private List<Consumer<Song>> songConsumers = new ArrayList<>(); // list of event
     private static MusicPlayer instance = new MusicPlayer(); //Singleton
     private static MediaPlayer player;
-
 
     private LinkedList<Song> queue = new LinkedList<>();
 
@@ -24,13 +26,16 @@ public class MusicPlayer {
     public void enqueue(Song song) {
         queue.add(song);
     }
+
     public void enqueue(List<Song> songs) {
         queue.addAll(songs);
     }
+
     public void playOne(Song song){
         queue.clear();
         play(song);
     }
+
     private void play(Song song){
         try {
             if(player != null){
@@ -45,10 +50,12 @@ public class MusicPlayer {
             player.setOnEndOfMedia(() -> {
                 play(queue.poll());
             });
+            emitSongPlay(song);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
     private boolean next(){
         if(queue.size() > 0){
             play(queue.poll());
@@ -61,12 +68,15 @@ public class MusicPlayer {
         Files.write(path, song.toStream().readAllBytes());
         return path;
     }
+
     public void pause(){
         player.pause();
     }
+
     public void resume(){
         player.play();
     }
+
     public void toggleResume(){
         if(player.getStatus().equals(MediaPlayer.Status.PLAYING)){
             pause();
@@ -74,7 +84,19 @@ public class MusicPlayer {
             resume();
         }
     }
+
     public MusicPlayer getInstance() {
         return instance;
+    }
+
+    public void addOnSongPlay(Consumer<Song> consumer){
+        this.songConsumers.add(consumer);
+    }
+
+
+    private void emitSongPlay(Song song){
+        for(Consumer<Song> consumer:songConsumers){
+            consumer.accept(song);
+        }
     }
 }

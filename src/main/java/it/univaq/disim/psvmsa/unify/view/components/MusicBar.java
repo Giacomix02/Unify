@@ -34,10 +34,11 @@ public class MusicBar extends HBox {
     private static Song currentSong;
 
     private static boolean isPlaying = false;
-    MusicPlayer musicPlayer = new MusicPlayer();
+    MusicPlayer musicPlayer;
 
-    public MusicBar() {
+    public MusicBar(MusicPlayer musicPlayer) {
         super();
+        this.musicPlayer = musicPlayer;
         init();
     }
 
@@ -90,22 +91,18 @@ public class MusicBar extends HBox {
                 sliderBar.setStyle(style);
             });
 
+            musicPlayer.addOnSongPlay(
+                    (Song song)->{
+                        songName.setText(song.getName());
+                        Image image = new Image(song.getPicture().toStream());
+                        songImage.setImage(image);
+                        isPlaying = true;
+                        playPauseButton.setImage(pauseImage);
+                    }
+            );
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    static public void setButtonImage(boolean change) {
-        if (change) {
-            playPauseButton.setImage(pauseImage);
-            isPlaying = true;
-        }
-    }
-
-    static public void setSong(Song song) {
-        songName.setText(song.getName());
-        Image image = new Image(song.getPicture().toStream());
-        songImage.setImage(image);
     }
 }

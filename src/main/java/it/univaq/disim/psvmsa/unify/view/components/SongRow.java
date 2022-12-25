@@ -28,6 +28,7 @@ public class SongRow extends HBox {
     private ImageView picture;
 
     private Text songName;
+
     private Button playButton;
 
     private User user;
@@ -130,9 +131,7 @@ public class SongRow extends HBox {
 
     public void playSong(){
         this.playButton.setOnMouseClicked(event -> {
-            MusicBar.setButtonImage(true);
-            MusicBar.setSong(song);
-            musicPlayer.playOne(song);
+            musicPlayer.getInstance().playOne(song);
         });
     }
 

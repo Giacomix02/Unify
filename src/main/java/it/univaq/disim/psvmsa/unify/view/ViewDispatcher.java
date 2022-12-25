@@ -11,7 +11,9 @@ import javafx.stage.Stage;
 
 public class ViewDispatcher {
     private Stage stage;
+
     private LayoutController layout;
+
     private static ViewDispatcher instance = new ViewDispatcher();
 
     static public ViewDispatcher getInstance(){
