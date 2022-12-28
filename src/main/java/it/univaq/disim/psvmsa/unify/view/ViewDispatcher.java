@@ -38,18 +38,22 @@ public class ViewDispatcher {
         View loginPage = loadView("/ui/views/login.fxml");
         stage.setScene(new Scene(loginPage.getView()));
     }
+
     public <T> void navigateTo(Pages page, T data) throws ViewDispatcherException {
         validateStage();
         View<T> viewToLoad = loadView("/ui/views/" + page.toString() + ".fxml");
         viewToLoad.getController().initializeData(data);
         layout.setCurrentView(viewToLoad);
-
+        System.gc();
     }
+
     public void navigateTo(Pages page) throws ViewDispatcherException {
         validateStage();
         View viewToLoad = loadView("/ui/views/" + page.toString() + ".fxml");
         layout.setCurrentView(viewToLoad);
+        System.gc();
     }
+
     private void validateStage() throws ViewDispatcherException {
         if(stage == null){
             throw new ViewDispatcherException("Stage not set");

@@ -18,11 +18,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ViewAlbum extends HBox {
@@ -36,7 +36,6 @@ public class ViewAlbum extends HBox {
     @FXML
     private Button editButton;
 
-    @FXML
     private Button playButton;
 
     private SongService songService;
@@ -46,6 +45,14 @@ public class ViewAlbum extends HBox {
     private Album album;
 
     private User user;
+
+    private List<Song> songs;
+
+    private LinkedList<Song> queue = new LinkedList<>();
+
+    private MusicPlayer musicPlayer = new MusicPlayer();
+
+
 
 
     public ViewAlbum(UserWithData data, boolean editable){
@@ -68,6 +75,7 @@ public class ViewAlbum extends HBox {
             albumImage = (ImageView) root.lookup("#albumImage");
             label = (Label) root.lookup("#albumName");
             editButton = (Button) root.lookup("#editButton");
+            playButton = (Button) root.lookup("#playButton");
 
             editButton.visibleProperty().set(editable);
             this.editButton.setOnAction(event -> {
@@ -114,6 +122,9 @@ public class ViewAlbum extends HBox {
             e.printStackTrace();
         }
 
+        enqueue();
+        playAlbum();
+
     }
 
 
@@ -134,6 +145,23 @@ public class ViewAlbum extends HBox {
     }
 
     public void playAlbum() {
-
+        this.playButton.setOnMouseClicked(event ->
+                musicPlayer.getInstance().playAlbum());
     }
+
+
+    public void enqueue() {
+        try {
+            songs = songService.getAllSongs();
+            for (Song song : songs) {
+                if (song.getAlbum().getId().equals(album.getId())) {
+                    queue.add(song);
+                }
+            }
+            musicPlayer.getInstance().enqueue(queue);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

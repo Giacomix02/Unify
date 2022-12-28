@@ -36,6 +36,17 @@ public class MusicPlayer {
         play(song);
     }
 
+    public void playAlbum() {
+        if (queue != null) {
+            for (Song song : queue) {
+                System.out.println(song.getName());
+                play(song);
+            }
+            queue.clear();
+        }
+
+    }
+
     private void play(Song song){
         try {
             if(player != null){
@@ -63,6 +74,7 @@ public class MusicPlayer {
         }
         return false;
     }
+
     private Path createTempFile(Song song) throws IOException {
         Path path = Files.createTempFile(song.getId().toString(), ".mp3");
         Files.write(path, song.toStream().readAllBytes());
@@ -95,7 +107,7 @@ public class MusicPlayer {
 
 
     private void emitSongPlay(Song song){
-        for(Consumer<Song> consumer:songConsumers){
+        for(Consumer<Song> consumer : songConsumers){
             consumer.accept(song);
         }
     }

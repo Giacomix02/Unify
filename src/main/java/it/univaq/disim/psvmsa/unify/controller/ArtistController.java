@@ -54,7 +54,6 @@ public class ArtistController implements Initializable, DataInitializable<User> 
             viewArtist = new ViewArtist(userWithData,user instanceof Admin);
             viewList.getChildren().add(viewArtist);
         }
-
     }
 
     public void initialize(URL location, ResourceBundle resources) {
