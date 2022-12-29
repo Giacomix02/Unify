@@ -2,13 +2,17 @@
     accent : #F14458;
     background: #0A0F14;
 }
-.slider .track{
-    -fx-background-color: #3E4057;
-}
 .slider {
     -fx-background-radius: 3;
+    -track-color: #3E4057;
 }
+.slider .track{
+    -fx-background-color: -track-color;
+}
+
 .slider .thumb{
     -fx-background-color: white;
     -fx-border-radius: 50%;
+    -fx-border-color: accent;
+    -fx-border-width: 2;
 }

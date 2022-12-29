@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 
 public class MusicBar extends HBox {
     //TODO maybe make this into a controller and make a static method that creates the music bar and
@@ -72,6 +73,13 @@ public class MusicBar extends HBox {
                 if (!this.isChangingTime) {
                     sliderBar.setValue(newValue.doubleValue());
                 }
+            });
+            sliderBar.valueProperty().addListener((observable, oldValue, newValue) -> {
+                String style = String.format(
+                        "-track-color: linear-gradient(to right, accent %d%%, #3E4057 %d%%);",
+                        newValue.intValue(), newValue.intValue()
+                );
+                sliderBar.setStyle(style);
             });
         } catch (Exception e) {
             e.printStackTrace();
