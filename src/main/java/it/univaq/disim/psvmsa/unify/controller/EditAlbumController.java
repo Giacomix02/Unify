@@ -114,6 +114,23 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
                 return null;
             }
         });
+        songsPicker.converterProperty().set(new StringConverter<>() {
+            @Override
+            public String toString(Song object) {
+                if (object == null) return "";
+                return object.getName();
+            }
+
+            @Override
+            public Song fromString(String string) {
+                for (Song s : songsPicker.getItems()) {
+                    if (s.getName().equals(string)) {
+                        return s;
+                    }
+                }
+                return null;
+            }
+        });
         artistPicker.getItems().addAll(artists);
         artistPicker.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {

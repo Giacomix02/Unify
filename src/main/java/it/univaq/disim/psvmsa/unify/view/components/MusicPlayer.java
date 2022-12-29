@@ -54,7 +54,7 @@ public class MusicPlayer {
                 isPlaying.set(false);
                 return;
             }
-
+            System.out.println("Playing " + song.getName());
             Media media = new Media(createTempFile(song).toUri().toString());
             this.player = new MediaPlayer(media);
             player.setAutoPlay(false);

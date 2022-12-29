@@ -1,6 +1,9 @@
 package it.univaq.disim.psvmsa.unify.business.impl.file;
 
 import java.io.*;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class IndexedFileLoader {
     private final String path;
@@ -40,6 +43,15 @@ public class IndexedFileLoader {
             e.printStackTrace();
         }
         return indexedFile;
+    }
+    public List<IndexedFile.Row> loadFiltered(Predicate<IndexedFile.Row> predicate){
+        IndexedFile indexedFile = this.load();
+        return indexedFile.getRows().stream().filter(predicate).collect(Collectors.toList());
+    }
+    public void deleteRows(Predicate<IndexedFile.Row> predicate){
+        IndexedFile indexedFile = this.load();
+        indexedFile.setRows(indexedFile.getRows().stream().filter(predicate.negate()).collect(Collectors.toList()));
+        this.save(indexedFile);
     }
 
     public void save(IndexedFile file){
