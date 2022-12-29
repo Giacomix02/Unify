@@ -1,20 +1,12 @@
 package it.univaq.disim.psvmsa.unify.view.components;
 
-import it.univaq.disim.psvmsa.unify.business.impl.file.IndexedFile;
-import it.univaq.disim.psvmsa.unify.model.Picture;
-import it.univaq.disim.psvmsa.unify.model.Song;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.media.MediaPlayer;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class MusicBar extends HBox {
     //TODO maybe make this into a controller and make a static method that creates the music bar and
@@ -27,7 +19,7 @@ public class MusicBar extends HBox {
     private ImageView nextButton;
     private Slider sliderBar;
     MusicPlayer musicPlayer;
-
+    private boolean isChangingTime = false;
     public MusicBar(MusicPlayer musicPlayer) {
         super();
         this.musicPlayer = musicPlayer;
@@ -50,7 +42,9 @@ public class MusicBar extends HBox {
             playPauseButton.setOnMouseClicked(event -> {
                 musicPlayer.toggleResume();
             });
-
+            nextButton.setOnMouseClicked(event -> {
+                musicPlayer.next();
+            });
             musicPlayer.currentSongProperty().addListener((observable, oldValue, newValue) -> {
                 try {
                     songName.setText(newValue.getName());
@@ -67,7 +61,18 @@ public class MusicBar extends HBox {
                     playPauseButton.setImage(playImage);
                 }
             });
-            sliderBar.valueProperty().bind(musicPlayer.playbackPositionProperty());
+            sliderBar.setOnMouseReleased(event -> {
+                isChangingTime = false;
+                musicPlayer.seekPercentage(sliderBar.getValue());
+            });
+            sliderBar.setOnMousePressed(event -> {
+                isChangingTime = true;
+            });
+            musicPlayer.playbackPositionProperty().addListener((observable, oldValue, newValue) -> {
+                if (!this.isChangingTime) {
+                    sliderBar.setValue(newValue.doubleValue());
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }

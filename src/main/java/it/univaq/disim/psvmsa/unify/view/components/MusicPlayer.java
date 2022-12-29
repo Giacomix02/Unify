@@ -2,14 +2,13 @@ package it.univaq.disim.psvmsa.unify.view.components;
 
 import it.univaq.disim.psvmsa.unify.model.Song;
 import javafx.beans.property.*;
-import javafx.beans.value.ChangeListener;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.Duration;
 import java.util.*;
 
 public class MusicPlayer {
@@ -75,7 +74,7 @@ public class MusicPlayer {
         }
     }
 
-    private boolean next(){
+    public boolean next(){
         if(queue.size() > 0){
             play(queue.poll());
             return true;
@@ -83,6 +82,13 @@ public class MusicPlayer {
         return false;
     }
 
+    public void seekPercentage(double percentage){
+        if(player != null){
+            double total = player.getTotalDuration().toMillis();
+            double current = total * (percentage / 100);
+            player.seek(Duration.millis(current));
+        }
+    }
     private Path createTempFile(Song song) throws IOException {
         Path path = Files.createTempFile(song.getId().toString(), ".mp3");
         Files.write(path, song.toStream().readAllBytes());
@@ -90,16 +96,19 @@ public class MusicPlayer {
     }
 
     public void pause(){
+        if(player == null) return;
         player.pause();
         isPlaying.set(false);
     }
 
     public void resume(){
+        if(player == null) return;
         player.play();
         isPlaying.set(true);
     }
 
     public void toggleResume(){
+        if(player == null) return;
         if(player.getStatus().equals(MediaPlayer.Status.PLAYING)){
             pause();
         }else{
