@@ -2,12 +2,14 @@ package it.univaq.disim.psvmsa.unify.view.components;
 
 import it.univaq.disim.psvmsa.unify.model.Song;
 import javafx.beans.property.*;
+import javafx.beans.value.ChangeListener;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
 import java.util.*;
 
 public class MusicPlayer {
@@ -16,7 +18,6 @@ public class MusicPlayer {
     private SimpleBooleanProperty isPlaying = new SimpleBooleanProperty();
     private static MusicPlayer instance = new MusicPlayer(); //Singleton
     private  MediaPlayer player;
-
     private LinkedList<Song> queue = new LinkedList<>();
 
     public MusicPlayer() {
@@ -48,23 +49,22 @@ public class MusicPlayer {
         try {
             if(player != null){
                 player.stop();
-                player.setOnEndOfMedia(null);
+                player.dispose();
             }
             if(song == null) {
                 isPlaying.set(false);
                 return;
             }
-            System.out.println("Playing " + song.getName());
             Media media = new Media(createTempFile(song).toUri().toString());
             this.player = new MediaPlayer(media);
             player.setAutoPlay(false);
             player.play();
             isPlaying.set(true);
-            player.currentTimeProperty().addListener(ov -> {
-                    double total = player.getTotalDuration().toMillis();
-                    double current = player.getCurrentTime().toMillis();
-                    double progress = (double) (current / total * 100);
-                    playbackPosition.set(progress);
+            player.currentTimeProperty().addListener( (ov, oldV, newV) -> {
+                double total = player.getTotalDuration().toMillis();
+                double current = player.getCurrentTime().toMillis();
+                double progress = (current / total * 100);
+                playbackPosition.set(progress);
             });
             player.setOnEndOfMedia(() -> {
                 play(queue.poll());
@@ -107,7 +107,7 @@ public class MusicPlayer {
         }
     }
 
-    public MusicPlayer getInstance() {
+    public static MusicPlayer getInstance() {
         return instance;
     }
 

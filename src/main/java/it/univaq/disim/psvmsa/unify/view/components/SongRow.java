@@ -35,7 +35,7 @@ public class SongRow extends HBox {
 
     private Song song;
 
-    private UserWithData userWithData;
+    private UserWithData<Song> userWithData;
 
     private boolean editable;
 
@@ -46,13 +46,12 @@ public class SongRow extends HBox {
     private Button editButton;
     private MusicPlayer musicPlayer = new MusicPlayer();
 
-
-    public SongRow (UserWithData data, boolean editable){
+    public SongRow (UserWithData<Song> data, boolean editable){
         super();
         this.userWithData = data;
         this.editable = editable;
         this.user = data.getUser();
-        this.song = (Song) data.getData();
+        this.song = data.getData();
         init(song);
     }
 
@@ -131,7 +130,7 @@ public class SongRow extends HBox {
 
     public void playSong(){
         this.playButton.setOnMouseClicked(event -> {
-            musicPlayer.getInstance().playOne(song);
+            MusicPlayer.getInstance().playOne(song);
         });
     }
 

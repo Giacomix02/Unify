@@ -49,7 +49,7 @@ public class ViewAlbum extends HBox {
 
     private LinkedList<Song> queue = new LinkedList<>();
 
-    private MusicPlayer musicPlayer = new MusicPlayer();
+    private MusicPlayer musicPlayer;
 
 
 
@@ -59,6 +59,7 @@ public class ViewAlbum extends HBox {
         this.editable = editable;
         this.album = (Album) data.getData();
         this.user = data.getUser();
+        this.musicPlayer = MusicPlayer.getInstance();
         init();
     }
 

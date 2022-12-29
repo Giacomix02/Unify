@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class EditArtistController implements Initializable, DataInitializable<UserWithData> {
+public class EditArtistController implements Initializable, DataInitializable<UserWithData<Artist>> {
     private ArtistService artistService;
 
     private PictureService pictureService;
@@ -77,10 +77,8 @@ public class EditArtistController implements Initializable, DataInitializable<Us
     }
 
     public void initializeData(UserWithData<Artist> data) {
-
         this.existingArtist = data.getData();
         this.user = data.getUser();
-
         artistNameInput.setText(existingArtist.getName());
         artistBiographyInput.setText(existingArtist.getBiography());
         delete.visibleProperty().set(true);

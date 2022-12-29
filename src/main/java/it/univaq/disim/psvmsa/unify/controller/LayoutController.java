@@ -83,8 +83,7 @@ public class LayoutController implements Initializable, DataInitializable<User> 
     }
     public void initialize(URL location, ResourceBundle resources) {
         createMenu();
-        MusicPlayer musicPlayer = new MusicPlayer();
-        musicBar = new MusicBar(musicPlayer.getInstance());
+        musicBar = new MusicBar(MusicPlayer.getInstance());
         borderPane.setBottom(musicBar);
     }
 
