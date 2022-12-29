@@ -1,8 +1,10 @@
 package it.univaq.disim.psvmsa.unify.view.components;
 
 import it.univaq.disim.psvmsa.unify.model.Song;
+import javafx.beans.property.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,11 +14,11 @@ import java.util.*;
 import java.util.function.Consumer;
 
 public class MusicPlayer {
-
-
-    private List<Consumer<Song>> songConsumers = new ArrayList<>(); // list of event
+    private SimpleObjectProperty<Song> currentSong = new SimpleObjectProperty<>();
+    private SimpleDoubleProperty playbackPosition = new SimpleDoubleProperty();
+    private SimpleBooleanProperty isPlaying = new SimpleBooleanProperty();
     private static MusicPlayer instance = new MusicPlayer(); //Singleton
-    private static MediaPlayer player;
+    private  MediaPlayer player;
 
     private LinkedList<Song> queue = new LinkedList<>();
 
@@ -46,22 +48,32 @@ public class MusicPlayer {
         }
 
     }
-
     private void play(Song song){
         try {
             if(player != null){
                 player.stop();
                 player.setOnEndOfMedia(null);
             }
-            if(song == null) return;
+            if(song == null) {
+                isPlaying.set(false);
+                return;
+            }
+
             Media media = new Media(createTempFile(song).toUri().toString());
             this.player = new MediaPlayer(media);
             player.setAutoPlay(false);
             player.play();
+            isPlaying.set(true);
+            player.currentTimeProperty().addListener(ov -> {
+                    double total = player.getTotalDuration().toMillis();
+                    double current = player.getCurrentTime().toMillis();
+                    double progress = (double) (current / total * 100);
+                    playbackPosition.set(progress);
+            });
             player.setOnEndOfMedia(() -> {
                 play(queue.poll());
             });
-            emitSongPlay(song);
+            currentSong.set(song);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -83,10 +95,12 @@ public class MusicPlayer {
 
     public void pause(){
         player.pause();
+        isPlaying.set(false);
     }
 
     public void resume(){
         player.play();
+        isPlaying.set(true);
     }
 
     public void toggleResume(){
@@ -101,14 +115,13 @@ public class MusicPlayer {
         return instance;
     }
 
-    public void addOnSongPlay(Consumer<Song> consumer){
-        this.songConsumers.add(consumer);
+    public SimpleDoubleProperty playbackPositionProperty() {
+        return playbackPosition;
     }
-
-
-    private void emitSongPlay(Song song){
-        for(Consumer<Song> consumer : songConsumers){
-            consumer.accept(song);
-        }
+    public SimpleObjectProperty<Song> currentSongProperty() {
+        return currentSong;
+    }
+    public SimpleBooleanProperty isPlayingProperty() {
+        return isPlaying;
     }
 }

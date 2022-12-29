@@ -25,15 +25,7 @@ public class MusicBar extends HBox {
     private static ImageView songImage;
     private static ImageView playPauseButton;
     private ImageView nextButton;
-    private ImageView previousButton;
     private Slider sliderBar;
-    private int playId = 0;
-    private int songLength = 100;
-    private int currentPosition = 0;
-
-    private static Song currentSong;
-
-    private static boolean isPlaying = false;
     MusicPlayer musicPlayer;
 
     public MusicBar(MusicPlayer musicPlayer) {
@@ -42,25 +34,6 @@ public class MusicBar extends HBox {
         init();
     }
 
-    public void play() {
-        isPlaying = true;
-        playPauseButton.setImage(pauseImage);
-        playTick(++playId);
-        musicPlayer = musicPlayer.getInstance();
-        musicPlayer.resume();
-    }
-
-    private void playTick(int id) {
-
-    }
-
-    public void pause() {
-        isPlaying = false;
-        playId++;
-        playPauseButton.setImage(playImage);
-        musicPlayer = musicPlayer.getInstance();
-        musicPlayer.pause();
-    }
 
     private void init() {
         try {
@@ -72,35 +45,26 @@ public class MusicBar extends HBox {
             songImage = (ImageView) root.lookup("#songImage");
             playPauseButton = (ImageView) root.lookup("#playButton");
             nextButton = (ImageView) root.lookup("#nextButton");
-            previousButton = (ImageView) root.lookup("#previousButton");
             sliderBar = (Slider) root.lookup("#sliderBar");
             playPauseButton.setImage(playImage);
             playPauseButton.setOnMouseClicked(event -> {
-                if (isPlaying) {
-                    pause();
-                } else {
-                    play();
-                }
-            });
-            sliderBar.valueProperty().addListener((ov, oldValue, newValue) -> {
-                currentPosition = newValue.intValue();
-                String style = String.format(
-                        "-fx-background-color: linear-gradient(to right, accent %d%%, transparent %d%%);",
-                        oldValue.intValue(), newValue.intValue()
-                );
-                sliderBar.setStyle(style);
+                musicPlayer.toggleResume();
             });
 
-            musicPlayer.addOnSongPlay(
-                    (Song song)->{
-                        songName.setText(song.getName());
-                        Image image = new Image(song.getPicture().toStream());
+            musicPlayer.currentSongProperty().addListener((observable, oldValue, newValue) -> {
+                        songName.setText(newValue.getName());
+                        Image image = new Image(newValue.getPicture().toStream());
                         songImage.setImage(image);
-                        isPlaying = true;
-                        playPauseButton.setImage(pauseImage);
                     }
             );
-
+            musicPlayer.isPlayingProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue) {
+                    playPauseButton.setImage(pauseImage);
+                } else {
+                    playPauseButton.setImage(playImage);
+                }
+            });
+            sliderBar.valueProperty().bind(musicPlayer.playbackPositionProperty());
         } catch (Exception e) {
             e.printStackTrace();
         }
