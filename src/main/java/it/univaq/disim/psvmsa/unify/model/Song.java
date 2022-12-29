@@ -9,19 +9,17 @@ import java.util.Objects;
 
 public class Song {
     private String name;
-    private Album album;
     private List<Genre> genres;
     private Artist artist;
     private String lyrics;
     private Picture picture;
     private Integer id;
+    private InputStream content;
+    private byte[] cache;
 
-    private byte[] content;
 
-
-    public Song(String name, Album album, Artist artist, String lyrics, Picture picture, List<Genre> genres, byte[] content) {
+    public Song(String name, Artist artist, String lyrics, Picture picture, List<Genre> genres, InputStream content) {
         this.name = name;
-        this.album = album;
         this.artist = artist;
         this.lyrics = lyrics;
         this.picture = picture;
@@ -29,21 +27,23 @@ public class Song {
         this.content = content;
     }
 
-    public Song (String name, Album album, Artist artist, String lyrics, Picture picture, List<Genre> genres, byte[] content, Integer id) {
-        this(name, album, artist, lyrics, picture, genres, content);
+    public Song (String name, Artist artist, String lyrics, Picture picture, List<Genre> genres, InputStream content, Integer id) {
+        this(name, artist, lyrics, picture, genres, content);
         this.id = id;
     }
-    public byte[] getContent() {
-        return content;
-    }
-    public void setContent(byte[] content) {
+    public void setContent(InputStream content) {
         this.content = content;
-    }
-    public void setContentFromStream(InputStream content) throws IOException {
-        this.content = content.readAllBytes();
+        cache = null;
     }
     public InputStream toStream()  {
-        return new ByteArrayInputStream(this.content);
+        if (cache == null) {
+            try {
+                cache = content.readAllBytes();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return new ByteArrayInputStream(this.cache);
     }
     public String getName() {
         return name;
@@ -51,14 +51,6 @@ public class Song {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Album getAlbum() {
-        return album;
-    }
-
-    public void setAlbum(Album album) {
-        this.album = album;
     }
 
 
@@ -108,19 +100,17 @@ public class Song {
         if (!(o instanceof Song)) return false;
         Song song = (Song) o;
         return Objects.equals(name,song.name) &&
-                Objects.equals(album, song.album) &&
                 Objects.equals(artist, song.artist) &&
                 Objects.equals(lyrics, song.lyrics) &&
                 Objects.equals(picture, song.picture) &&
                 Objects.equals(genres, song.genres) &&
-                Objects.equals(id, song.id) &&
-                Arrays.equals(content, song.content);
+                Objects.equals(id, song.id);
 
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, album, artist,
+        return Objects.hash(name, artist,
                             lyrics, picture, genres, id);
     }
 

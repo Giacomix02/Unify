@@ -46,7 +46,6 @@ public class ViewAlbum extends HBox {
 
     private User user;
 
-    private List<Song> songs;
 
     private LinkedList<Song> queue = new LinkedList<>();
 
@@ -90,16 +89,9 @@ public class ViewAlbum extends HBox {
 
             this.albumImage.setOnMouseClicked(event -> {
                 try {
-                    List<Song> songs = songService.getAllSongs();
-                    ArrayList<Song> albumSongs = new ArrayList<>();
-                    for(Song song : songs){
-                        if(song.getAlbum().getId().equals(album.getId())){
-                            albumSongs.add(song);
-                        }
-                    }
-
-                    UserWithData userWithData = new UserWithData(user, albumSongs);
-
+                    List<Song> songs = album.getSongs();
+                    UserWithData<List<Song>> userWithData = new UserWithData<>(user, songs);
+                    //TODO NO!
                     ViewDispatcher.getInstance().navigateTo(Pages.SONGS,userWithData);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -122,7 +114,6 @@ public class ViewAlbum extends HBox {
             e.printStackTrace();
         }
 
-        enqueue();
         playAlbum();
 
     }
@@ -131,12 +122,9 @@ public class ViewAlbum extends HBox {
     public Picture getAlbumPicture() {
         try {
             songService = UnifyServiceFactory.getInstance().getSongService();
-            List<Song> songs = songService.getAllSongs();
-            for (Song song : songs) {
-                if (song.getAlbum().equals(album)) {
-                    return song.getPicture();
-                }
-            }
+            List<Song> songs = album.getSongs();
+            if(songs.size() == 0) return null;
+            return songs.get(0).getPicture();
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -145,23 +133,12 @@ public class ViewAlbum extends HBox {
     }
 
     public void playAlbum() {
-        this.playButton.setOnMouseClicked(event ->
-                musicPlayer.getInstance().playAlbum());
+        this.playButton.setOnMouseClicked(event -> {
+            musicPlayer.setQueue(album.getSongs());
+            musicPlayer.startQueuePlayback();
+        });
     }
 
 
-    public void enqueue() {
-        try {
-            songs = songService.getAllSongs();
-            for (Song song : songs) {
-                if (song.getAlbum().getId().equals(album.getId())) {
-                    queue.add(song);
-                }
-            }
-            musicPlayer.getInstance().enqueue(queue);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
 }

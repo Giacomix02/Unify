@@ -2,6 +2,7 @@ package it.univaq.disim.psvmsa.unify.business.impl.ram;
 
 import it.univaq.disim.psvmsa.unify.business.BusinessException;
 import it.univaq.disim.psvmsa.unify.business.SongService;
+import it.univaq.disim.psvmsa.unify.model.Artist;
 import it.univaq.disim.psvmsa.unify.model.Song;
 
 import java.util.ArrayList;
@@ -56,6 +57,18 @@ public class RAMSongServiceImpl implements SongService {
             }
         }
         return songs;
+    }
+
+    @Override
+    public List<Song> searchByArtist(Artist artist) {
+ArrayList<Song> songs = new ArrayList<>();
+        for(Song song : this.songs.values()) {
+            if(song.getArtist().equals(artist)) {
+                songs.add(song);
+            }
+        }
+        return songs;
+
     }
 
 }

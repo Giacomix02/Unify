@@ -77,11 +77,14 @@ public class SongDetailsController implements Initializable, DataInitializable<U
         this.songName.setText(song.getName());
         this.songLyrics.setText(song.getLyrics());
         this.artistLabel.setText(song.getArtist().getName());
-        this.albumLabel.setText(song.getAlbum().getName());
         for(Genre g : song.getGenres()){
             this.genresLabel.setText(this.genresLabel.getText() + g.getName() + "\n");
         }
-        this.songImage.setImage(new Image(song.getPicture().toStream()));
+        try{
+            this.songImage.setImage(new Image(song.getPicture().toStream()));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         playlistsChoice.setConverter(new StringConverter<>() {   // Convert Genre to String
             @Override

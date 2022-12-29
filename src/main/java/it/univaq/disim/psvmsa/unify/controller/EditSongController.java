@@ -50,8 +50,6 @@ public class EditSongController implements Initializable, DataInitializable<User
     @FXML
     private Button uploadSongButton;
 
-    @FXML
-    private ChoiceBox<Album> albumBoxChoice;
 
     @FXML
     private ChoiceBox<Artist> artistBoxChoice;
@@ -100,7 +98,6 @@ public class EditSongController implements Initializable, DataInitializable<User
 
         List<Genre> genres = genreService.getGenres();
         List<Artist> artists = artistService.getArtists();
-        List<Album> albums = albumService.getAlbums();
 
 
         genreBoxChoice.setConverter(new StringConverter<>() {   // Convert Genre to String
@@ -134,42 +131,28 @@ public class EditSongController implements Initializable, DataInitializable<User
             }
         });
 
-        albumBoxChoice.setConverter(new StringConverter<>() {   // Convert Album to String
-            @Override
-            public String toString(Album album) {
-                if (album == null) return "";
-                return album.getName();
-            }
-            @Override
-            public Album fromString(String s) {
-                for (Album album : albums) {
-                    if (album.getName().equals(s)) return album;
-                }
-                return null;
-            }
-        });
-
         genreBoxChoice.getItems().removeAll(genreBoxChoice.getItems());
         artistBoxChoice.getItems().removeAll(artistBoxChoice.getItems());
-        albumBoxChoice.getItems().removeAll(albumBoxChoice.getItems());
 
         genreBoxChoice.getItems().addAll(genres);
         artistBoxChoice.getItems().addAll(artists);
-        albumBoxChoice.getItems().addAll(albums);
 
 
         if(song != null){
             songNameInput.setText(song.getName());
             songLyricsInput.setText(song.getLyrics());
             inputPicture = song.getPicture();
-            Image image = new Image(inputPicture.toStream());
-            songImage.setImage(image);
-            picture = inputPicture;
-            songInputStream = song.toStream();
+            try{
+                Image image = new Image(inputPicture.toStream());
+                songImage.setImage(image);
+                picture = inputPicture;
+                songInputStream = song.toStream();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
             for (Genre genre : song.getGenres()) {
                 genreBoxChoice.getCheckModel().check(genre); //set previous song genres
             }
-            albumBoxChoice.setValue(song.getAlbum());
             artistBoxChoice.setValue(song.getArtist());
 
         }
@@ -185,8 +168,7 @@ public class EditSongController implements Initializable, DataInitializable<User
         );
         Stage stage = new Stage();
         File file = fileChooser.showOpenDialog(stage);
-        FileInputStream inputStream = new FileInputStream(file);
-        picture = new Picture(inputStream.readAllBytes());
+        picture = new Picture(new FileInputStream(file));
         songImage.setImage(new Image(picture.toStream()));
     }
 
@@ -214,18 +196,16 @@ public class EditSongController implements Initializable, DataInitializable<User
 
     public void saveSong() {
         ArrayList<Genre> genres = new ArrayList<>(genreBoxChoice.getCheckModel().getCheckedItems());
-        Picture picture = pictureService.add(this.picture);
+        Picture picture = pictureService.add(this.picture); //TODO maybe move in service
         try{
             Song song = new Song(
                     songNameInput.getText(),
-                    albumService.getById(albumBoxChoice.getSelectionModel().getSelectedItem().getId()),
                     artistService.getById(artistBoxChoice.getSelectionModel().getSelectedItem().getId()),
                     songLyricsInput.getText(),
                     picture,
                     genres,
-                    songInputStream.readAllBytes()
+                    songInputStream
             );
-
             if(this.song != null) {
                 song.setId(this.song.getId());
                 songService.update(song);
@@ -244,7 +224,6 @@ public class EditSongController implements Initializable, DataInitializable<User
         songLyricsInput.clear();
         songImage.setImage(null);
         genreBoxChoice.getCheckModel().clearChecks();
-        albumBoxChoice.setValue(null);
         artistBoxChoice.setValue(null);
     }
 }

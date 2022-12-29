@@ -76,9 +76,9 @@ public class EditArtistController implements Initializable, DataInitializable<Us
         this.pictureService = factoryInstance.getPictureService();
     }
 
-    public void initializeData(UserWithData data) {
+    public void initializeData(UserWithData<Artist> data) {
 
-        this.existingArtist = (Artist) data.getData();
+        this.existingArtist = data.getData();
         this.user = data.getUser();
 
         artistNameInput.setText(existingArtist.getName());
@@ -149,7 +149,7 @@ public class EditArtistController implements Initializable, DataInitializable<Us
         Stage stage = new Stage();
         File file = fileChooser.showOpenDialog(stage);
         try (FileInputStream inputStream = new FileInputStream(file)) {
-            images.add(new Picture(inputStream.readAllBytes()));
+            images.add(new Picture(inputStream));
             setImages(images);
         } catch (IOException e) {
             e.printStackTrace();
@@ -158,11 +158,17 @@ public class EditArtistController implements Initializable, DataInitializable<Us
 
     private void setImages(List<Picture> pictures){
         artistPictures.getChildren().clear();
+
         for(Picture picture: pictures){
-            ImageView img = new ImageView(new Image(picture.toStream()));
-            img.setFitHeight(150);
-            img.setFitWidth(150);
-            artistPictures.getChildren().add(img);
+            try{
+                ImageView img = new ImageView(new Image(picture.toStream()));
+                img.setFitHeight(150);
+                img.setFitWidth(150);
+                artistPictures.getChildren().add(img);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
         }
     }
 

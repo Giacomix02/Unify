@@ -1,6 +1,7 @@
 package it.univaq.disim.psvmsa.unify.business.impl.file;
 
 import it.univaq.disim.psvmsa.unify.business.*;
+import it.univaq.disim.psvmsa.unify.model.Artist;
 import it.univaq.disim.psvmsa.unify.model.Genre;
 import it.univaq.disim.psvmsa.unify.model.Picture;
 import it.univaq.disim.psvmsa.unify.model.Song;
@@ -20,9 +21,8 @@ public class FileSongServiceImpl implements SongService {
         public static int SONG_ID = 0;
         public static int SONG_NAME = 1;
         public static int ARTIST_ID = 2;
-        public static int ALBUM_ID = 3;
-        public static int LYRICS = 4;
-        public static int PICTURE_ID = 5;
+        public static int LYRICS = 3;
+        public static int PICTURE_ID = 4;
     }
 
     private static class RelationSchema {
@@ -34,7 +34,6 @@ public class FileSongServiceImpl implements SongService {
     private final IndexedFileLoader loader;
     private final IndexedFileLoader genresRelationLoader;
     private final ArtistService artistService;
-    private final AlbumService albumService;
     private final PictureService pictureService;
     private final GenreService genreService;
     private final String SEPARATOR = "|";
@@ -45,7 +44,6 @@ public class FileSongServiceImpl implements SongService {
             String genresRelationPath,
             String songsFolderPath,
             ArtistService artistService,
-            AlbumService albumService,
             PictureService pictureService,
             GenreService genreService
     ) {
@@ -53,7 +51,6 @@ public class FileSongServiceImpl implements SongService {
         this.genresRelationLoader = new IndexedFileLoader(genresRelationPath, this.SEPARATOR, RelationSchema.RELATION_ID);
         this.songsFolderPath = songsFolderPath;
         this.artistService = artistService;
-        this.albumService = albumService;
         this.pictureService = pictureService;
         this.genreService = genreService;
         ensureSongsFolderExists();
@@ -79,12 +76,11 @@ public class FileSongServiceImpl implements SongService {
         try {
             return new Song(
                     row.getStringAt(Schema.SONG_NAME),
-                    albumService.getById(row.getIntAt(Schema.ALBUM_ID)),
                     artistService.getById(row.getIntAt(Schema.ARTIST_ID)),
                     row.getStringAt(Schema.LYRICS),
                     pictureService.getById(row.getIntAt(Schema.PICTURE_ID)),
                     genres,
-                    getSongStream(row.getIntAt(Schema.SONG_ID)).readAllBytes(),
+                    getSongStream(row.getIntAt(Schema.SONG_ID)),
                     row.getIntAt(Schema.SONG_ID)
             );
         } catch (Exception e) {
@@ -107,7 +103,6 @@ public class FileSongServiceImpl implements SongService {
         row.set(Schema.SONG_ID, song.getId())
                 .set(Schema.SONG_NAME, song.getName())
                 .set(Schema.ARTIST_ID, song.getArtist().getId())
-                .set(Schema.ALBUM_ID, song.getAlbum().getId())
                 .set(Schema.LYRICS, song.getLyrics())
                 .set(Schema.PICTURE_ID, song.getPicture().getId());
         this.deleteRelations(song);
@@ -129,7 +124,6 @@ public class FileSongServiceImpl implements SongService {
         row.set(Schema.SONG_ID, song.getId())
                 .set(Schema.SONG_NAME, song.getName())
                 .set(Schema.ARTIST_ID, song.getArtist().getId())
-                .set(Schema.ALBUM_ID, song.getAlbum().getId())
                 .set(Schema.LYRICS, song.getLyrics())
                 .set(Schema.PICTURE_ID, song.getPicture().getId());
 
@@ -185,22 +179,17 @@ public class FileSongServiceImpl implements SongService {
                 genres.add(genre);
             }
 
-            try{
                 Song song = new Song(
                         row.getStringAt(Schema.SONG_NAME),
-                        albumService.getById(row.getIntAt(Schema.ALBUM_ID)),
                         artistService.getById(row.getIntAt(Schema.ARTIST_ID)),
                         row.getStringAt(Schema.LYRICS),
                         pictureService.getById(row.getIntAt(Schema.PICTURE_ID)),
                         genres,
-                        getSongStream(row.getIntAt(Schema.SONG_ID)).readAllBytes(),
+                        getSongStream(row.getIntAt(Schema.SONG_ID)),
                         row.getIntAt(Schema.SONG_ID)
                 );
                 songs.add(song);
-            } catch (IOException e) {
-                e.printStackTrace();
-                throw new BusinessException("Error while loading song content");
-            }
+
         }
         return songs;
     }
@@ -209,7 +198,7 @@ public class FileSongServiceImpl implements SongService {
     private void saveSongToFile(Song song){
         File fileToSave = new File(this.songsFolderPath + song.getId() + ".mp3");
             try (FileOutputStream outputStream = new FileOutputStream(fileToSave)) {
-                outputStream.write(song.getContent());
+                outputStream.write(song.toStream().readAllBytes());
             }catch (IOException e) {
                 //TODO maybe relaunch error
                 e.printStackTrace();
@@ -236,6 +225,19 @@ public class FileSongServiceImpl implements SongService {
         IndexedFile file = loader.load();
         List<IndexedFile.Row> rows = file.filterRows(
                 r -> r.getStringAt(Schema.SONG_NAME).toLowerCase().contains(name.toLowerCase())
+        );
+        List<Song> songs = new ArrayList<>();
+        for (IndexedFile.Row row : rows) {
+            Song song = this.getById(row.getIntAt(Schema.SONG_ID));
+            songs.add(song);
+        }
+        return songs;
+    }
+
+    public List<Song> searchByArtist(Artist artist) throws BusinessException {
+        IndexedFile file = loader.load();
+        List<IndexedFile.Row> rows = file.filterRows(
+                r -> r.getIntAt(Schema.ARTIST_ID) == artist.getId()
         );
         List<Song> songs = new ArrayList<>();
         for (IndexedFile.Row row : rows) {

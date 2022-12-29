@@ -68,7 +68,6 @@ public class FileArtistServiceImpl implements ArtistService {
         IndexedFile groupFile = groupRelationsLoader.load();
         for (IndexedFile.Row row : rows) {
             artists.add(parseArtist(row, groupFile));
-
         }
         return artists;
     }
@@ -184,6 +183,7 @@ public class FileArtistServiceImpl implements ArtistService {
     public void update(Artist artist) throws BusinessException {
         IndexedFile file = loader.load();
         IndexedFile.Row row = new IndexedFile.Row(this.SEPARATOR);
+
         row.set(Schema.ARTIST_ID, artist.getId())
                 .set(Schema.ARTIST_NAME, artist.getName())
                 .set(Schema.ARTIST_BIOGRAPHY, artist.getBiography());

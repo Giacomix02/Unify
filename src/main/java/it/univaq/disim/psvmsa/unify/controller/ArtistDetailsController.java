@@ -6,7 +6,6 @@ import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.model.*;
 import it.univaq.disim.psvmsa.unify.view.components.SingleAlbum;
 import it.univaq.disim.psvmsa.unify.view.components.SongRow;
-import it.univaq.disim.psvmsa.unify.view.components.ViewAlbum;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -76,15 +75,14 @@ public class ArtistDetailsController implements Initializable, DataInitializable
 
         this.existingArtist = (Artist) data.getData();
         this.user = data.getUser();
-        List<Album> albums = albumService.getAlbums();
 
         artistNameInput.setText(existingArtist.getName());
         artistBiographyInput.setText(existingArtist.getBiography());
         images = (existingArtist.getPictures());
         songLabel.visibleProperty().set(false);
         albumLabel.visibleProperty().set(false);
-        getImages(images);
-        getSongsAndAlbums(albums);
+        setImages(images);
+        setSongsAndAlbums();
 
         artistNameInput.setEditable(false);
         artistBiographyInput.setEditable(false);
@@ -109,35 +107,33 @@ public class ArtistDetailsController implements Initializable, DataInitializable
     }
 
 
-    private void getImages(List<Picture> pictures) {
+    private void setImages(List<Picture> pictures) {
         artistPictures.getChildren().clear();
         for (Picture picture : pictures) {
-            ImageView img = new ImageView(new Image(picture.toStream()));
-            img.setFitHeight(150);
-            img.setFitWidth(150);
-            artistPictures.getChildren().add(img);
+            try{
+                ImageView img = new ImageView(new Image(picture.toStream()));
+                img.setFitHeight(150);
+                img.setFitWidth(150);
+                artistPictures.getChildren().add(img);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
 
-    private void getSongsAndAlbums(List<Album> albums) {
+    private void setSongsAndAlbums() {
         artistSongs.getChildren().clear();
+        artistAlbums.getChildren().clear();
         try{
-            ArrayList<Album> iterated = new ArrayList<>();
-            for (Song song : songService.getAllSongs()) {
-                if (song.getArtist().getId().equals(existingArtist.getId())) {
-                    songLabel.visibleProperty().set(true);
-                    artistSongs.getChildren().add(new SongRow(new UserWithData(user, song), user instanceof Admin));
-                }
-                for (Album album : albums) {
-                    if (song.getAlbum().getId().equals(album.getId())) {
-                        albumLabel.visibleProperty().set(true);
-                        if(!iterated.contains(album)) {
-                            artistAlbums.getChildren().add(new SingleAlbum(new UserWithData(user, album)));
-                        }
-                        iterated.add(album);
-                    }
-                }
-
+            List<Song> songs = songService.searchByArtist(existingArtist);
+            List<Album> albums = albumService.searchAlbumsByArtist(existingArtist);
+            for (Song song : songs) {
+                songLabel.visibleProperty().set(true);
+                artistSongs.getChildren().add(new SongRow(new UserWithData<>(user, song), user instanceof Admin));
+            }
+            for (Album album : albums) {
+                albumLabel.visibleProperty().set(true);
+                artistAlbums.getChildren().add(new SingleAlbum(new UserWithData<>(user, album)));
             }
         } catch (Exception e) {
             e.printStackTrace();

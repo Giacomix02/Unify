@@ -50,12 +50,16 @@ public class AlbumController implements Initializable, DataInitializable<User> {
             addBox.getChildren().add(new AddLinkButton(Pages.EDITALBUM));
         }
 
-        List<Album> albums = albumService.getAlbums();
+        try{
+            List<Album> albums = albumService.getAlbums();
+            for (Album album : albums) {
+                UserWithData<Album> userWithData = new UserWithData<>(user, album);
+                viewAlbum = new ViewAlbum(userWithData,user instanceof Admin);
+                viewList.getChildren().add(viewAlbum);
+            }
 
-        for (Album album : albums) {
-            UserWithData userWithData = new UserWithData(user, album);
-            viewAlbum = new ViewAlbum(userWithData,user instanceof Admin);
-            viewList.getChildren().add(viewAlbum);
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
     }
@@ -72,15 +76,18 @@ public class AlbumController implements Initializable, DataInitializable<User> {
 
     public void showSearch(String text) {
 
-        List<Album> albums = albumService.searchAlbumsByName(text);
-
-        viewList.getChildren().clear();
-
-        for (Album album : albums) {
-            UserWithData userWithData = new UserWithData(user, album);
-            viewAlbum = new ViewAlbum(userWithData, user instanceof Admin);
-            viewList.getChildren().add(viewAlbum);
+        try{
+            List<Album> albums = albumService.searchAlbumsByName(text);
+            viewList.getChildren().clear();
+            for (Album album : albums) {
+                UserWithData<Album> userWithData = new UserWithData<>(user, album);
+                viewAlbum = new ViewAlbum(userWithData, user instanceof Admin);
+                viewList.getChildren().add(viewAlbum);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
+
     }
 }
 

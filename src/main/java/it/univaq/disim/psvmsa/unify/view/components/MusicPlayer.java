@@ -4,14 +4,11 @@ import it.univaq.disim.psvmsa.unify.model.Song;
 import javafx.beans.property.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.util.Duration;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.function.Consumer;
 
 public class MusicPlayer {
     private SimpleObjectProperty<Song> currentSong = new SimpleObjectProperty<>();
@@ -37,16 +34,15 @@ public class MusicPlayer {
         queue.clear();
         play(song);
     }
+    public void setQueue(List<Song> songs){
+        queue.clear();
+        queue.addAll(songs);
+    }
 
-    public void playAlbum() {
-        if (queue != null) {
-            for (Song song : queue) {
-                System.out.println(song.getName());
-                play(song);
-            }
-            queue.clear();
+    public void startQueuePlayback(){
+        if(queue.size() > 0){
+            play(queue.pop());
         }
-
     }
     private void play(Song song){
         try {

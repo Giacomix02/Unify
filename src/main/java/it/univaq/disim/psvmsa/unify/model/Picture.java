@@ -9,13 +9,14 @@ import java.util.Objects;
 public class Picture {
 
     private Integer id;
-    private byte[] content;
+    private InputStream content;
+    private byte[] cache;
 
-    public Picture(byte[] content) {
+    public Picture(InputStream content) {
         this.content = content;
     }
 
-    public Picture(byte[] content, Integer id){
+    public Picture(InputStream content, Integer id){
         this(content);
         this.id = id;
     }
@@ -28,14 +29,20 @@ public class Picture {
     }
 
 
-    public void setContent(byte[] content) {
+    public void setContent(InputStream content) {
         this.content = content;
-    }
-    public void setContentFromStream(InputStream content) throws IOException {
-        this.content = content.readAllBytes();
+        cache = null;
     }
     public InputStream toStream()  {
-        return new ByteArrayInputStream(this.content);
+        if (cache == null) {
+            try {
+                cache = content.readAllBytes();
+            } catch (IOException e) {
+                //TODO should i throw an exception?
+                e.printStackTrace();
+            }
+        }
+        return new ByteArrayInputStream(this.cache);
     }
 
     @Override
@@ -43,8 +50,7 @@ public class Picture {
         if (this == o) return true;
         if (!(o instanceof Picture)) return false;
         Picture picture = (Picture) o;
-        return Arrays.equals(content,picture.content) &&
-                Objects.equals(id, picture.id);
+        return Objects.equals(id, picture.id);
     }
 
     @Override

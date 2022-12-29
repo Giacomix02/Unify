@@ -49,19 +49,11 @@ public class SingleAlbum extends HBox {
 
             label = (Label) root.lookup("#label");
             image = (ImageView) root.lookup("#image");
-
+            List<Song> songs = album.getSongs();
             this.image.setOnMouseClicked(mouseEvent -> {
                 try {
-                    List<Song> songs = songService.getAllSongs();
-                    ArrayList<Song> associatedSongs = new ArrayList<>();
-
-                    for(Song song : songs){
-                        if(song.getAlbum().equals(album)){
-                            associatedSongs.add(song);
-                        }
-                    }
-
-                    UserWithData userWithData = new UserWithData(user, associatedSongs);
+                    //TODO NO!
+                    UserWithData<List<Song>> userWithData = new UserWithData<>(user, songs);
                     ViewDispatcher.getInstance().navigateTo(Pages.SONGS,userWithData);
                 }catch (Exception e){
                     e.printStackTrace();
@@ -72,24 +64,18 @@ public class SingleAlbum extends HBox {
 
 
             songService = UnifyServiceFactory.getInstance().getSongService();
-            List<Song> songs = songService.getAllSongs();
-            for (Song song : songs) {
-                if (song.getAlbum().equals(album)) {
-                    picture = song.getPicture();
-                }
+
+            if (songs.size() > 0) {
+                picture = songs.get(0).getPicture();
             }
-
-
             if(picture != null){
                 Image i = new Image(picture.toStream());
-
                 Rectangle rectangle = new Rectangle(0, 0, 30, 30);
                 rectangle.setArcWidth(14);   // Corner radius
                 rectangle.setArcHeight(14);
                 ImagePattern pattern = new ImagePattern(i);
                 rectangle.setFill(pattern);
                 image.setClip(rectangle);
-
                 image.setImage(i);
             }
 

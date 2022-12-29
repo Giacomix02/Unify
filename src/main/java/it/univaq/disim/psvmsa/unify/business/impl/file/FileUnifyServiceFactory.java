@@ -13,7 +13,7 @@ public class FileUnifyServiceFactory extends UnifyServiceFactory {
 
     private final FileGenreServiceImpl fileGenreService = new FileGenreServiceImpl(BASE_PATH + "genres.txt");
     private final FilePictureServiceImpl filePictureService = new FilePictureServiceImpl(BASE_PATH + "pictures.txt", BASE_PATH + "images/");
-    private final FileAlbumServiceImpl fileAlbumService = new FileAlbumServiceImpl(BASE_PATH + "albums.txt");
+    private final FileAlbumServiceImpl fileAlbumService;
     private final FileArtistServiceImpl fileArtistService;
     private final FilePlaylistServiceImpl filePlaylistService;
     private final FileUserServiceImpl fileUserService;
@@ -31,7 +31,6 @@ public class FileUnifyServiceFactory extends UnifyServiceFactory {
                 BASE_PATH + "song_relation.txt",
                 BASE_PATH + "songs/",
                 fileArtistService,
-                fileAlbumService,
                 filePictureService,
                 fileGenreService
         );
@@ -43,6 +42,12 @@ public class FileUnifyServiceFactory extends UnifyServiceFactory {
                 BASE_PATH + "playlist_relation.txt",
                 fileSongService,
                 fileUserService
+        );
+        fileAlbumService = new FileAlbumServiceImpl(
+                BASE_PATH + "albums.txt",
+                BASE_PATH + "album_relation.txt",
+                fileSongService,
+                fileArtistService
         );
     }
 

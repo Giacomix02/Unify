@@ -3,6 +3,7 @@ package it.univaq.disim.psvmsa.unify.business.impl.ram;
 import it.univaq.disim.psvmsa.unify.business.AlbumService;
 import it.univaq.disim.psvmsa.unify.business.BusinessException;
 import it.univaq.disim.psvmsa.unify.model.Album;
+import it.univaq.disim.psvmsa.unify.model.Artist;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,6 +50,17 @@ public class RAMAlbumServiceImpl implements AlbumService {
     @Override
     public List<Album> searchAlbumsByName(String name) {
         return null;
+    }
+
+    @Override
+    public List<Album> searchAlbumsByArtist(Artist artist) throws BusinessException {
+        List<Album> albums = new ArrayList<>();
+        for (Album album : this.albums.values()) {
+            if(album.getArtist().equals(artist)){
+                albums.add(album);
+            }
+        }
+        return albums;
     }
 
     @Override

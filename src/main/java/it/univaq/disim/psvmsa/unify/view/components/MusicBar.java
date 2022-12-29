@@ -52,11 +52,14 @@ public class MusicBar extends HBox {
             });
 
             musicPlayer.currentSongProperty().addListener((observable, oldValue, newValue) -> {
-                        songName.setText(newValue.getName());
-                        Image image = new Image(newValue.getPicture().toStream());
-                        songImage.setImage(image);
-                    }
-            );
+                try {
+                    songName.setText(newValue.getName());
+                    Image image = new Image(newValue.getPicture().toStream());
+                    songImage.setImage(image);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
             musicPlayer.isPlayingProperty().addListener((observable, oldValue, newValue) -> {
                 if (newValue) {
                     playPauseButton.setImage(pauseImage);

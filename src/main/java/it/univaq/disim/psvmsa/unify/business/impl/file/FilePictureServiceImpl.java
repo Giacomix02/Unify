@@ -32,7 +32,7 @@ public class FilePictureServiceImpl implements PictureService {
             InputStream stream = this.getPictureStream(row.getIntAt(Schema.PICTURE_ID));
             if(stream == null) return null;
             return new Picture(
-                    stream.readAllBytes(),
+                    stream,
                     row.getIntAt(Schema.PICTURE_ID)
             );
         } catch (Exception e) {
