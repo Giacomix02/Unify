@@ -44,14 +44,12 @@ public class ViewDispatcher {
         View<T> viewToLoad = loadView("/ui/views/" + page.toString() + ".fxml");
         viewToLoad.getController().initializeData(data);
         layout.setCurrentView(viewToLoad);
-        System.gc();
     }
 
     public void navigateTo(Pages page) throws ViewDispatcherException {
         validateStage();
         View viewToLoad = loadView("/ui/views/" + page.toString() + ".fxml");
         layout.setCurrentView(viewToLoad);
-        System.gc();
     }
 
     private void validateStage() throws ViewDispatcherException {

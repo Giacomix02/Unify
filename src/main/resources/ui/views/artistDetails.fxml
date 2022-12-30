@@ -1,32 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.FlowPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
-<VBox minWidth="700.0" stylesheets="@../css/home.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.psvmsa.unify.controller.ArtistDetailsController">
+<VBox minWidth="700.0" stylesheets="@../css/home.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.psvmsa.unify.controller.ArtistDetailsController">
     <children>
       <HBox prefHeight="100.0" prefWidth="200.0" spacing="30.0">
          <children>
             <ImageView fx:id="artistImagePreview" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
-            <VBox prefHeight="200.0" prefWidth="100.0">
+            <VBox>
                <children>
                         <Label fx:id="artistName" style="-fx-font-size: 20;" text="Artist " />
-                  <VBox prefHeight="200.0" prefWidth="100.0">
+                  <Label fx:id="artistBiography" />
+                  <VBox>
                      <children>
                         <Label fx:id="membersLabel" />
                      </children>
                   </VBox>
                </children>
             </VBox>
-            <Label fx:id="artistBiography" text="Label">
-               <HBox.margin>
-                  <Insets top="20.0" />
-               </HBox.margin>
-            </Label>
          </children>
          <VBox.margin>
             <Insets />
