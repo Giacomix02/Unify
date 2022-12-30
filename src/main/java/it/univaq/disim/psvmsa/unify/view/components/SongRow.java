@@ -9,6 +9,7 @@ import it.univaq.disim.psvmsa.unify.view.Pages;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -27,7 +28,7 @@ public class SongRow extends HBox {
 
     private ImageView picture;
 
-    private Text songName;
+    private Label songName;
 
     private Button playButton;
 
@@ -62,7 +63,7 @@ public class SongRow extends HBox {
             HBox.setHgrow(root, Priority.ALWAYS);
             getChildren().add(root);
 
-            songName = (Text) root.lookup("#songName");
+            songName = (Label) root.lookup("#songName");
             genreName = (Text) root.lookup("#genreName");
             artistName = (Text) root.lookup("#artistName");
             picture = (ImageView) root.lookup("#picture");

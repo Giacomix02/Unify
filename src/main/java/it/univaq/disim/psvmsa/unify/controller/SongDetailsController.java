@@ -26,10 +26,10 @@ public class SongDetailsController implements Initializable, DataInitializable<U
     private SongService songService;
 
     @FXML
-    private TextField songName;
+    private Label songName;
 
     @FXML
-    private TextArea songLyrics;
+    private Label songLyrics;
 
     @FXML
     private Label genresLabel;

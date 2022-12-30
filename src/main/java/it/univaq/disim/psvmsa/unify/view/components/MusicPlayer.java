@@ -47,7 +47,9 @@ public class MusicPlayer {
     private void play(Song song){
         try {
             if(player != null){
-                player.stop();
+                if(player.getStatus() == MediaPlayer.Status.PLAYING){
+                    player.stop();
+                }
                 player.dispose();
             }
             if(song == null) {

@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
@@ -17,6 +18,6 @@
             <Insets bottom="10.0" />
          </VBox.margin></HBox>
       <Label styleClass="title-text" text="Artists" />
-      <VBox fx:id="viewList" spacing="10.0" />
+      <ListView fx:id="viewList" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS" />
    </children>
 </VBox>

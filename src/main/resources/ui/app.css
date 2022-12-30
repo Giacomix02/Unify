@@ -159,3 +159,9 @@ TextField, PasswordField, .combo-box-base, .text-area .content, .choice-box {
 .list-cell:selected {
     -fx-background-color: transparent;
 }
+
+.noheader .column-header-background {
+    -fx-max-height: 0;
+    -fx-pref-height: 0;
+    -fx-min-height: 0;
+}

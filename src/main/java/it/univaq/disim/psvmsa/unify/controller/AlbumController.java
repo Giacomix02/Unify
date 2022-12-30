@@ -10,8 +10,12 @@ import it.univaq.disim.psvmsa.unify.view.components.AddLinkButton;
 import it.univaq.disim.psvmsa.unify.view.components.SearchBar;
 import it.univaq.disim.psvmsa.unify.view.components.ViewAlbum;
 import it.univaq.disim.psvmsa.unify.view.components.ViewUser;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -28,7 +32,7 @@ public class AlbumController implements Initializable, DataInitializable<User> {
     private HBox addBox;
 
     @FXML
-    private VBox viewList;
+    private ListView<Album> viewList;
 
     @FXML
     private SearchBar searchBar;
@@ -37,7 +41,6 @@ public class AlbumController implements Initializable, DataInitializable<User> {
     private AlbumService albumService;
 
     private ViewAlbum viewAlbum;
-
     public AlbumController() {
         UnifyServiceFactory factoryInstance = UnifyServiceFactory.getInstance();
         this.albumService = factoryInstance.getAlbumService();
@@ -49,41 +52,37 @@ public class AlbumController implements Initializable, DataInitializable<User> {
         if (user instanceof Admin){
             addBox.getChildren().add(new AddLinkButton(Pages.EDITALBUM));
         }
-
-        try{
-            List<Album> albums = albumService.getAlbums();
-            for (Album album : albums) {
-                UserWithData<Album> userWithData = new UserWithData<>(user, album);
-                viewAlbum = new ViewAlbum(userWithData,user instanceof Admin);
-                viewList.getChildren().add(viewAlbum);
+        viewList.setCellFactory(album -> new ListCell<>(){
+            @Override
+            protected void updateItem(Album album, boolean empty) {
+                super.updateItem(album, empty);
+                if (empty || album == null) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(new ViewAlbum(new UserWithData<>(user, album), user instanceof Admin));
+                }
             }
-
+        });
+        try{
+            viewList.setItems(FXCollections.observableList(albumService.getAlbums()));
         }catch (Exception e){
             e.printStackTrace();
         }
-
     }
 
     public void initialize(URL location, ResourceBundle resources) {
         searchBar = new SearchBar("Search by Album");
-
         searchBar.setOnSearch(text ->{
             showSearch(text);
         });
-
         searchBox.getChildren().add(searchBar);
     }
 
     public void showSearch(String text) {
-
         try{
             List<Album> albums = albumService.searchAlbumsByName(text);
-            viewList.getChildren().clear();
-            for (Album album : albums) {
-                UserWithData<Album> userWithData = new UserWithData<>(user, album);
-                viewAlbum = new ViewAlbum(userWithData, user instanceof Admin);
-                viewList.getChildren().add(viewAlbum);
-            }
+            this.viewList.getItems().clear();
+            this.viewList.getItems().addAll(albums);
         }catch (Exception e){
             e.printStackTrace();
         }

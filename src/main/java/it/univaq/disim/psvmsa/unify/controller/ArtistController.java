@@ -8,9 +8,13 @@ import it.univaq.disim.psvmsa.unify.model.User;
 import it.univaq.disim.psvmsa.unify.view.Pages;
 import it.univaq.disim.psvmsa.unify.view.components.AddLinkButton;
 import it.univaq.disim.psvmsa.unify.view.components.SearchBar;
+import it.univaq.disim.psvmsa.unify.view.components.ViewAlbum;
 import it.univaq.disim.psvmsa.unify.view.components.ViewArtist;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -31,11 +35,10 @@ public class ArtistController implements Initializable, DataInitializable<User> 
 
     private ArtistService artistService;
 
-    private ViewArtist viewArtist;
     private User user;
 
     @FXML
-    private VBox viewList;
+    private ListView<Artist> viewList;
 
     public ArtistController() {
         UnifyServiceFactory factoryInstance = UnifyServiceFactory.getInstance();
@@ -48,16 +51,27 @@ public class ArtistController implements Initializable, DataInitializable<User> 
         if (user instanceof Admin) {
             addBox.getChildren().add(new AddLinkButton(Pages.EDITARTIST));
         }
-        List<Artist> artists = artistService.getArtists();
-        for(Artist artist : artists) {
-            UserWithData<Artist> userWithData = new UserWithData<>(user, artist);
-            viewArtist = new ViewArtist(userWithData,user instanceof Admin);
-            viewList.getChildren().add(viewArtist);
-        }
+        viewList.setCellFactory(artist -> new ListCell<>(){
+            @Override
+            protected void updateItem(Artist artist, boolean empty) {
+                super.updateItem(artist, empty);
+                if (empty || artist == null) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(new ViewArtist(new UserWithData<>(user, artist), user instanceof Admin));
+                }
+            }
+        });
+        viewList.setItems(FXCollections.observableArrayList(artistService.getArtists()));
     }
 
     public void initialize(URL location, ResourceBundle resources) {
         searchBar = new SearchBar("Search by Artist");
+        searchBar.setOnSearch(search -> {
+            List<Artist> artists = artistService.searchArtistsByName(search);
+            viewList.getItems().clear();
+            viewList.getItems().addAll(artists);
+        });
         searchBox.getChildren().add(searchBar);
     }
 }
