@@ -23,7 +23,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class EditAlbumController implements Initializable, DataInitializable<UserWithData> {
+public class EditAlbumController implements Initializable, DataInitializable<UserWithData<Album>> {
 
     private AlbumService albumService;
     private SongService songService;
@@ -67,7 +67,7 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
     public void initializeData(UserWithData<Album> data){
         this.album = data.getData();
         this.user = data.getUser();
-
+        System.out.println(album);
         if(this.album != null){
             removeButton.visibleProperty().set(true);
             albumInput.setText(album.getName());
@@ -146,8 +146,6 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
             }
         });
     }
-
-
     @FXML
     public void updateAlbum(){
         try{

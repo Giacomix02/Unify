@@ -17,14 +17,11 @@ public class SingleSong extends VBox {
     private Label label;
     private ImageView image;
     private Song song;
-
-
     public SingleSong(Song song) {
         super();
         this.song = song;
         init();
     }
-
 
     public void init(){
         try{

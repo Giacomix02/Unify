@@ -80,7 +80,7 @@ public class ViewAlbum extends HBox {
             editButton.visibleProperty().set(editable);
             this.editButton.setOnAction(event -> {
                 try{
-                    UserWithData data = new UserWithData(user, album);
+                    UserWithData<Album> data = new UserWithData<>(user, album);
                     ViewDispatcher.getInstance().navigateTo(Pages.EDITALBUM, data);
                 }
                 catch (Exception e) {
