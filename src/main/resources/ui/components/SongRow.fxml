@@ -13,14 +13,11 @@
    <children>
       <HBox alignment="CENTER_LEFT" prefWidth="300.0" spacing="8.0">
          <children>
-            <ImageView id="picture" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" styleClass="image" HBox.hgrow="NEVER">
-               <HBox.margin>
-                  <Insets right="10.0" />
-               </HBox.margin>
+            <Button id="pictureButton" mnemonicParsing="false" style="-fx-background-color: #161721;">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
-            </ImageView>
+            </Button>
             <Label id="songName" styleClass="song-text" text="Label" />
          </children>
       </HBox>

@@ -28,6 +28,8 @@ public class SongRow extends HBox {
 
     private ImageView picture;
 
+    private Button pictureButton;
+
     private Label songName;
 
     private Button playButton;
@@ -63,10 +65,11 @@ public class SongRow extends HBox {
             HBox.setHgrow(root, Priority.ALWAYS);
             getChildren().add(root);
 
+            pictureButton = (Button) root.lookup("#pictureButton");
             songName = (Label) root.lookup("#songName");
             genreName = (Text) root.lookup("#genreName");
             artistName = (Text) root.lookup("#artistName");
-            picture = (ImageView) root.lookup("#picture");
+            //picture = (ImageView) root.lookup("#picture");
             editButton = (Button) root.lookup("#editButton");
             playButton = (Button) root.lookup("#playButton");
 
@@ -96,8 +99,11 @@ public class SongRow extends HBox {
             rectangle.setArcHeight(14);
             ImagePattern pattern = new ImagePattern(image);
             rectangle.setFill(pattern);
-            picture.setClip(rectangle);
-            this.picture.setImage(image);
+            //picture.setClip(rectangle);
+            RoundedImage roundedImage = new RoundedImage(image,20,50);
+            roundedImage.fitHeightProperty().set(50);
+            roundedImage.fitWidthProperty().set(50);
+            pictureButton.setGraphic(roundedImage);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -120,7 +126,7 @@ public class SongRow extends HBox {
 
 
     public void songDetails(){
-        this.picture.setOnMouseClicked(event -> {
+        this.pictureButton.setOnMouseClicked(event -> {
             try {
                 ViewDispatcher.getInstance().navigateTo(Pages.SONGDETAILS,userWithData);
             } catch (Exception e) {

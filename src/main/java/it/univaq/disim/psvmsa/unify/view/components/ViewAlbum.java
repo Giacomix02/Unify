@@ -28,7 +28,7 @@ import java.util.List;
 public class ViewAlbum extends HBox {
 
     @FXML
-    private ImageView albumImage;
+    private Button albumDetails;
 
     @FXML
     private Label label;
@@ -72,7 +72,7 @@ public class ViewAlbum extends HBox {
             HBox.setHgrow(root, Priority.ALWAYS);
             getChildren().add(root);
 
-            albumImage = (ImageView) root.lookup("#albumImage");
+            albumDetails = (Button) root.lookup("#albumDetails");
             label = (Label) root.lookup("#albumName");
             editButton = (Button) root.lookup("#editButton");
             playButton = (Button) root.lookup("#playButton");
@@ -88,7 +88,7 @@ public class ViewAlbum extends HBox {
                 }
             });
 
-            this.albumImage.setOnMouseClicked(event -> {
+            this.albumDetails.setOnMouseClicked(event -> {
                 try {
                     List<Song> songs = album.getSongs();
                     UserWithData<List<Song>> userWithData = new UserWithData<>(user, songs);
@@ -108,8 +108,11 @@ public class ViewAlbum extends HBox {
             rectangle.setArcHeight(14);
             ImagePattern pattern = new ImagePattern(image);
             rectangle.setFill(pattern);
-            albumImage.setClip(rectangle);
-            albumImage.setImage(image);
+            RoundedImage roundedImage = new RoundedImage(image,20,50);
+            roundedImage.fitHeightProperty().set(50);
+            roundedImage.fitWidthProperty().set(50);
+            albumDetails.setGraphic(roundedImage);
+
         }
         catch (Exception e) {
             e.printStackTrace();

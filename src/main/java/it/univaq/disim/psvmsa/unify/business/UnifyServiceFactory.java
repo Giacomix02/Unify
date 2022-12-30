@@ -26,5 +26,4 @@ public abstract class UnifyServiceFactory {
     public static UnifyServiceFactory getInstance() {
         return instance;
     }
-
 }

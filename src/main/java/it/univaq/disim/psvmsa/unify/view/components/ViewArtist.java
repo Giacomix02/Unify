@@ -17,7 +17,7 @@ import javafx.scene.shape.Rectangle;
 
 public class ViewArtist extends HBox {
 
-    private ImageView artistImage;
+    private Button artistInfo;
 
     private Label label;
 
@@ -43,9 +43,11 @@ public class ViewArtist extends HBox {
             HBox root = FXMLLoader.load(getClass().getResource("/ui/components/viewArtist.fxml"));
             HBox.setHgrow(root, Priority.ALWAYS);
             getChildren().add(root);
-            artistImage = (ImageView) root.lookup("#artistImage");
+            //artistImage = (ImageView) root.lookup("#artistImage");
             label = (Label) root.lookup("#artistName");
             actionButton = (Button) root.lookup("#actionButton");
+            artistInfo = (Button) root.lookup("#artistInfo");
+
             label.setText(artist.getName());
             if(artist.getPictures().size() > 0){
                 Picture pfp = artist.getPictures().get(0);
@@ -55,9 +57,12 @@ public class ViewArtist extends HBox {
                 rectangle.setArcWidth(14);
                 ImagePattern pattern = new ImagePattern(image);
                 rectangle.setFill(pattern);
-                artistImage.setClip(rectangle);
-                artistImage.setImage(image);
-                artistImage.setOnMouseClicked(mouseEvent -> {
+                RoundedImage roundedImage = new RoundedImage(image,20,50);
+                roundedImage.fitHeightProperty().set(50);
+                roundedImage.fitWidthProperty().set(50);
+                artistInfo.setGraphic(roundedImage);
+
+                artistInfo.setOnMouseClicked(mouseEvent -> {
                     try{
                         UserWithData<Artist> data = new UserWithData<>(user, artist);
                         ViewDispatcher.getInstance().navigateTo(Pages.ARTISTDETAILS, data);
