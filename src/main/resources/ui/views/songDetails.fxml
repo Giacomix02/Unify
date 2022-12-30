@@ -98,13 +98,8 @@
                   <Insets bottom="10.0" top="10.0" />
                </VBox.margin>
                <children>
-                  <Label text="Playlists">
-                     <HBox.margin>
-                        <Insets right="6.0" />
-                     </HBox.margin>
-                  </Label>
                   <CheckComboBox fx:id="playlistsChoice" prefWidth="150.0" styleClass="combo-box" />
-                  <Button fx:id="savePlaylistButton" mnemonicParsing="false" onAction="#savePlaylists" styleClass="custom-button" text="Save playlists">
+                  <Button fx:id="savePlaylistButton" mnemonicParsing="false" onAction="#savePlaylists" styleClass="custom-button" text="Add to playlist">
                      <HBox.margin>
                         <Insets left="15.0" />
                      </HBox.margin>

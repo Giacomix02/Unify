@@ -60,11 +60,6 @@ public class ViewGenre extends VBox {
                 if(song.getGenres().contains(genre)){
                     SingleSong singleSong = new SingleSong(song);
                     songsBox.getChildren().add(singleSong);
-                    /*
-                    if(!albums.contains(song.getAlbum())){
-                        albums.add(song.getAlbum());
-                    }
-                    */
                 }
             }
             for(Album album : albums){

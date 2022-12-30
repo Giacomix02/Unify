@@ -11,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -19,30 +20,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class ArtistDetailsController implements Initializable, DataInitializable<UserWithData> {
-
-    public HBox membersPickerBox;
+public class ArtistDetailsController implements Initializable, DataInitializable<UserWithData<Artist>> {
 
     @FXML
-    private HBox artistPictures;
+    private FlowPane artistPictures;
 
     @FXML
-    private HBox artistAlbums;
+    private FlowPane artistAlbums;
 
     @FXML
     private VBox artistSongs;
 
-    @FXML
-    private Label artistType;
 
     @FXML
-    private TextField artistNameInput;
+    private Label artistName;
 
     @FXML
-    private TextArea artistBiographyInput;
-
-    @FXML
-    private ChoiceBox<String> artistMembersChoiceBox;
+    private Label artistBiography;
 
     @FXML
     private Label membersLabel;
@@ -50,9 +44,9 @@ public class ArtistDetailsController implements Initializable, DataInitializable
     @FXML
     private Label songLabel;
 
-    @FXML
-    private Label albumLabel;
 
+    @FXML
+    private ImageView artistImagePreview;
     private List<Picture> images = new ArrayList<>();
 
     private SongService songService;
@@ -71,33 +65,21 @@ public class ArtistDetailsController implements Initializable, DataInitializable
     }
 
 
-    public void initializeData(UserWithData data) {
-
-        this.existingArtist = (Artist) data.getData();
+    public void initializeData(UserWithData<Artist> data) {
+        this.existingArtist = data.getData();
         this.user = data.getUser();
-
-        artistNameInput.setText(existingArtist.getName());
-        artistBiographyInput.setText(existingArtist.getBiography());
+        artistName.setText(existingArtist.getName());
+        artistBiography.setText(existingArtist.getBiography());
         images = (existingArtist.getPictures());
         songLabel.visibleProperty().set(false);
-        albumLabel.visibleProperty().set(false);
         setImages(images);
         setSongsAndAlbums();
-
-        artistNameInput.setEditable(false);
-        artistBiographyInput.setEditable(false);
-
         if (existingArtist instanceof GroupArtist) {
-            artistType.setText("Group");
-
+            StringBuilder members = new StringBuilder("Members: ");
             for (Artist artist : ((GroupArtist) existingArtist).getArtists()) {
-                artistMembersChoiceBox.getItems().add(artist.getName());
+                members.append(artist.getName()).append(", ");
             }
-
-        } else {
-            artistType.setText("Single");
-            membersLabel.setDisable(true);
-            artistMembersChoiceBox.setDisable(true);
+            membersLabel.setText(members.substring(0, members.length() - 2)); //remove last comma
         }
     }
 
@@ -109,14 +91,17 @@ public class ArtistDetailsController implements Initializable, DataInitializable
 
     private void setImages(List<Picture> pictures) {
         artistPictures.getChildren().clear();
-        for (Picture picture : pictures) {
-            try{
-                ImageView img = new ImageView(new Image(picture.toStream()));
-                img.setFitHeight(150);
-                img.setFitWidth(150);
-                artistPictures.getChildren().add(img);
-            }catch (Exception e){
-                e.printStackTrace();
+        Picture pfp = pictures.get(0);
+        if (pfp != null) {
+            artistImagePreview.setImage(new Image(pfp.toStream()));
+        }
+        for (int i = 1; i < pictures.size(); i++) {
+            Picture picture = pictures.get(i);
+            if (picture != null) {
+                ImageView imageView = new ImageView(new Image(picture.toStream()));
+                imageView.setFitHeight(100);
+                imageView.setFitWidth(100);
+                artistPictures.getChildren().add(imageView);
             }
         }
     }
@@ -132,7 +117,6 @@ public class ArtistDetailsController implements Initializable, DataInitializable
                 artistSongs.getChildren().add(new SongRow(new UserWithData<>(user, song), user instanceof Admin));
             }
             for (Album album : albums) {
-                albumLabel.visibleProperty().set(true);
                 artistAlbums.getChildren().add(new SingleAlbum(new UserWithData<>(user, album)));
             }
         } catch (Exception e) {
