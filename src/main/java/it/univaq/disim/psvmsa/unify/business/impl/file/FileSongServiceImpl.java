@@ -56,23 +56,21 @@ public class FileSongServiceImpl implements SongService {
         ensureSongsFolderExists();
     }
 
-
-    public Song getById(Integer id) throws BusinessException {
+    private boolean existsSong(Song song){
+        if(song.getId() == null) return false;
         IndexedFile file = loader.load();
-        IndexedFile relationFile = genresRelationLoader.load();
-        IndexedFile.Row row = file.findRowById(id);
-
-        List<IndexedFile.Row> relationRows = relationFile.filterRows(
+        return file.findRowById(song.getId()) != null;
+    }
+    public Song getById(Integer id) throws BusinessException {
+        IndexedFile.Row row = loader.getRowById(id);
+        List<IndexedFile.Row> relationRows = genresRelationLoader.loadFiltered(
                 r -> r.getIntAt(RelationSchema.SONG_ID) == id
         );
-
-
         List<Genre> genres = new ArrayList<>();
         for (IndexedFile.Row relationRow : relationRows) {
             Genre genre = genreService.getById(relationRow.getIntAt(RelationSchema.GENRE_ID));
             genres.add(genre);
         }
-
         try {
             return new Song(
                     row.getStringAt(Schema.SONG_NAME),
@@ -112,12 +110,11 @@ public class FileSongServiceImpl implements SongService {
     }
 
     public void deleteById(Integer id) throws BusinessException {
-        IndexedFile file = loader.load();
-        file.deleteRowById(id);
-        loader.save(file);
+        if(loader.deleteRowById(id) == null) throw new BusinessException("Song not found");
     }
 
     public Song add(Song song) {
+        if(this.existsSong(song)) return null;
         IndexedFile file = loader.load();
         IndexedFile.Row row = new IndexedFile.Row(SEPARATOR);
         song.setId(file.incrementId());
@@ -126,11 +123,14 @@ public class FileSongServiceImpl implements SongService {
                 .set(Schema.ARTIST_ID, song.getArtist().getId())
                 .set(Schema.LYRICS, song.getLyrics())
                 .set(Schema.PICTURE_ID, song.getPicture().getId());
-
         this.saveSongToFile(song);
         file.appendRow(row);
         this.addRelations(song);
         loader.save(file);
+        try {
+            pictureService.add(song.getPicture());
+            artistService.add(song.getArtist());
+        }catch (Exception ignored){}
         return song;
     }
 
@@ -148,6 +148,9 @@ public class FileSongServiceImpl implements SongService {
     private void addRelations(Song song) {
         IndexedFile relationFile = genresRelationLoader.load();
         for (Genre genre : song.getGenres()) {
+            try{
+                genreService.add(genre);
+            }catch(Exception ignored){}
             IndexedFile.Row row = new IndexedFile.Row(SEPARATOR);
             int id = relationFile.incrementId();
             row.set(RelationSchema.RELATION_ID, id)

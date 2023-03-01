@@ -43,8 +43,7 @@ public class FileUserServiceImpl implements UserService {
     }
     @Override
     public User getById(Integer id) {
-        IndexedFile file = loader.load();
-        IndexedFile.Row row = file.findRowById(id);
+        IndexedFile.Row row = loader.getRowById(id);
         if (row == null) return null;
         return userFromRow(row);
     }
@@ -83,11 +82,7 @@ public class FileUserServiceImpl implements UserService {
 
     @Override
     public void delete(User user) throws BusinessException {
-        User existingUser = this.getById(user.getId());
-        if(existingUser == null) throw new BusinessException("User not found");
-        IndexedFile file = loader.load();
-        file.deleteRowById(user.getId());
-        loader.save(file);
+        if(loader.deleteRowById(user.getId()) == null) throw new BusinessException("User not found");
     }
 
     @Override

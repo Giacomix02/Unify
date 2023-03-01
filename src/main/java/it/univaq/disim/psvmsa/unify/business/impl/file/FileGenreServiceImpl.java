@@ -38,8 +38,8 @@ public class FileGenreServiceImpl implements GenreService {
 
     @Override
     public Genre getById(Integer id) {
-        IndexedFile file = loader.load();
-        IndexedFile.Row row = file.findRow(r -> r.getIntAt(Schema.GENRE_ID) == (id));
+        IndexedFile.Row row = loader.getRowById(id);
+        System.out.println(row);
         if (row == null) return null;
         return new Genre(
                 row.getIntAt(Schema.GENRE_ID),
@@ -50,8 +50,7 @@ public class FileGenreServiceImpl implements GenreService {
     @Override
     public List<Genre> searchByName(String name) {
         ArrayList<Genre> genres = new ArrayList<>();
-        IndexedFile file = loader.load();
-        List<IndexedFile.Row> rows = file.filterRows(r -> r.getStringAt(Schema.GENRE_NAME).contains(name.toLowerCase()));
+        List<IndexedFile.Row> rows = loader.loadFiltered(r -> r.getStringAt(Schema.GENRE_NAME).contains(name.toLowerCase()));
         if (rows == null) return null;
 
         for(IndexedFile.Row row : rows) {
@@ -81,15 +80,12 @@ public class FileGenreServiceImpl implements GenreService {
     public boolean existGenreName(String name) {
         IndexedFile file = loader.load();
         IndexedFile.Row row = file.findRow(r -> r.getStringAt(Schema.GENRE_NAME).equalsIgnoreCase(name));
-        if (row == null) return false;
-        return true;
+        return row != null;
     }
 
     @Override
     public void delete(Genre genre) throws BusinessException {
-        IndexedFile file = loader.load();
-        file.deleteRowById(genre.getId());
-        loader.save(file);
+       if(loader.deleteRowById(genre.getId()) == null) throw new BusinessException("Genre not found");
     }
 
     @Override

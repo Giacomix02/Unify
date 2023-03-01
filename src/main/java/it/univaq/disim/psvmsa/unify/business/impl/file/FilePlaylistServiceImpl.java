@@ -70,11 +70,9 @@ public class FilePlaylistServiceImpl implements PlaylistService {
 
     @Override
     public Playlist getById(Integer id) throws BusinessException {
-        IndexedFile file = loader.load();
-        IndexedFile relationFile = loaderRelation.load();
         List<Song> songs = new ArrayList<>();
-        IndexedFile.Row row = file.findRowById(id);
-        List<IndexedFile.Row> relationRows = relationFile.filterRows(
+        IndexedFile.Row row = loader.getRowById(id);
+        List<IndexedFile.Row> relationRows = loaderRelation.loadFiltered(
                 relationRow -> relationRow.getIntAt(RelationSchema.PLAYLIST_ID) == row.getIntAt(Schema.PLAYLIST_ID)
         );
         try{
@@ -111,10 +109,8 @@ public class FilePlaylistServiceImpl implements PlaylistService {
 
     @Override
     public void delete(Playlist playlist) throws BusinessException{
-        IndexedFile file = loader.load();
-        file.deleteRowById(playlist.getId());
+        if(loader.deleteRowById(playlist.getId()) == null) throw new BusinessException("Playlist not found");
         this.deleteSongRelationsInPlaylist(playlist);
-        loader.save(file);
     }
 
     @Override

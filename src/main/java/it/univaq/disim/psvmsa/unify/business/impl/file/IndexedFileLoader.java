@@ -44,10 +44,59 @@ public class IndexedFileLoader {
         }
         return indexedFile;
     }
+    public IndexedFile.Row getRowById(int id){
+        try{
+            this.createFileIfNotExists(path);
+            BufferedReader in = new BufferedReader(new FileReader(path));
+            String l;
+            in.readLine(); // skip header
+            while ((l = in.readLine())!=null){
+                IndexedFile.Row row = IndexedFile.Row.fromText(separator,l);
+                if(row.getIntAt(ID_POSITION) == id){
+                    in.close();
+                    return row;
+                }
+            }
+            in.close();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public IndexedFile.Row deleteRowById(int id){
+        IndexedFile.Row found = null;
+        try{
+            this.createFileIfNotExists(path);
+            BufferedReader in = new BufferedReader(new FileReader(path));
+            String l;
+            StringBuilder out = new StringBuilder();
+            String header = in.readLine();
+            out.append(header);
+            while ((l = in.readLine())!=null){
+                IndexedFile.Row row = IndexedFile.Row.fromText(separator,l);
+                if(row.getIntAt(ID_POSITION) != id){
+                    out.append(l);
+                    out.append("\r\n");
+                }else{
+                    found = row;
+                }
+            }
+            in.close();
+            BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+            writer.write(out.toString());
+            writer.close();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        return found;
+    }
     public List<IndexedFile.Row> loadFiltered(Predicate<IndexedFile.Row> predicate){
         IndexedFile indexedFile = this.load();
         return indexedFile.getRows().stream().filter(predicate).collect(Collectors.toList());
     }
+
     public void deleteRows(Predicate<IndexedFile.Row> predicate){
         IndexedFile indexedFile = this.load();
         indexedFile.setRows(indexedFile.getRows().stream().filter(predicate.negate()).collect(Collectors.toList()));

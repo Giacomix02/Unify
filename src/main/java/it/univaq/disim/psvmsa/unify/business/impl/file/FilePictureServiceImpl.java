@@ -25,8 +25,7 @@ public class FilePictureServiceImpl implements PictureService {
     }
     @Override
     public Picture getById(Integer id) {
-        IndexedFile file = loader.load();
-        IndexedFile.Row row = file.findRow(r -> r.getIntAt(Schema.PICTURE_ID) == id);
+        IndexedFile.Row row = loader.getRowById(id);
         if (row == null) return null;
         try{
             InputStream stream = this.getPictureStream(row.getIntAt(Schema.PICTURE_ID));
@@ -44,11 +43,9 @@ public class FilePictureServiceImpl implements PictureService {
 
     @Override
     public void deleteById(Integer id) throws BusinessException {
-        IndexedFile file = loader.load();
-        file.deleteRowById(id);
+        if(loader.deleteRowById(id) == null) throw new BusinessException("Picture not found");
         File fileToDelete = new File(this.imageFolder + id);
         if(fileToDelete.exists()) fileToDelete.delete();
-        loader.save(file);
     }
 
     @Override
@@ -77,11 +74,7 @@ public class FilePictureServiceImpl implements PictureService {
 
     @Override
     public void delete(Picture picture) throws BusinessException {
-        IndexedFile file = loader.load();
-        file.deleteRowById(picture.getId());
-        File fileToDelete = new File(this.imageFolder + picture.getId());
-        if(fileToDelete.exists()) fileToDelete.delete();
-        loader.save(file);
+        this.deleteById(picture.getId());
     }
 
     private void savePictureToFile(Picture picture){

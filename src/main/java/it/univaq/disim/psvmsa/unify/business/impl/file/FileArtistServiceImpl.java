@@ -78,20 +78,18 @@ public class FileArtistServiceImpl implements ArtistService {
     }
     //to prevent reloading of group relations everytime
     private Artist getById(Integer id, IndexedFile relations){
-        IndexedFile file = loader.load();
-        IndexedFile.Row row = file.findRowById(id);
+        IndexedFile.Row row = loader.getRowById(id);
         if (row == null) return null;
         return parseArtist(row, relations);
     }
 
     @Override
     public void deleteById(Integer id) throws BusinessException {
-        IndexedFile file = loader.load();
-        IndexedFile.Row deleted = file.deleteRowById(id);
+        IndexedFile.Row deleted = loader.deleteRowById(id);
+        if(deleted == null) throw new BusinessException("Artist not found");
         Artist parsed = parseArtist(deleted, groupRelationsLoader.load());
         if(parsed instanceof GroupArtist) removeGroupRelations((GroupArtist) parsed);
         deleteImagesRelations(parsed);
-        loader.save(file);
     }
 
     //for performance reasons i pass the reference to the relations else it would cause the file to be
@@ -128,8 +126,7 @@ public class FileArtistServiceImpl implements ArtistService {
     }
 
     private List<Picture> getArtistPicturesFromId(int id){
-        IndexedFile imagesRelations = imagesRelationsLoader.load();
-        List<IndexedFile.Row> images = imagesRelations.filterRows(row -> row.getIntAt(ImagesSchema.ARTIST_ID) == id);
+        List<IndexedFile.Row> images = imagesRelationsLoader.loadFiltered(row -> row.getIntAt(ImagesSchema.ARTIST_ID) == id);
         List<Picture> pictures = new ArrayList<>();
         for(IndexedFile.Row row: images){
             pictures.add(pictureService.getById(row.getIntAt(ImagesSchema.IMAGE_ID)));
@@ -139,6 +136,9 @@ public class FileArtistServiceImpl implements ArtistService {
     private void addImagesRelations(Artist artist){
         IndexedFile relationFile = imagesRelationsLoader.load();
         for(Picture picture: artist.getPictures()){
+            try{
+                pictureService.add(picture);
+            }catch (Exception ignored){}
             IndexedFile.Row row = new IndexedFile.Row(this.SEPARATOR);
             row.set(ImagesSchema.RELATION_ID, relationFile.incrementId())
                     .set(ImagesSchema.IMAGE_ID, picture.getId())
@@ -159,6 +159,7 @@ public class FileArtistServiceImpl implements ArtistService {
     }
     @Override
     public Artist add(Artist artist) {
+        if(existsArtist(artist)) return null;
         IndexedFile file = loader.load();
         IndexedFile.Row row = new IndexedFile.Row(this.SEPARATOR);
         int id = file.incrementId();
@@ -178,7 +179,10 @@ public class FileArtistServiceImpl implements ArtistService {
         loader.save(file);
         return artist;
     }
-
+    private boolean existsArtist(Artist artist){
+        if(artist.getId() == null) return false;
+        return loader.getRowById(artist.getId()) != null;
+    }
     @Override
     public void update(Artist artist) throws BusinessException {
         IndexedFile file = loader.load();
@@ -208,9 +212,8 @@ public class FileArtistServiceImpl implements ArtistService {
 
     @Override
     public List<Artist> searchArtistsByName(String n) {
-        IndexedFile file = loader.load();
         String name = n.toLowerCase();
-        List<IndexedFile.Row> rows = file.filterRows(
+        List<IndexedFile.Row> rows = loader.loadFiltered(
                 r -> r.getStringAt(Schema.ARTIST_NAME).toLowerCase().contains(name)
         );
         List<Artist> artists = new ArrayList<>();
@@ -219,10 +222,14 @@ public class FileArtistServiceImpl implements ArtistService {
         }
         return artists;
     }
-
     public void addGroupRelations(GroupArtist group){
         IndexedFile file = groupRelationsLoader.load();
         for(Artist member: group.getArtists()){
+            try{
+                if(!existsArtist(member)){
+                    add(member);
+                }
+            }catch (Exception ignored){}
             IndexedFile.Row row = new IndexedFile.Row(this.SEPARATOR);
             int id = file.incrementId();
             row.set(GroupSchema.RELATION_ID, id)
