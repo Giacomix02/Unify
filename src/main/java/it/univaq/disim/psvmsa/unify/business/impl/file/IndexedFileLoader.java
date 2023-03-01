@@ -1,6 +1,7 @@
 package it.univaq.disim.psvmsa.unify.business.impl.file;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -72,6 +73,7 @@ public class IndexedFileLoader {
             String l;
             StringBuilder out = new StringBuilder();
             String header = in.readLine();
+            if(header == null) return null; // file is empty (no header)
             out.append(header);
             while ((l = in.readLine())!=null){
                 IndexedFile.Row row = IndexedFile.Row.fromText(separator,l);
@@ -93,8 +95,25 @@ public class IndexedFileLoader {
         return found;
     }
     public List<IndexedFile.Row> loadFiltered(Predicate<IndexedFile.Row> predicate){
-        IndexedFile indexedFile = this.load();
-        return indexedFile.getRows().stream().filter(predicate).collect(Collectors.toList());
+        List<IndexedFile.Row> filtered = new ArrayList<>();
+        try{
+            this.createFileIfNotExists(path);
+            BufferedReader in = new BufferedReader(new FileReader(path));
+            String header = in.readLine();
+            if(header == null) return new ArrayList<>();
+            String l;
+            while ((l = in.readLine())!=null){
+                IndexedFile.Row row = IndexedFile.Row.fromText(separator,l);
+                if(predicate.test(row)){
+                    filtered.add(row);
+                }
+            }
+            in.close();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        return filtered;
     }
 
     public void deleteRows(Predicate<IndexedFile.Row> predicate){
