@@ -137,7 +137,7 @@ public class FileArtistServiceImpl implements ArtistService {
         IndexedFile relationFile = imagesRelationsLoader.load();
         for(Picture picture: artist.getPictures()){
             try{
-                pictureService.add(picture);
+                picture = pictureService.add(picture);
             }catch (Exception ignored){}
             IndexedFile.Row row = new IndexedFile.Row(this.SEPARATOR);
             row.set(ImagesSchema.RELATION_ID, relationFile.incrementId())
@@ -147,6 +147,7 @@ public class FileArtistServiceImpl implements ArtistService {
         }
         imagesRelationsLoader.save(relationFile);
     }
+
     private void deleteImagesRelations(Artist artist) throws BusinessException{
         IndexedFile relationFile = imagesRelationsLoader.load();
         List<IndexedFile.Row> rows = relationFile.filterRows(

@@ -196,16 +196,18 @@ public class EditSongController implements Initializable, DataInitializable<User
 
     public void saveSong() {
         ArrayList<Genre> genres = new ArrayList<>(genreBoxChoice.getCheckModel().getCheckedItems());
-        Picture picture = pictureService.add(this.picture); //TODO maybe move in service
+        //Picture picture = pictureService.add(this.picture); //TODO maybe move in service
+        System.out.println(this.picture);
         try{
             Song song = new Song(
                     songNameInput.getText(),
                     artistService.getById(artistBoxChoice.getSelectionModel().getSelectedItem().getId()),
                     songLyricsInput.getText(),
-                    picture,
+                    this.picture, //previously was picture
                     genres,
                     songInputStream
             );
+            System.out.println(song.getPicture());
             if(this.song != null) {
                 song.setId(this.song.getId());
                 songService.update(song);
@@ -219,6 +221,7 @@ public class EditSongController implements Initializable, DataInitializable<User
         }
         saveSongLabel.setVisible(false);
     }
+
     private void clear(){
         songNameInput.clear();
         songLyricsInput.clear();
@@ -226,4 +229,5 @@ public class EditSongController implements Initializable, DataInitializable<User
         genreBoxChoice.getCheckModel().clearChecks();
         artistBoxChoice.setValue(null);
     }
+
 }

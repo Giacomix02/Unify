@@ -39,7 +39,6 @@ public class FileGenreServiceImpl implements GenreService {
     @Override
     public Genre getById(Integer id) {
         IndexedFile.Row row = loader.getRowById(id);
-        System.out.println(row);
         if (row == null) return null;
         return new Genre(
                 row.getIntAt(Schema.GENRE_ID),
