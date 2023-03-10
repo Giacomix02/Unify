@@ -115,9 +115,16 @@ public class FileSongServiceImpl implements SongService {
 
     public Song add(Song song) {
         if(this.existsSong(song)) return null;
+
+        try {
+            pictureService.add(song.getPicture());
+            artistService.add(song.getArtist());
+        } catch (Exception ignored){}
+
         IndexedFile file = loader.load();
         IndexedFile.Row row = new IndexedFile.Row(SEPARATOR);
         song.setId(file.incrementId());
+
         row.set(Schema.SONG_ID, song.getId())
                 .set(Schema.SONG_NAME, song.getName())
                 .set(Schema.ARTIST_ID, song.getArtist().getId())
@@ -127,10 +134,7 @@ public class FileSongServiceImpl implements SongService {
         file.appendRow(row);
         this.addRelations(song);
         loader.save(file);
-        try {
-            pictureService.add(song.getPicture());
-            artistService.add(song.getArtist());
-        }catch (Exception ignored){}
+
         return song;
     }
 

@@ -78,7 +78,8 @@ public class EditArtistController implements Initializable, DataInitializable<Us
 
     public void initializeData(UserWithData<Artist> data) {
         this.existingArtist = data.getData();
-        this.user = data.getUser();
+        this.user =
+                data.getUser();
         artistNameInput.setText(existingArtist.getName());
         artistBiographyInput.setText(existingArtist.getBiography());
         delete.visibleProperty().set(true);
@@ -91,6 +92,7 @@ public class EditArtistController implements Initializable, DataInitializable<Us
             }
         }
         images = existingArtist.getPictures();
+
         setImages(existingArtist.getPictures());
     }
 
@@ -172,9 +174,11 @@ public class EditArtistController implements Initializable, DataInitializable<Us
 
     @FXML
     private void onAction() {
+        /*
         for (Picture picture: images){
             pictureService.add(picture);
-        }
+        }*/
+
         if (artistTypeChoiceBox.getSelectionModel().getSelectedItem().equals("Single")) {
             Artist singleArtist = new Artist(artistNameInput.getText(), artistBiographyInput.getText(), images);
             save(singleArtist);

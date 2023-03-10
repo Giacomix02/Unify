@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 public class IndexedFileLoader {
     private final String path;
     private final String separator;
-
     private final int ID_POSITION;
 
     public IndexedFileLoader(String path, String separator) {
