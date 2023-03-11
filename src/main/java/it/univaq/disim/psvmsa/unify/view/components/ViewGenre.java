@@ -22,14 +22,23 @@ import java.util.List;
 public class ViewGenre extends VBox {
 
     private Label label;
+
     private boolean editable;
+
     private User user;
+
     private Button removeButton;
+
     private Genre genre;
+
     private HBox songsBox;
+
     private HBox albumBox;
+
     private GenreService genreService;
+
     private SongService songService;
+
 
     public ViewGenre(Genre genre, User user) {
         super();
@@ -37,7 +46,8 @@ public class ViewGenre extends VBox {
         this.user = user;
         this.editable = user instanceof Admin;
         init();
-}
+    }
+
     public void init(){
         try {
             VBox root = FXMLLoader.load(getClass().getResource("/ui/components/viewGenre.fxml"));

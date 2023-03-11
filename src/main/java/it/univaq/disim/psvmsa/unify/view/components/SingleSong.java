@@ -4,6 +4,7 @@ import it.univaq.disim.psvmsa.unify.model.Genre;
 import it.univaq.disim.psvmsa.unify.model.Picture;
 import it.univaq.disim.psvmsa.unify.model.Song;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,11 +16,20 @@ import javafx.scene.shape.Rectangle;
 public class SingleSong extends VBox {
 
     private Label label;
+
     private ImageView image;
+
     private Song song;
+
+    private Button playSong;
+
+    private MusicPlayer musicPlayer;
+
+
     public SingleSong(Song song) {
         super();
         this.song = song;
+        this.musicPlayer = MusicPlayer.getInstance();
         init();
     }
 
@@ -31,26 +41,30 @@ public class SingleSong extends VBox {
 
             label = (Label) root.lookup("#label");
             image = (ImageView) root.lookup("#image");
+            playSong = (Button) root.lookup("#playSong");
 
             this.label.setText(song.getName());
-            Picture picture = song.getPicture();
-            if(picture != null){
-                Image i = new Image(picture.toStream());
+            Picture pic = song.getPicture();
+            if(pic == null) return;
+            Image image = new Image(pic.toStream());
+            Rectangle rectangle = new Rectangle(0, 0, 100, 100);
+            rectangle.setArcWidth(14);
+            rectangle.setArcHeight(14);
+            ImagePattern pattern = new ImagePattern(image);
+            rectangle.setFill(pattern);
+            playSong.setGraphic(rectangle);
 
-                Rectangle rectangle = new Rectangle(0, 0, 100, 100);
-                rectangle.setArcWidth(14);   // Corner radius
-                rectangle.setArcHeight(14);
-                ImagePattern pattern = new ImagePattern(i);
-                rectangle.setFill(pattern);
-                image.setClip(rectangle);
-
-                image.setImage(i);
-            }
-
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
+
+        playSong();
     }
 
-    //TODO form here song can be only played
+    public void playSong() {
+        this.playSong.setOnMouseClicked(event -> {
+            musicPlayer.playOne(song);
+        });
+    }
+
 }

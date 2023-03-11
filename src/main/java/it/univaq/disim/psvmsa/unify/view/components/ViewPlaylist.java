@@ -15,16 +15,25 @@ import javafx.scene.layout.Priority;
 public class ViewPlaylist extends HBox {
 
     private User user;
+
     private Label label;
+
     private Button editButton;
+
     private HBox hBox;
 
+    private Button playButton;
+
+    private MusicPlayer musicPlayer;
+
     private Playlist playlist;
+
 
     public ViewPlaylist(Playlist playlist, User user) {
         super();
         this.playlist = playlist;
         this.user = user;
+        this.musicPlayer = MusicPlayer.getInstance();
         init();
     }
 
@@ -37,6 +46,7 @@ public class ViewPlaylist extends HBox {
 
             label = (Label) root.lookup("#label");
             editButton = (Button) root.lookup("#editButton");
+            playButton = (Button) root.lookup("#playButton");
 
             this.label.setOnMouseClicked(mouseEvent -> {
                 try {
@@ -62,6 +72,16 @@ public class ViewPlaylist extends HBox {
         }catch (Exception e){
             e.printStackTrace();
         }
+
+        playPlaylist();
+
+    }
+
+    public void playPlaylist() {
+        this.playButton.setOnMouseClicked(event -> {
+            musicPlayer.setQueue(playlist.getSongs());
+            musicPlayer.startQueuePlayback();
+        });
     }
 
 }

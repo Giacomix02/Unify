@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Rectangle2D?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<VBox id="singleSong" alignment="CENTER" stylesheets="@singleSong.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<VBox id="singleSong" alignment="CENTER" stylesheets="@singleSong.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ImageView id="image" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" VBox.vgrow="NEVER">
-         <viewport>
-            <Rectangle2D />
-         </viewport></ImageView>
+      <Button id="playSong" mnemonicParsing="false" style="-fx-background-color: transparent;">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Button>
       <Label id="label" styleClass="text" />
    </children>
 </VBox>

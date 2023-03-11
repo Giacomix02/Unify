@@ -46,7 +46,6 @@ public class ViewAlbum extends HBox {
 
     private User user;
 
-
     private LinkedList<Song> queue = new LinkedList<>();
 
     private MusicPlayer musicPlayer;
@@ -141,7 +140,6 @@ public class ViewAlbum extends HBox {
             musicPlayer.startQueuePlayback();
         });
     }
-
 
 
 }
