@@ -58,6 +58,7 @@ public class HomeController implements DataInitializable<User>, Initializable {
     }
 
     public void initializeData(User user){
+
         this.user = user;
         try {
             List<Playlist> playlists = playlistService.getPlaylistsByUser(user);

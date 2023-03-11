@@ -5,7 +5,7 @@ target/
 !**/src/test/**
 logs
 data
-data.zip
+data.rar
 ### Eclipse ###
 .classpath
 .project
