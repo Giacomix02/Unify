@@ -114,7 +114,8 @@ public class FilePlaylistServiceImpl implements PlaylistService {
         this.deleteSongRelationsInPlaylist(playlist);
     }
     public boolean existsPlaylist(Playlist p){
-        return loader.getRowById(p.getId()) != null;
+        if (p.getId()==null) return false;
+        return (loader.getRowById(p.getId()) != null);
     }
     @Override
     public void update(Playlist playlist) throws BusinessException {
