@@ -76,11 +76,18 @@ public class IndexedFileLoader {
             out.append(header);
             while ((l = in.readLine())!=null){
                 IndexedFile.Row row = IndexedFile.Row.fromText(separator,l);
+                System.out.println("0 ==> "+row);
                 if(row.getIntAt(ID_POSITION) != id){
+                    out.append("\r");
                     out.append(l);
                     out.append("\r\n");
+                    System.out.println("1 ==> "+out.toString());
+                    System.out.println("a1");
                 }else{
+                    System.out.println("2 ==> "+found);
                     found = row;
+                    System.out.println("22 ==> "+found);
+                    System.out.println("a2");
                 }
             }
             in.close();

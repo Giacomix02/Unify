@@ -5,6 +5,7 @@ target/
 !**/src/test/**
 logs
 data
+data.zip
 ### Eclipse ###
 .classpath
 .project
