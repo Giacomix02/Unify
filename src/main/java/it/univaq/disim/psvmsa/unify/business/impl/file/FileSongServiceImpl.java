@@ -103,7 +103,6 @@ public class FileSongServiceImpl implements SongService {
 
         IndexedFile file = loader.load();
         IndexedFile.Row row = new IndexedFile.Row(SEPARATOR);
-        System.out.println(song.getPicture()+ " | "+ song.getPicture().getId());
         row.set(Schema.SONG_ID, song.getId())
                 .set(Schema.SONG_NAME, song.getName())
                 .set(Schema.ARTIST_ID, song.getArtist().getId())

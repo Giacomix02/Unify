@@ -123,7 +123,6 @@ public class FilePlaylistServiceImpl implements PlaylistService {
         this.deleteSongRelationsInPlaylist(playlist);
         this.addSongRelationInPlaylist(playlist);
 
-        System.out.println(row.getValues());
 
         file.updateRow(row);
         loader.save(file);

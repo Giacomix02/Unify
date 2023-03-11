@@ -101,7 +101,6 @@ public class FilePictureServiceImpl implements PictureService {
 
     private void ensurePictureFolderExists(){
         File folder = new File(this.imageFolder);
-        System.out.println(folder.exists());
         if(!folder.exists()) folder.mkdirs();
     }
 }
