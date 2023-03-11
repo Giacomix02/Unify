@@ -8,16 +8,15 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../app.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.psvmsa.unify.controller.PlaylistsController">
+<VBox stylesheets="@../app.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.psvmsa.unify.controller.PlaylistsController">
    <children>
       <HBox alignment="CENTER">
          <children>
-            <HBox fx:id="searchBox" alignment="CENTER_RIGHT" maxHeight="50.0" styleClass="searchBox">
+            <HBox fx:id="searchBox" alignment="CENTER_RIGHT" styleClass="searchBox" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
             </HBox>
-            <HBox alignment="CENTER" HBox.hgrow="ALWAYS" />
             <HBox fx:id="addBox" alignment="CENTER_LEFT" />
             <Button id="button" fx:id="addButton" mnemonicParsing="false" onAction="#addPlaylist" style="-fx-background-color: transparent;" stylesheets="@../components/add.css" text="Add" textAlignment="CENTER">
                <graphic>

@@ -23,7 +23,7 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor></HBox>
-      <HBox minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS" />
+      <HBox HBox.hgrow="ALWAYS" />
       <HBox alignment="CENTER">
          <children>
             <Button id="editButton" fx:id="edit" mnemonicParsing="false" style="-fx-background-color: transparent;" styleClass="text-button" text="Edit">

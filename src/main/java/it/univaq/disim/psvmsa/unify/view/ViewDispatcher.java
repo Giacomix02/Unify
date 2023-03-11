@@ -31,7 +31,7 @@ public class ViewDispatcher {
         layoutPage.getController().initializeData(user);
         this.layout = (LayoutController) layoutPage.getController();
         stage.setScene(new Scene(layoutView));
-        navigateTo(Pages.HOME);
+        navigateTo(Pages.HOME, user);
     }
 
     public void showLogin() throws ViewDispatcherException {
