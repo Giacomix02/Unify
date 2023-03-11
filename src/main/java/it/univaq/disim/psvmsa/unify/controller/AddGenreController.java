@@ -21,6 +21,7 @@ public class AddGenreController implements Initializable, DataInitializable{
 
     @FXML
     private TextField genreInput;
+
     @FXML
     private Button saveButton;
 

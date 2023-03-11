@@ -189,7 +189,7 @@ public class EditSongController implements Initializable, DataInitializable<User
         try{
             songService.deleteById(song.getId());
             viewDispatcher.navigateTo(Pages.SONGS, user);
-        }catch(Exception e){
+        } catch(Exception e) {
             e.printStackTrace();
         }
     }
@@ -201,7 +201,7 @@ public class EditSongController implements Initializable, DataInitializable<User
                     songNameInput.getText(),
                     artistService.getById(artistBoxChoice.getSelectionModel().getSelectedItem().getId()),
                     songLyricsInput.getText(),
-                    this.picture, //previously was picture
+                    this.picture,
                     genres,
                     songInputStream
             );

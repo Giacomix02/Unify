@@ -92,7 +92,7 @@ public class ViewGenre extends VBox {
                         songService.update(song);
                     }
                 }
-                ViewDispatcher.getInstance().navigateTo(Pages.GENRES);
+                ViewDispatcher.getInstance().navigateTo(Pages.GENRES, user);
             }
             catch (Exception e){
                 e.printStackTrace();
