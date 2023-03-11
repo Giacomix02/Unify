@@ -74,7 +74,6 @@ public class FileAlbumServiceImpl implements AlbumService {
 
     @Override
     public Album add(Album album) {
-
         IndexedFile file = loader.load();
         IndexedFile.Row row = new IndexedFile.Row(this.SEPARATOR);
         int id = file.incrementId();
@@ -109,18 +108,10 @@ public class FileAlbumServiceImpl implements AlbumService {
     }
 
     public List<Song> getSongsRelations(Integer albumId) throws BusinessException{
-        IndexedFile file = songsRelationsLoader.load();
         List<Song> songs = new ArrayList<>();
-        List<IndexedFile.Row> rows = file.filterRows((r) -> r.getIntAt(SongsSchema.ALBUM_ID) == albumId);
-        System.out.println("inizio");
+        List<IndexedFile.Row> rows = songsRelationsLoader.loadFiltered((r) -> r.getIntAt(SongsSchema.ALBUM_ID) == albumId);
         for (IndexedFile.Row row : rows) {
-            System.out.println(row);
-            int i = row.getIntAt(SongsSchema.SONG_ID);
-            System.out.println("Id = "+i);
-            Song songToAdd = songService.getById(i);
-            System.out.println(songToAdd.getName());
-            songs.add(songToAdd);
-            //songs.add(songService.getById(row.getIntAt(SongsSchema.SONG_ID)));
+            songs.add(songService.getById(row.getIntAt(SongsSchema.SONG_ID)));
         }
         return songs;
     }
@@ -137,9 +128,8 @@ public class FileAlbumServiceImpl implements AlbumService {
     public void addSongsRelations(Integer albumId, List<Song> songs){
         IndexedFile file = songsRelationsLoader.load();
         for (Song song : songs) {
-            try{
-                this.songService.add(song);
-            } catch(Exception ignored){}
+            Song s = this.songService.add(song);
+            song = s == null ? song : s; //if the song is already present, it is not added again
             IndexedFile.Row row = new IndexedFile.Row(this.SEPARATOR);
             int id = file.incrementId();
             row.set(SongsSchema.RELATION_ID, id)

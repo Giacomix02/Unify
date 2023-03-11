@@ -149,13 +149,13 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
     public void updateAlbum(){
         try{
             if(this.album == null){
-                this.album = new Album(albumInput.getText(), songsPicker.getItems(),artistPicker.getValue());
+                this.album = new Album(albumInput.getText(), songsPicker.getCheckModel().getCheckedItems(),artistPicker.getValue());
                albumService.add(this.album);
                exceptionLabel.setText("Saved album");
                albumInput.clear();
             }else{
                 this.album.setName(albumInput.getText());
-                this.album.setSongs(songsPicker.getItems());
+                this.album.setSongs(songsPicker.getCheckModel().getCheckedItems());
                 this.album.setArtist(artistPicker.getValue());
                 albumService.update(album);
                 exceptionLabel.setText("Edited album");

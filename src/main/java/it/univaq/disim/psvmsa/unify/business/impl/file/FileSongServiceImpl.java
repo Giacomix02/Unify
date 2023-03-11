@@ -120,21 +120,20 @@ public class FileSongServiceImpl implements SongService {
 
     public Song add(Song song) {
         if(this.existsSong(song)) return null;
-
-        try {
-            pictureService.add(song.getPicture());
-            artistService.add(song.getArtist());
-        } catch (Exception ignored){}
-
+        Picture pic = pictureService.add(song.getPicture());
+        Artist art = artistService.add(song.getArtist());
+        pic = pic == null ? song.getPicture() : pic; // if the picture already exists, it will be returned
+        art = art == null ? song.getArtist() : art; // if the artist already exists, it will be returned
+        song.setArtist(art);
+        song.setPicture(pic);
         IndexedFile file = loader.load();
         IndexedFile.Row row = new IndexedFile.Row(SEPARATOR);
         song.setId(file.incrementId());
-
         row.set(Schema.SONG_ID, song.getId())
                 .set(Schema.SONG_NAME, song.getName())
-                .set(Schema.ARTIST_ID, song.getArtist().getId())
+                .set(Schema.ARTIST_ID, art.getId())
                 .set(Schema.LYRICS, song.getLyrics())
-                .set(Schema.PICTURE_ID, song.getPicture().getId());
+                .set(Schema.PICTURE_ID, pic.getId());
         this.saveSongToFile(song);
         file.appendRow(row);
         this.addRelations(song);
@@ -157,9 +156,8 @@ public class FileSongServiceImpl implements SongService {
     private void addRelations(Song song) {
         IndexedFile relationFile = genresRelationLoader.load();
         for (Genre genre : song.getGenres()) {
-            try{
-                genreService.add(genre);
-            }catch(Exception ignored){}
+                Genre g = genreService.add(genre);
+                genre = g == null ? genre : g; // if the genre already exists, it will be returned
             IndexedFile.Row row = new IndexedFile.Row(SEPARATOR);
             int id = relationFile.incrementId();
             row.set(RelationSchema.RELATION_ID, id)

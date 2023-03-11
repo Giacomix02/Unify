@@ -94,6 +94,7 @@ public class FilePlaylistServiceImpl implements PlaylistService {
 
     @Override
     public Playlist add(Playlist playlist){
+        if(existsPlaylist(playlist)) return null;
         IndexedFile file = loader.load();
         IndexedFile.Row row = new IndexedFile.Row(SEPARATOR);
         int id = file.incrementId();
@@ -112,7 +113,9 @@ public class FilePlaylistServiceImpl implements PlaylistService {
         if(loader.deleteRowById(playlist.getId()) == null) throw new BusinessException("Playlist not found");
         this.deleteSongRelationsInPlaylist(playlist);
     }
-
+    public boolean existsPlaylist(Playlist p){
+        return loader.getRowById(p.getId()) != null;
+    }
     @Override
     public void update(Playlist playlist) throws BusinessException {
         IndexedFile file = loader.load();

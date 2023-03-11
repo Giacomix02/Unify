@@ -50,6 +50,7 @@ public class FilePictureServiceImpl implements PictureService {
 
     @Override
     public Picture add(Picture picture) {
+        if(this.existsPicture(picture)) return null;
         IndexedFile file = loader.load();
         IndexedFile.Row row = new IndexedFile.Row(this.SEPARATOR);
         int id = file.incrementId();
@@ -71,7 +72,9 @@ public class FilePictureServiceImpl implements PictureService {
         loader.save(file);
         return picture;
     }
-
+    private boolean existsPicture(Picture picture){
+        return loader.getRowById(picture.getId() ) != null;
+    }
     @Override
     public void delete(Picture picture) throws BusinessException {
         this.deleteById(picture.getId());

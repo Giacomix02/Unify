@@ -22,9 +22,9 @@ public class RAMGenreServiceImpl implements GenreService {
         return genres.get(id);
     }
 
-    public Genre add(Genre genre) throws BusinessException  {
+    public Genre add(Genre genre)  {
         List<Genre> g = searchByName(genre.getName());
-        if(!g.isEmpty()) throw new BusinessException("Genre already exist");
+        if(!g.isEmpty()) return null;
         genre.setId(++id);
         this.genres.put(genre.getId(), genre);
         return genre;

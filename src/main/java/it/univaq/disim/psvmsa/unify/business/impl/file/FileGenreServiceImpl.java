@@ -63,8 +63,8 @@ public class FileGenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Genre add(Genre genre) throws BusinessException {
-        if(existGenreName(genre.getName())) throw new BusinessException("Genre already exist");
+    public Genre add(Genre genre)  {
+        if(existGenreName(genre.getName())) return null;
         IndexedFile file = loader.load();
         IndexedFile.Row row = new IndexedFile.Row(this.SEPARATOR);
         int id = file.incrementId();

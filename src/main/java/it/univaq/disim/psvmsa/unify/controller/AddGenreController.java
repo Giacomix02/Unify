@@ -50,11 +50,9 @@ public class AddGenreController implements Initializable, DataInitializable{
 
     public void saveGenre(){
         Genre genre = new Genre(genreInput.getText());
-        try {
-            genreService.add(genre);
-        }
-        catch (BusinessException e){
-            exceptionLabel.setText(e.getMessage());
+        Genre saved = genreService.add(genre);
+        if(saved == null) {
+            exceptionLabel.setText("Genre already exists");
         }
         genreInput.clear();
     }

@@ -136,9 +136,8 @@ public class FileArtistServiceImpl implements ArtistService {
     private void addImagesRelations(Artist artist){
         IndexedFile relationFile = imagesRelationsLoader.load();
         for(Picture picture: artist.getPictures()){
-            try{
-                picture = pictureService.add(picture);
-            }catch (Exception ignored){}
+            Picture p = pictureService.add(picture);
+            picture = p == null ? picture : p; //if the picture already exists it will return null
             IndexedFile.Row row = new IndexedFile.Row(this.SEPARATOR);
             row.set(ImagesSchema.RELATION_ID, relationFile.incrementId())
                     .set(ImagesSchema.IMAGE_ID, picture.getId())
@@ -226,11 +225,10 @@ public class FileArtistServiceImpl implements ArtistService {
     public void addGroupRelations(GroupArtist group){
         IndexedFile file = groupRelationsLoader.load();
         for(Artist member: group.getArtists()){
-            try{
                 if(!existsArtist(member)){
-                    add(member);
+                    Artist m = add(member);
+                    member = m == null ? member : m; //if the artist already exists it will return null
                 }
-            }catch (Exception ignored){}
             IndexedFile.Row row = new IndexedFile.Row(this.SEPARATOR);
             int id = file.incrementId();
             row.set(GroupSchema.RELATION_ID, id)
