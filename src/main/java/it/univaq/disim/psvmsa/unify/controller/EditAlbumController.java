@@ -20,6 +20,7 @@ import javafx.util.StringConverter;
 import org.controlsfx.control.CheckComboBox;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -67,13 +68,11 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
     public void initializeData(UserWithData<Album> data){
         this.album = data.getData();
         this.user = data.getUser();
-        System.out.println(album);
         if(this.album != null){
             removeButton.visibleProperty().set(true);
             albumInput.setText(album.getName());
             artistPicker.setValue(album.getArtist());
             try {
-                songsPicker.getItems().addAll(songService.searchByArtist(album.getArtist()));
                 for (Song song : album.getSongs()) {
                     songsPicker.getCheckModel().check(song);
                 }

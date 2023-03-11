@@ -90,10 +90,9 @@ public class ViewAlbum extends HBox {
 
             this.albumDetails.setOnMouseClicked(event -> {
                 try {
-                    List<Song> songs = album.getSongs();
-                    UserWithData<List<Song>> userWithData = new UserWithData<>(user, songs);
+                    UserWithData<List<Song>> userWithData = new UserWithData<>(user, album.getSongs());
                     //TODO NO!
-                    ViewDispatcher.getInstance().navigateTo(Pages.SONGS,userWithData);
+                    ViewDispatcher.getInstance().navigateTo(Pages.SONGS, userWithData);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

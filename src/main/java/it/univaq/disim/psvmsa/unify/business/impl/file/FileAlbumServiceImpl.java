@@ -15,7 +15,6 @@ public class FileAlbumServiceImpl implements AlbumService {
     private static class Schema {
         public static int ALBUM_ID = 0;
         public static int ALBUM_NAME = 1;
-
         public static int ARTIST_ID = 2;
     }
     private static class SongsSchema {
@@ -23,12 +22,14 @@ public class FileAlbumServiceImpl implements AlbumService {
         public static int ALBUM_ID = 1;
         public static int SONG_ID = 2;
     }
+
     private final String SEPARATOR = "|";
 
     private final IndexedFileLoader loader;
     private final IndexedFileLoader songsRelationsLoader;
     SongService songService;
     ArtistService artistService;
+
     public FileAlbumServiceImpl(String path, String songRelationsPath, SongService songService, ArtistService artistService) {
         this.loader = new IndexedFileLoader(path, this.SEPARATOR);
         this.songsRelationsLoader = new IndexedFileLoader(songRelationsPath, this.SEPARATOR);
@@ -106,14 +107,24 @@ public class FileAlbumServiceImpl implements AlbumService {
         deleteById(album.getId());
         deleteSongsRelations(album.getId());
     }
+
     public List<Song> getSongsRelations(Integer albumId) throws BusinessException{
+        IndexedFile file = songsRelationsLoader.load();
         List<Song> songs = new ArrayList<>();
-        List<IndexedFile.Row> rows = loader.loadFiltered((r) -> r.getIntAt(Schema.ALBUM_ID) == albumId);
+        List<IndexedFile.Row> rows = file.filterRows((r) -> r.getIntAt(SongsSchema.ALBUM_ID) == albumId);
+        System.out.println("inizio");
         for (IndexedFile.Row row : rows) {
-            songs.add(songService.getById(row.getIntAt(SongsSchema.SONG_ID)));
+            System.out.println(row);
+            int i = row.getIntAt(SongsSchema.SONG_ID);
+            System.out.println("Id = "+i);
+            Song songToAdd = songService.getById(i);
+            System.out.println(songToAdd.getName());
+            songs.add(songToAdd);
+            //songs.add(songService.getById(row.getIntAt(SongsSchema.SONG_ID)));
         }
         return songs;
     }
+
     public void deleteSongsRelations(Integer albumId) throws BusinessException{
         IndexedFile file = songsRelationsLoader.load();
         List<IndexedFile.Row> rows = file.filterRows((r) -> r.getIntAt(SongsSchema.ALBUM_ID) == albumId);
@@ -122,12 +133,13 @@ public class FileAlbumServiceImpl implements AlbumService {
         }
         songsRelationsLoader.save(file);
     }
+
     public void addSongsRelations(Integer albumId, List<Song> songs){
         IndexedFile file = songsRelationsLoader.load();
         for (Song song : songs) {
             try{
                 this.songService.add(song);
-            }catch(Exception ignored){}
+            } catch(Exception ignored){}
             IndexedFile.Row row = new IndexedFile.Row(this.SEPARATOR);
             int id = file.incrementId();
             row.set(SongsSchema.RELATION_ID, id)
@@ -137,6 +149,7 @@ public class FileAlbumServiceImpl implements AlbumService {
         }
         songsRelationsLoader.save(file);
     }
+
     @Override
     public List<Album> searchAlbumsByName(String name) throws BusinessException {
         List<IndexedFile.Row> rows = loader.loadFiltered(r -> r.getStringAt(Schema.ALBUM_NAME).toLowerCase().contains(name.toLowerCase()));

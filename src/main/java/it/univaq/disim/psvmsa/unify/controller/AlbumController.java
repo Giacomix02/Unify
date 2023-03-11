@@ -38,9 +38,11 @@ public class AlbumController implements Initializable, DataInitializable<User> {
     private SearchBar searchBar;
 
     private User user;
+
     private AlbumService albumService;
 
     private ViewAlbum viewAlbum;
+
     public AlbumController() {
         UnifyServiceFactory factoryInstance = UnifyServiceFactory.getInstance();
         this.albumService = factoryInstance.getAlbumService();
@@ -52,6 +54,13 @@ public class AlbumController implements Initializable, DataInitializable<User> {
         if (user instanceof Admin){
             addBox.getChildren().add(new AddLinkButton(Pages.EDITALBUM));
         }
+
+        try{
+            viewList.setItems(FXCollections.observableList(albumService.getAlbums()));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         viewList.setCellFactory(album -> new ListCell<>(){
             @Override
             protected void updateItem(Album album, boolean empty) {
@@ -63,11 +72,7 @@ public class AlbumController implements Initializable, DataInitializable<User> {
                 }
             }
         });
-        try{
-            viewList.setItems(FXCollections.observableList(albumService.getAlbums()));
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+
     }
 
     public void initialize(URL location, ResourceBundle resources) {
