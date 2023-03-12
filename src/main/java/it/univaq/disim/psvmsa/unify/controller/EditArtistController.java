@@ -78,8 +78,7 @@ public class EditArtistController implements Initializable, DataInitializable<Us
 
     public void initializeData(UserWithData<Artist> data) {
         this.existingArtist = data.getData();
-        this.user =
-                data.getUser();
+        this.user = data.getUser();
         artistNameInput.setText(existingArtist.getName());
         artistBiographyInput.setText(existingArtist.getBiography());
         delete.visibleProperty().set(true);
@@ -113,6 +112,7 @@ public class EditArtistController implements Initializable, DataInitializable<Us
         membersPickerBox.visibleProperty().bind(
                 artistTypeChoiceBox.valueProperty().isEqualTo("Group")
         );
+
         addPicture.setOnAction(event -> {
             try{
                 askForPicture();

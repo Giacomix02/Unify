@@ -104,11 +104,13 @@ public class ViewAlbum extends HBox {
             runnable.run();
         });
     }
+
     public void setOnEditClicked(Consumer<Album> consumer) {
         this.editButton.setOnAction(event -> {
             consumer.accept(album);
         });
     }
+
     public Picture getAlbumPicture() {
         try {
             songService = UnifyServiceFactory.getInstance().getSongService();

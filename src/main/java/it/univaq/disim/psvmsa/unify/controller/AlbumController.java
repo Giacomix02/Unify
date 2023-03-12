@@ -73,6 +73,7 @@ public class AlbumController implements Initializable, DataInitializable<User> {
                             ex.printStackTrace();
                         }
                     });
+
                     viewAlbum.setOnEditClicked(a -> {
                         try{
                             UserWithData<Album> data = new UserWithData<>(user, a);
@@ -89,7 +90,7 @@ public class AlbumController implements Initializable, DataInitializable<User> {
     }
 
     public void initialize(URL location, ResourceBundle resources) {
-        searchBar = new SearchBar("Search by Album");
+        searchBar = new SearchBar("Search an Album");
         searchBar.setOnSearch(text ->{
             showSearch(text);
         });
@@ -104,7 +105,7 @@ public class AlbumController implements Initializable, DataInitializable<User> {
         }catch (Exception e){
             e.printStackTrace();
         }
-
     }
+
 }
 

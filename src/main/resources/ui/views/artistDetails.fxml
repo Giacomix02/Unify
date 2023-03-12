@@ -16,7 +16,10 @@
                   <Label fx:id="artistBiography" />
                   <VBox>
                      <children>
-                        <Label fx:id="membersLabel" />
+                        <Label fx:id="membersLabel">
+                           <padding>
+                              <Insets top="7.0" />
+                           </padding></Label>
                      </children>
                   </VBox>
                </children>

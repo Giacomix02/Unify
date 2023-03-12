@@ -145,6 +145,7 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
             }
         });
     }
+
     @FXML
     public void updateAlbum(){
         try{

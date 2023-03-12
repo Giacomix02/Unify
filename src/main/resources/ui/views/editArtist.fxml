@@ -27,7 +27,7 @@
                   <HBox fx:id="membersPickerBox" alignment="CENTER_LEFT" spacing="15.0">
                      <children>
                         <Label text="Members" />
-                        <CheckComboBox fx:id="membersPicker" prefHeight="35.0" prefWidth="150.0" />
+                        <CheckComboBox fx:id="membersPicker" prefHeight="35.0" prefWidth="150.0" title="Select members" />
                      </children>
                   </HBox>
                </children>

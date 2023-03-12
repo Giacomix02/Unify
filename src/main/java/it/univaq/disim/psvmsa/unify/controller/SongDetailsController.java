@@ -22,7 +22,9 @@ import java.util.ResourceBundle;
 public class SongDetailsController implements Initializable, DataInitializable<UserWithData> {
 
     private Image DEFAULT_IMAGE = null;
+
     private PlaylistService playlistService;
+
     private SongService songService;
 
     @FXML
@@ -33,25 +35,32 @@ public class SongDetailsController implements Initializable, DataInitializable<U
 
     @FXML
     private Label genresLabel;
+
     @FXML
     private Label artistLabel;
+
     @FXML
     private Label albumLabel;
+
     @FXML
     private Button savePlaylistButton;
 
     @FXML
     private CheckComboBox<Playlist> playlistsChoice;
+
     @FXML
     private ImageView songImage;
 
     private Picture picture;
+
     private Picture inputPicture;
 
     private InputStream songInputStream;
 
     private Song song;
+
     private User user;
+
     private List<Playlist> userPlaylists;
 
 
@@ -59,6 +68,7 @@ public class SongDetailsController implements Initializable, DataInitializable<U
         UnifyServiceFactory factoryInstance = UnifyServiceFactory.getInstance();
         this.playlistService = factoryInstance.getPlaylistService();
     }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

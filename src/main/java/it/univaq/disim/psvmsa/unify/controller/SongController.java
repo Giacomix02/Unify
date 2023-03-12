@@ -71,7 +71,7 @@ public class SongController implements Initializable, DataInitializable<User> {
     }
 
     public void initialize(URL location, ResourceBundle resources) {
-        searchBar = new SearchBar("Search by Song");
+        searchBar = new SearchBar("Search a Song");
         searchBox.getChildren().add(searchBar);
         searchBar.setOnSearch(text ->{
             showSearch(text);

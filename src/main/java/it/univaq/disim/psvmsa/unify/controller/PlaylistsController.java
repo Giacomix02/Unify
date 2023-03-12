@@ -76,4 +76,5 @@ public class PlaylistsController implements Initializable, DataInitializable<Use
             e.printStackTrace();
         }
     }
+
 }

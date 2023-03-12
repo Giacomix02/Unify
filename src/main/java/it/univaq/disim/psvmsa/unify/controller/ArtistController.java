@@ -66,7 +66,7 @@ public class ArtistController implements Initializable, DataInitializable<User> 
     }
 
     public void initialize(URL location, ResourceBundle resources) {
-        searchBar = new SearchBar("Search by Artist");
+        searchBar = new SearchBar("Search an Artist");
         searchBar.setOnSearch(search -> {
             List<Artist> artists = artistService.searchArtistsByName(search);
             viewList.getItems().clear();

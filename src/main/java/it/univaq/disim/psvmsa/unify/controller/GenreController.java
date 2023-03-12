@@ -64,7 +64,7 @@ public class GenreController implements Initializable, DataInitializable<User> {
     }
 
     public void initialize(URL location, ResourceBundle resources){
-        searchBar = new SearchBar("Search by Genre");
+        searchBar = new SearchBar("Search a Genre");
         searchBar.setOnSearch(text ->{
             showSearch(text);
         });

@@ -33,7 +33,6 @@ public class ArtistDetailsController implements Initializable, DataInitializable
     @FXML
     private VBox artistSongs;
 
-
     @FXML
     private Label artistName;
 
@@ -46,9 +45,9 @@ public class ArtistDetailsController implements Initializable, DataInitializable
     @FXML
     private Label songLabel;
 
-
     @FXML
     private ImageView artistImagePreview;
+
     private List<Picture> images = new ArrayList<>();
 
     private SongService songService;
@@ -78,10 +77,17 @@ public class ArtistDetailsController implements Initializable, DataInitializable
         setSongsAndAlbums();
         if (existingArtist instanceof GroupArtist) {
             StringBuilder members = new StringBuilder("Members: ");
+
             for (Artist artist : ((GroupArtist) existingArtist).getArtists()) {
                 members.append(artist.getName()).append(", ");
             }
-            membersLabel.setText(members.substring(0, members.length() - 2)); //remove last comma
+
+            if (members.toString().equals("Members: ")) {
+                membersLabel.visibleProperty().set(false);
+            } else {
+                membersLabel.setText(members.substring(0, members.length() - 2)); //remove last comma
+            }
+
         }
     }
 
