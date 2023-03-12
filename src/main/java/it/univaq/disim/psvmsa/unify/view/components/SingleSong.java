@@ -1,6 +1,5 @@
 package it.univaq.disim.psvmsa.unify.view.components;
 
-import it.univaq.disim.psvmsa.unify.model.Genre;
 import it.univaq.disim.psvmsa.unify.model.Picture;
 import it.univaq.disim.psvmsa.unify.model.Song;
 import javafx.fxml.FXMLLoader;

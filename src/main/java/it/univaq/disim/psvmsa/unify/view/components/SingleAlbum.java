@@ -26,6 +26,8 @@ public class SingleAlbum extends HBox {
     private ImageView image;
     private User user;
     private Album album;
+
+    private HBox box;
     private ViewDispatcher viewDispatcher;
 
     private Picture picture;
@@ -49,8 +51,19 @@ public class SingleAlbum extends HBox {
 
             label = (Label) root.lookup("#label");
             image = (ImageView) root.lookup("#image");
+
             List<Song> songs = album.getSongs();
             this.image.setOnMouseClicked(mouseEvent -> {
+                try {
+                    //TODO NO!
+                    UserWithData<List<Song>> userWithData = new UserWithData<>(user, songs);
+                    ViewDispatcher.getInstance().navigateTo(Pages.SONGS,userWithData);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            });
+
+            this.label.setOnMouseClicked(mouseEvent -> {
                 try {
                     //TODO NO!
                     UserWithData<List<Song>> userWithData = new UserWithData<>(user, songs);

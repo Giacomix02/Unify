@@ -7,7 +7,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 
-<HBox alignment="CENTER_LEFT" fillHeight="false" spacing="6.0" styleClass="backgound" stylesheets="@singleAlbum.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<HBox id="album" alignment="CENTER_LEFT" fillHeight="false" spacing="6.0" styleClass="backgound" stylesheets="@singleAlbum.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ImageView id="image" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" HBox.hgrow="NEVER">
          <viewport>
@@ -20,6 +20,12 @@
       <Label id="label" styleClass="text" text="Label">
          <padding>
             <Insets right="5.0" />
-         </padding></Label>
+         </padding>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></Label>
    </children>
+   <cursor>
+      <Cursor fx:constant="DEFAULT" />
+   </cursor>
 </HBox>

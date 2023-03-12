@@ -1,13 +1,9 @@
 package it.univaq.disim.psvmsa.unify.controller;
 
-import it.univaq.disim.psvmsa.unify.business.ArtistService;
-import it.univaq.disim.psvmsa.unify.business.GenreService;
-import it.univaq.disim.psvmsa.unify.business.PlaylistService;
-import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
-import it.univaq.disim.psvmsa.unify.model.Admin;
-import it.univaq.disim.psvmsa.unify.model.Artist;
-import it.univaq.disim.psvmsa.unify.model.Playlist;
-import it.univaq.disim.psvmsa.unify.model.User;
+import it.univaq.disim.psvmsa.unify.business.*;
+import it.univaq.disim.psvmsa.unify.model.*;
+import it.univaq.disim.psvmsa.unify.view.components.SingleAlbum;
+import it.univaq.disim.psvmsa.unify.view.components.SingleArtistHome;
 import it.univaq.disim.psvmsa.unify.view.components.ViewPlaylist;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -25,7 +21,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 public class HomeController implements DataInitializable<User>, Initializable {
@@ -40,10 +38,9 @@ public class HomeController implements DataInitializable<User>, Initializable {
     private HBox randomArtist;
 
     @FXML
-    private ListView<Playlist> viewList;
-
+    private VBox album;
     @FXML
-    private VBox genresBox;
+    private ListView<Playlist> viewList;
 
     @FXML
     private ListView<Artist> randomArtistsList;
@@ -56,6 +53,8 @@ public class HomeController implements DataInitializable<User>, Initializable {
 
     private GenreService genreService;
 
+    private AlbumService albumService;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -63,15 +62,18 @@ public class HomeController implements DataInitializable<User>, Initializable {
         artistService = factoryInstance.getArtistService();
         playlistService = factoryInstance.getPlaylistService();
         genreService = factoryInstance.getGenreService();
+        albumService = factoryInstance.getAlbumService();
     }
 
-    public void initializeData(User user){
+    public void initializeData(User user) {
 
         this.user = user;
 
         try {
+
             List<Playlist> playlists = playlistService.getPlaylistsByUser(user);
             List<Artist> artists = artistService.getArtists();
+            List<Album> albums = albumService.getAlbums();
 
             viewList.setCellFactory(playlist -> new ListCell<>(
                     ) {
@@ -87,9 +89,23 @@ public class HomeController implements DataInitializable<User>, Initializable {
                     }
             );
 
+
             viewList.setItems(FXCollections.observableArrayList(playlistService.getPlaylistsByUser(user)));
 
-        } catch (Exception e){
+            for(int i=0;i<5&&i<artists.size();i++){
+                Artist a = artists.get(i);
+                randomArtist.getChildren().add(new SingleArtistHome(a,user));
+            }
+
+            for(int i=0;i<5&&i<albums.size();i++){
+                Album a = albums.get(i);
+                UserWithData<Album> data = new UserWithData<>(user,a);
+                album.getChildren().add(new SingleAlbum(data));
+            }
+
+
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

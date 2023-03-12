@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
-<GridPane hgap="15.0" style="-fx-background-color: bg-color;" stylesheets="@../css/home.css" vgap="15.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.psvmsa.unify.controller.HomeController">
+<GridPane hgap="15.0" style="-fx-background-color: bg-color;" stylesheets="@../css/home.css" vgap="15.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.psvmsa.unify.controller.HomeController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="30.0" />
     <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
@@ -14,7 +19,16 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <VBox styleClass="random-artists-card" GridPane.columnSpan="2" GridPane.vgrow="ALWAYS">
+      <VBox styleClass="random-artists-card">
+         <children>
+            <Label styleClass="title-text" text="Random albums" />
+            <VBox fx:id="album" spacing="20.0" VBox.vgrow="ALWAYS" />
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </VBox>
+      <VBox styleClass="random-artists-card" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.vgrow="ALWAYS">
          <children>
             <Label styleClass="title-text" text="Random artists" />
             <HBox fx:id="randomArtist" VBox.vgrow="ALWAYS">
@@ -33,13 +47,13 @@
             <Insets />
          </opaqueInsets>
       </VBox>
-      <VBox GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+      <VBox GridPane.columnSpan="2147483647" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
          <children>
             <Label styleClass="title-text" text="Playlists">
                <VBox.margin>
                   <Insets left="15.0" />
                </VBox.margin></Label>
-            <ListView fx:id="viewList" accessibleRole="PARENT" style="-fx-background-color: transparent;" />
+            <ListView fx:id="viewList" accessibleRole="PARENT" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS" />
          </children>
          <GridPane.margin>
             <Insets top="10.0" />
