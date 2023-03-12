@@ -4,6 +4,8 @@ import it.univaq.disim.psvmsa.unify.business.AlbumService;
 import it.univaq.disim.psvmsa.unify.business.SongService;
 import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.model.*;
+import it.univaq.disim.psvmsa.unify.view.Pages;
+import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import it.univaq.disim.psvmsa.unify.view.components.SingleAlbum;
 import it.univaq.disim.psvmsa.unify.view.components.SongRow;
 import javafx.fxml.FXML;
@@ -117,7 +119,15 @@ public class ArtistDetailsController implements Initializable, DataInitializable
                 artistSongs.getChildren().add(new SongRow(new UserWithData<>(user, song), user instanceof Admin));
             }
             for (Album album : albums) {
-                artistAlbums.getChildren().add(new SingleAlbum(new UserWithData<>(user, album)));
+                SingleAlbum singleAlbum = new SingleAlbum(album);
+                singleAlbum.setOnAlbumClick(a -> {
+                    try {
+                        ViewDispatcher.getInstance().navigateTo(Pages.SONGSLIST,a.getSongs());
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                });
+                artistAlbums.getChildren().add(singleAlbum);
             }
         } catch (Exception e) {
             e.printStackTrace();

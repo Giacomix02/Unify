@@ -6,18 +6,16 @@ import it.univaq.disim.psvmsa.unify.model.Admin;
 import it.univaq.disim.psvmsa.unify.model.Album;
 import it.univaq.disim.psvmsa.unify.model.User;
 import it.univaq.disim.psvmsa.unify.view.Pages;
+import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import it.univaq.disim.psvmsa.unify.view.components.AddLinkButton;
 import it.univaq.disim.psvmsa.unify.view.components.SearchBar;
 import it.univaq.disim.psvmsa.unify.view.components.ViewAlbum;
-import it.univaq.disim.psvmsa.unify.view.components.ViewUser;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.List;
@@ -54,7 +52,6 @@ public class AlbumController implements Initializable, DataInitializable<User> {
         if (user instanceof Admin){
             addBox.getChildren().add(new AddLinkButton(Pages.EDITALBUM));
         }
-
         try{
             viewList.setItems(FXCollections.observableList(albumService.getAlbums()));
         }catch (Exception e){
@@ -68,7 +65,23 @@ public class AlbumController implements Initializable, DataInitializable<User> {
                 if (empty || album == null) {
                     setGraphic(null);
                 } else {
-                    setGraphic(new ViewAlbum(new UserWithData<>(user, album), user instanceof Admin));
+                    ViewAlbum viewAlbum = new ViewAlbum(new UserWithData<>(user, album), user instanceof Admin);
+                    viewAlbum.setOnMouseClicked(() -> {
+                        try{
+                            ViewDispatcher.getInstance().navigateTo(Pages.SONGSLIST, album.getSongs());
+                        }catch(Exception ex){
+                            ex.printStackTrace();
+                        }
+                    });
+                    viewAlbum.setOnEditClicked(a -> {
+                        try{
+                            UserWithData<Album> data = new UserWithData<>(user, a);
+                            ViewDispatcher.getInstance().navigateTo(Pages.EDITALBUM, data);
+                        }catch(Exception ex){
+                            ex.printStackTrace();
+                        }
+                    });
+                    setGraphic(viewAlbum);
                 }
             }
         });

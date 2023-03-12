@@ -12,9 +12,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
+import java.util.function.Consumer;
+
 public class ViewPlaylist extends HBox {
 
-    private User user;
 
     private Label label;
 
@@ -29,10 +30,9 @@ public class ViewPlaylist extends HBox {
     private Playlist playlist;
 
 
-    public ViewPlaylist(Playlist playlist, User user) {
+    public ViewPlaylist(Playlist playlist) {
         super();
         this.playlist = playlist;
-        this.user = user;
         this.musicPlayer = MusicPlayer.getInstance();
         init();
     }
@@ -48,25 +48,6 @@ public class ViewPlaylist extends HBox {
             editButton = (Button) root.lookup("#editButton");
             playButton = (Button) root.lookup("#playButton");
 
-            this.label.setOnMouseClicked(mouseEvent -> {
-                try {
-                    UserWithData userWithData = new UserWithData(user, playlist.getSongs());
-                    ViewDispatcher.getInstance().navigateTo(Pages.SONGS,userWithData);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            });
-
-
-            this.editButton.setOnMouseClicked(event -> {
-                try {
-                    UserWithData userWithData = new UserWithData(user, playlist);
-                    ViewDispatcher.getInstance().navigateTo(Pages.EDITPLAYLIST,userWithData);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
-
             label.setText(playlist.getName());
 
         }catch (Exception e){
@@ -76,7 +57,16 @@ public class ViewPlaylist extends HBox {
         playPlaylist();
 
     }
-
+    public void setOnPlaylistClicked(Consumer<Playlist> consumer){
+        this.label.setOnMouseClicked(mouseEvent -> {
+            consumer.accept(playlist);
+        });
+    }
+    public void setOnEditClicked(Consumer<Playlist> consumer){
+        this.editButton.setOnMouseClicked(mouseEvent -> {
+            consumer.accept(playlist);
+        });
+    }
     public void playPlaylist() {
         this.playButton.setOnMouseClicked(event -> {
             musicPlayer.setQueue(playlist.getSongs());

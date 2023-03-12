@@ -43,7 +43,22 @@ public class PlaylistsController implements Initializable, DataInitializable<Use
 
         if (playlists!=null) {
             for (Playlist playlist : playlists) {
-                playlistsBox.getChildren().add(new ViewPlaylist(playlist,user));
+                ViewPlaylist viewPlaylist = new ViewPlaylist(playlist);
+                viewPlaylist.setOnEditClicked(playlist1 -> {
+                    try {
+                        ViewDispatcher.getInstance().navigateTo(Pages.EDITPLAYLIST, playlist1);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                viewPlaylist.setOnPlaylistClicked(playlist1 -> {
+                    try {
+                        ViewDispatcher.getInstance().navigateTo(Pages.SONGSLIST, playlist.getSongs());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                playlistsBox.getChildren().add(viewPlaylist);
             }
         }
     }

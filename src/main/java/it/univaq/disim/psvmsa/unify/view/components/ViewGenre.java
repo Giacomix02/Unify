@@ -65,16 +65,22 @@ public class ViewGenre extends VBox {
             label.setText(genre.getName());
             songService = UnifyServiceFactory.getInstance().getSongService();
             List<Song> songs = songService.getAllSongs();
-            ArrayList<Album> albums = new ArrayList<>();
             for(Song song : songs){
                 if(song.getGenres().contains(genre)){
                     SingleSong singleSong = new SingleSong(song);
                     songsBox.getChildren().add(singleSong);
                 }
             }
+            ArrayList<Album> albums = new ArrayList<>(); //TODO what?
             for(Album album : albums){
-                UserWithData userWithData = new UserWithData(user, album);
-                SingleAlbum singleAlbum = new SingleAlbum(userWithData);
+                SingleAlbum singleAlbum = new SingleAlbum(album);
+                singleAlbum.setOnAlbumClick(a -> {
+                    try {
+                        ViewDispatcher.getInstance().navigateTo(Pages.SONGSLIST,a.getSongs());
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                });
                 albumBox.getChildren().add(singleAlbum);
 
             }

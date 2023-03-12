@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.psvmsa.unify.controller.SongController">
+<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.psvmsa.unify.controller.SongsListController">
    <children>
       <HBox alignment="CENTER">
          <children>
@@ -16,13 +16,12 @@
                </HBox.margin>
             </HBox>
             <HBox alignment="CENTER" HBox.hgrow="ALWAYS" />
-            <HBox fx:id="addBox" alignment="CENTER_LEFT" />
          </children>
          <VBox.margin>
             <Insets bottom="10.0" />
          </VBox.margin>
       </HBox>
-      <Label styleClass="title-text" text="Songs" />
+      <Label styleClass="title-text" text="Songs list" />
       <ListView fx:id="listView" fixedCellSize="0.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS" />
    </children>
 </VBox>

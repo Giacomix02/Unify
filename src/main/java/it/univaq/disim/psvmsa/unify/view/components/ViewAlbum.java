@@ -1,6 +1,5 @@
 package it.univaq.disim.psvmsa.unify.view.components;
 
-import it.univaq.disim.psvmsa.unify.business.AlbumService;
 import it.univaq.disim.psvmsa.unify.business.SongService;
 import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.controller.UserWithData;
@@ -15,15 +14,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 public class ViewAlbum extends HBox {
 
@@ -77,25 +76,6 @@ public class ViewAlbum extends HBox {
             playButton = (Button) root.lookup("#playButton");
 
             editButton.visibleProperty().set(editable);
-            this.editButton.setOnAction(event -> {
-                try{
-                    UserWithData<Album> data = new UserWithData<>(user, album);
-                    ViewDispatcher.getInstance().navigateTo(Pages.EDITALBUM, data);
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
-
-            this.albumDetails.setOnMouseClicked(event -> {
-                try {
-                    UserWithData<List<Song>> userWithData = new UserWithData<>(user, album.getSongs());
-                    //TODO NO!
-                    ViewDispatcher.getInstance().navigateTo(Pages.SONGS, userWithData);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
 
             label.setText(album.getName());
             Picture pic = getAlbumPicture();
@@ -119,8 +99,16 @@ public class ViewAlbum extends HBox {
         playAlbum();
 
     }
-
-
+    public void setOnMouseClicked(Runnable runnable) {
+        this.albumDetails.setOnMouseClicked(event -> {
+            runnable.run();
+        });
+    }
+    public void setOnEditClicked(Consumer<Album> consumer) {
+        this.editButton.setOnAction(event -> {
+            consumer.accept(album);
+        });
+    }
     public Picture getAlbumPicture() {
         try {
             songService = UnifyServiceFactory.getInstance().getSongService();

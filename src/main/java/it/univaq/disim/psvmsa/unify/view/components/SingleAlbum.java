@@ -20,11 +20,11 @@ import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class SingleAlbum extends HBox {
     private Label label;
     private ImageView image;
-    private User user;
     private Album album;
 
     private HBox box;
@@ -34,10 +34,9 @@ public class SingleAlbum extends HBox {
 
     SongService songService;
 
-    public SingleAlbum(UserWithData data) {
+    public SingleAlbum(Album album) {
         super();
-        user = data.getUser();
-        album = (Album) data.getData();
+        this.album = album;
         init(album);
     }
 
@@ -53,25 +52,6 @@ public class SingleAlbum extends HBox {
             image = (ImageView) root.lookup("#image");
 
             List<Song> songs = album.getSongs();
-            this.image.setOnMouseClicked(mouseEvent -> {
-                try {
-                    //TODO NO!
-                    UserWithData<List<Song>> userWithData = new UserWithData<>(user, songs);
-                    ViewDispatcher.getInstance().navigateTo(Pages.SONGS,userWithData);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            });
-
-            this.label.setOnMouseClicked(mouseEvent -> {
-                try {
-                    //TODO NO!
-                    UserWithData<List<Song>> userWithData = new UserWithData<>(user, songs);
-                    ViewDispatcher.getInstance().navigateTo(Pages.SONGS,userWithData);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            });
 
             this.label.setText(album.getName());
 
@@ -96,5 +76,14 @@ public class SingleAlbum extends HBox {
         catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public void setOnAlbumClick(Consumer<Album> consumer){
+        this.image.setOnMouseClicked(mouseEvent -> {
+            consumer.accept(this.album);
+        });
+        this.label.setOnMouseClicked(mouseEvent -> {
+            consumer.accept(this.album);
+        });
     }
 }

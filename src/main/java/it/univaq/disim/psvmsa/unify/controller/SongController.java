@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class SongController implements Initializable, DataInitializable<Object> {
+public class SongController implements Initializable, DataInitializable<User> {
 
     @FXML
     private ListView<Song> listView;
@@ -46,26 +46,13 @@ public class SongController implements Initializable, DataInitializable<Object> 
     }
 
     @Override
-    public void initializeData(Object t) {
-        if(t instanceof User){
-            this.user = (User) t;
-        }else{
-            UserWithData userWithData = (UserWithData) t;
-            this.user = userWithData.getUser();
-            songs = (List<Song>) userWithData.getData();
-        }
-
+    public void initializeData(User u) {
+        this.user = u;
         if(user instanceof Admin){
             addBox.getChildren().add(new AddLinkButton(Pages.EDITSONG, new UserWithData(user, null)));
         }
-
         try{
-            if(this.songs == null){
-                songsObservable = FXCollections.observableList(songService.getAllSongs());
-            }else{
-                songsObservable.addAll(songs);
-            }
-
+            songsObservable = FXCollections.observableList(songService.getAllSongs());
             listView.setItems(songsObservable);
             listView.setCellFactory(song -> new ListCell<>(){
                 @Override

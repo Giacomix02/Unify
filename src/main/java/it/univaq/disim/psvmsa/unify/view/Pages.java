@@ -4,6 +4,7 @@ public enum Pages {
     HOME("home"),
     ALBUMS("albums"),
     SONGS("songs"),
+    SONGSLIST("songsList"),
     ARTISTS("artists"),
     GENRES("genres"),
     PLAYLISTS("playlists"),
