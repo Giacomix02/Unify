@@ -27,6 +27,22 @@
          <opaqueInsets>
             <Insets left="10.0" />
          </opaqueInsets></HBox>
+      <HBox alignment="CENTER">
+         <children>
+            <Button id="editButton" mnemonicParsing="false" style="-fx-background-color: transparent;" styleClass="text-button" text="Edit">
+               <graphic>
+                  <ImageView pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/icons/pencil-alt.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+         </children>
+      </HBox>
       <HBox alignment="CENTER" HBox.hgrow="NEVER">
          <children>
             <Button id="playButton" mnemonicParsing="false" style="-fx-background-color: transparent;" styleClass="text-button" HBox.hgrow="NEVER">
@@ -44,22 +60,6 @@
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
          </children></HBox>
-      <HBox alignment="CENTER">
-         <children>
-            <Button id="editButton" mnemonicParsing="false" style="-fx-background-color: transparent;" styleClass="text-button" text="Edit">
-               <graphic>
-                  <ImageView pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/icons/pencil-alt.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-         </children>
-      </HBox>
    </children>
    <opaqueInsets>
       <Insets />

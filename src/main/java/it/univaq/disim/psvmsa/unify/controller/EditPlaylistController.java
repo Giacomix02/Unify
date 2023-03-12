@@ -17,7 +17,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 
-public class EditPlaylistController implements Initializable, DataInitializable<UserWithData> {
+public class EditPlaylistController implements Initializable, DataInitializable<UserWithData<Playlist>> {
 
     @FXML
     private TextField playlistInput;
@@ -48,9 +48,9 @@ public class EditPlaylistController implements Initializable, DataInitializable<
         viewDispatcher = ViewDispatcher.getInstance();
     }
 
-    public void initializeData(UserWithData data) {
+    public void initializeData(UserWithData<Playlist> data) {
         user = data.getUser();
-        playlist = (Playlist) data.getData();
+        playlist = data.getData();
 
         if(playlist!=null){
             this.playlistInput.setText(playlist.getName());

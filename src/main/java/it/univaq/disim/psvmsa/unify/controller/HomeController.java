@@ -91,7 +91,7 @@ public class HomeController implements DataInitializable<User>, Initializable {
                                 });
                                 viewPlaylist.setOnPlaylistClicked(playlist1 -> {
                                     try {
-                                        ViewDispatcher.getInstance().navigateTo(Pages.SONGSLIST, playlist.getSongs());
+                                        ViewDispatcher.getInstance().navigateTo(Pages.SONGSLIST, new UserWithData<>(user,playlist1.getSongs()));
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
@@ -118,7 +118,7 @@ public class HomeController implements DataInitializable<User>, Initializable {
                 SingleAlbum singleAlbum = new SingleAlbum(a);
                 singleAlbum.setOnAlbumClick(album -> {
                     try {
-                        ViewDispatcher.getInstance().navigateTo(Pages.SONGSLIST,album.getSongs());
+                        ViewDispatcher.getInstance().navigateTo(Pages.SONGSLIST,new UserWithData<>(user,album.getSongs()));
                     }catch (Exception e){
                         e.printStackTrace();
                     }

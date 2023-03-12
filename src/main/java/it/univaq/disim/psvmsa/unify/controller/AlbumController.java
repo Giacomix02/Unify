@@ -65,10 +65,10 @@ public class AlbumController implements Initializable, DataInitializable<User> {
                 if (empty || album == null) {
                     setGraphic(null);
                 } else {
-                    ViewAlbum viewAlbum = new ViewAlbum(new UserWithData<>(user, album), user instanceof Admin);
-                    viewAlbum.setOnMouseClicked(() -> {
+                    ViewAlbum viewAlbum = new ViewAlbum(album, user instanceof Admin);
+                    viewAlbum.setOnAlbumClicked(a -> {
                         try{
-                            ViewDispatcher.getInstance().navigateTo(Pages.SONGSLIST, album.getSongs());
+                            ViewDispatcher.getInstance().navigateTo(Pages.SONGSLIST,new UserWithData<>(user, a.getSongs()));
                         }catch(Exception ex){
                             ex.printStackTrace();
                         }

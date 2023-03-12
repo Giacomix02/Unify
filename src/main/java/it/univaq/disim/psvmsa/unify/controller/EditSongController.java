@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 
-public class EditSongController implements Initializable, DataInitializable<UserWithData> {
+public class EditSongController implements Initializable, DataInitializable<UserWithData<Song>> {
 
     private Image DEFAULT_IMAGE = null;
     private final SongService songService;
@@ -85,15 +85,12 @@ public class EditSongController implements Initializable, DataInitializable<User
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     }
-    public void initializeData(UserWithData data) {
+    public void initializeData(UserWithData<Song> data) {
         this.user = data.getUser();
+        this.song = data.getData();
 
-        if(data.getData()!=null) {
-            this.song = (Song) data.getData();
-            exit.visibleProperty().set(true);
-        }else {
-            exit.visibleProperty().set(false);
-        }
+        exit.visibleProperty().set(data.getData()!=null);
+
         saveSongLabel.setVisible(false);
 
         List<Genre> genres = genreService.getGenres();

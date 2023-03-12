@@ -22,8 +22,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
-public class SongsListController implements Initializable, DataInitializable<List<Song>> {
+public class SongsListController implements Initializable, DataInitializable<UserWithData<List<Song>>> {
 
     @FXML
     private ListView<Song> listView;
@@ -40,8 +41,9 @@ public class SongsListController implements Initializable, DataInitializable<Lis
 
 
     @Override
-    public void initializeData(List<Song> songs) {
-        songsObservable = FXCollections.observableList(songs);
+    public void initializeData(UserWithData<List<Song>> userWithData) {
+        this.songs = userWithData.getData();
+        songsObservable = FXCollections.observableList(new ArrayList<>(this.songs));
             listView.setItems(songsObservable);
             listView.setCellFactory(song -> new ListCell<>(){
                 @Override
@@ -50,7 +52,7 @@ public class SongsListController implements Initializable, DataInitializable<Lis
                     if (empty || item == null) {
                         setGraphic(null);
                     } else {
-                        setGraphic(new SongRow(new UserWithData<>(null, item), false));
+                        setGraphic(new SongRow(new UserWithData<>(userWithData.getUser(), item), false));
                     }
                 }
             });
@@ -65,7 +67,13 @@ public class SongsListController implements Initializable, DataInitializable<Lis
     }
 
     public void showSearch(String text){
-            List<Song> searchedSongs = new ArrayList<>(); //TODO add search
-            listView.setItems(FXCollections.observableList(searchedSongs));
+            List<Song> searchedSongs = songs.stream()
+                    .filter(song ->
+                            song.getName()
+                                    .toLowerCase()
+                                    .contains(text.toLowerCase()))
+                    .collect(Collectors.toList());
+            songsObservable.clear();
+            songsObservable.addAll(searchedSongs);
     }
 }

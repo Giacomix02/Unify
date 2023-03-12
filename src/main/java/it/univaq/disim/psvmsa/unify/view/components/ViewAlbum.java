@@ -7,8 +7,6 @@ import it.univaq.disim.psvmsa.unify.model.Album;
 import it.univaq.disim.psvmsa.unify.model.Picture;
 import it.univaq.disim.psvmsa.unify.model.Song;
 import it.univaq.disim.psvmsa.unify.model.User;
-import it.univaq.disim.psvmsa.unify.view.Pages;
-import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -22,7 +20,6 @@ import javafx.scene.shape.Rectangle;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 public class ViewAlbum extends HBox {
 
@@ -43,7 +40,6 @@ public class ViewAlbum extends HBox {
 
     private Album album;
 
-    private User user;
 
     private LinkedList<Song> queue = new LinkedList<>();
 
@@ -52,11 +48,10 @@ public class ViewAlbum extends HBox {
 
 
 
-    public ViewAlbum(UserWithData data, boolean editable){
+    public ViewAlbum(Album album, boolean editable){
         super();
         this.editable = editable;
-        this.album = (Album) data.getData();
-        this.user = data.getUser();
+        this.album = album;
         this.musicPlayer = MusicPlayer.getInstance();
         init();
     }
@@ -99,9 +94,9 @@ public class ViewAlbum extends HBox {
         playAlbum();
 
     }
-    public void setOnMouseClicked(Runnable runnable) {
+    public void setOnAlbumClicked(Consumer<Album> consumer) {
         this.albumDetails.setOnMouseClicked(event -> {
-            runnable.run();
+            consumer.accept(album);
         });
     }
 

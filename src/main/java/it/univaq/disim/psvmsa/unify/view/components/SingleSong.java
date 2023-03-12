@@ -1,7 +1,10 @@
 package it.univaq.disim.psvmsa.unify.view.components;
 
+import it.univaq.disim.psvmsa.unify.controller.UserWithData;
 import it.univaq.disim.psvmsa.unify.model.Picture;
 import it.univaq.disim.psvmsa.unify.model.Song;
+import it.univaq.disim.psvmsa.unify.view.Pages;
+import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -11,6 +14,9 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+
+import java.lang.module.Configuration;
+import java.util.function.Consumer;
 
 public class SingleSong extends VBox {
 
@@ -57,13 +63,21 @@ public class SingleSong extends VBox {
             e.printStackTrace();
         }
 
-        playSong();
     }
 
-    public void playSong() {
+    public void setOnSongClick(Consumer<Song> consumer) {
         this.playSong.setOnMouseClicked(event -> {
-            musicPlayer.playOne(song);
+            consumer.accept(song);
         });
     }
+
+    /*
+    public void viewSong() {
+        this.playSong.setOnMouseClicked(event -> {
+            ViewDispatcher.getInstance().navigateTo(Pages.SONGSLIST, new UserWithData<>(use, null));
+        });
+    }
+
+     */
 
 }

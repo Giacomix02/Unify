@@ -2,6 +2,7 @@ package it.univaq.disim.psvmsa.unify.controller;
 
 import it.univaq.disim.psvmsa.unify.business.*;
 import it.univaq.disim.psvmsa.unify.model.*;
+import it.univaq.disim.psvmsa.unify.view.components.MusicPlayer;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -17,9 +18,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 
-public class SongDetailsController implements Initializable, DataInitializable<UserWithData> {
+public class SongDetailsController implements Initializable, DataInitializable<UserWithData<Song>> {
 
     private Image DEFAULT_IMAGE = null;
 
@@ -38,6 +40,9 @@ public class SongDetailsController implements Initializable, DataInitializable<U
 
     @FXML
     private Label artistLabel;
+
+    @FXML
+    private Button playButton;
 
     @FXML
     private Label albumLabel;
@@ -74,8 +79,8 @@ public class SongDetailsController implements Initializable, DataInitializable<U
     public void initialize(URL location, ResourceBundle resources) {
     }
 
-    public void initializeData(UserWithData data) {
-        song = (Song) data.getData();
+    public void initializeData(UserWithData<Song> data) {
+        song = data.getData();
         user = data.getUser();
 
         try {
@@ -87,9 +92,8 @@ public class SongDetailsController implements Initializable, DataInitializable<U
         this.songName.setText(song.getName());
         this.songLyrics.setText(song.getLyrics());
         this.artistLabel.setText(song.getArtist().getName());
-        for(Genre g : song.getGenres()){
-            this.genresLabel.setText(this.genresLabel.getText() + g.getName() + "\n");
-        }
+        String join = song.getGenres().stream().map(genre->genre.getName()).collect(Collectors.joining(", "));
+        this.genresLabel.setText(join);
         try{
             this.songImage.setImage(new Image(song.getPicture().toStream()));
         }catch (Exception e){
@@ -143,5 +147,11 @@ public class SongDetailsController implements Initializable, DataInitializable<U
             }
         }
 
+    }
+
+    @FXML
+    public void playSong(){
+        MusicPlayer musicPlayer = MusicPlayer.getInstance();
+        musicPlayer.playOne(song);
     }
 }

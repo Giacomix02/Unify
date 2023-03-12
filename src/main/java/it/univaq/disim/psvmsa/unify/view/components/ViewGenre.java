@@ -68,6 +68,14 @@ public class ViewGenre extends VBox {
             for(Song song : songs){
                 if(song.getGenres().contains(genre)){
                     SingleSong singleSong = new SingleSong(song);
+                    singleSong.setOnSongClick(s -> {
+                        try {
+                            ViewDispatcher.getInstance().navigateTo(Pages.SONGDETAILS,new UserWithData<>(user,s));
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    });
                     songsBox.getChildren().add(singleSong);
                 }
             }
@@ -76,13 +84,12 @@ public class ViewGenre extends VBox {
                 SingleAlbum singleAlbum = new SingleAlbum(album);
                 singleAlbum.setOnAlbumClick(a -> {
                     try {
-                        ViewDispatcher.getInstance().navigateTo(Pages.SONGSLIST,a.getSongs());
+                        ViewDispatcher.getInstance().navigateTo(Pages.SONGSLIST,new UserWithData<>(user, a.getSongs()));
                     }catch (Exception e){
                         e.printStackTrace();
                     }
                 });
                 albumBox.getChildren().add(singleAlbum);
-
             }
         }
         catch (Exception e){
