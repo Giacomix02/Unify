@@ -5,7 +5,9 @@ import it.univaq.disim.psvmsa.unify.business.SongService;
 import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.model.*;
 import it.univaq.disim.psvmsa.unify.view.Pages;
+import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import it.univaq.disim.psvmsa.unify.view.components.AddLinkButton;
+import it.univaq.disim.psvmsa.unify.view.components.MusicPlayer;
 import it.univaq.disim.psvmsa.unify.view.components.SearchBar;
 import it.univaq.disim.psvmsa.unify.view.components.SongRow;
 import javafx.collections.FXCollections;
@@ -32,6 +34,7 @@ public class SongController implements Initializable, DataInitializable<User> {
     private HBox addBox;
 
     private User user;
+
     private SearchBar searchBar;
 
     private List<Song> songs;
@@ -61,11 +64,35 @@ public class SongController implements Initializable, DataInitializable<User> {
                     if (empty || item == null) {
                         setGraphic(null);
                     } else {
-                        setGraphic(new SongRow(new UserWithData<>(user, item), user instanceof Admin));
+                        SongRow songRow = new SongRow(new UserWithData<>(user, item), user instanceof Admin);
+                        setGraphic(songRow);
+
+                        songRow.setOnSongClicked(s -> {
+                            try {
+                                UserWithData<Song> data = new UserWithData<>(user, s);
+                                ViewDispatcher.getInstance().navigateTo(Pages.SONGDETAILS, data);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        });
+
+                        songRow.setOnEditClicked(s -> {
+                            try {
+                                UserWithData<Song> data = new UserWithData<>(user, s);
+                                ViewDispatcher.getInstance().navigateTo(Pages.EDITSONG, data);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        });
+
+                        songRow.setOnPlayButtonClicked(s -> {
+                            MusicPlayer.getInstance().playOne(s);
+                        });
+
                     }
                 }
             });
-        }catch(BusinessException e){
+        } catch(BusinessException e){
             e.printStackTrace();
         }
     }

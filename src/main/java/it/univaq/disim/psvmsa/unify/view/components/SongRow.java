@@ -1,12 +1,8 @@
 package it.univaq.disim.psvmsa.unify.view.components;
-import it.univaq.disim.psvmsa.unify.business.SongService;
-import it.univaq.disim.psvmsa.unify.controller.LayoutController;
 import it.univaq.disim.psvmsa.unify.controller.UserWithData;
 import it.univaq.disim.psvmsa.unify.model.Genre;
 import it.univaq.disim.psvmsa.unify.model.Song;
 import it.univaq.disim.psvmsa.unify.model.User;
-import it.univaq.disim.psvmsa.unify.view.Pages;
-import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -14,15 +10,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class SongRow extends HBox {
 
@@ -49,6 +43,7 @@ public class SongRow extends HBox {
     private Button editButton;
     private MusicPlayer musicPlayer = new MusicPlayer();
 
+
     public SongRow (UserWithData<Song> data, boolean editable){
         super();
         this.userWithData = data;
@@ -57,7 +52,6 @@ public class SongRow extends HBox {
         this.song = data.getData();
         init(song);
     }
-
 
     public void init(Song song) {
         try {
@@ -108,36 +102,23 @@ public class SongRow extends HBox {
         catch (Exception e){
             e.printStackTrace();
         }
-        editSong();
-        songDetails();
-        playSong();
     }
 
-
-    public void editSong(){
+    public void setOnEditClicked(Consumer<Song> consumer){
         this.editButton.setOnMouseClicked(event -> {
-            try {
-                ViewDispatcher.getInstance().navigateTo(Pages.EDITSONG,userWithData);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            consumer.accept(song);
         });
     }
 
-
-    public void songDetails(){
+    public void setOnSongClicked(Consumer<Song> consumer){
         this.pictureButton.setOnMouseClicked(event -> {
-            try {
-                ViewDispatcher.getInstance().navigateTo(Pages.SONGDETAILS,userWithData);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            consumer.accept(song);
         });
     }
 
-    public void playSong(){
+    public void setOnPlayButtonClicked(Consumer<Song> consumer){
         this.playButton.setOnMouseClicked(event -> {
-            MusicPlayer.getInstance().playOne(song);
+            consumer.accept(song);
         });
     }
 
