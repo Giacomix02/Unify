@@ -68,7 +68,7 @@ public class AlbumController implements Initializable, DataInitializable<User> {
                     ViewAlbum viewAlbum = new ViewAlbum(album, user instanceof Admin);
                     viewAlbum.setOnAlbumClicked(a -> {
                         try{
-                            ViewDispatcher.getInstance().navigateTo(Pages.SONGSLIST,new UserWithData<>(user, a.getSongs()));
+                            ViewDispatcher.getInstance().navigateTo(Pages.ALBUMDETAILS, new UserWithData<>(user, album));
                         }catch(Exception ex){
                             ex.printStackTrace();
                         }

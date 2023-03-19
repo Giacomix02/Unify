@@ -6,8 +6,11 @@ import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.model.*;
 import it.univaq.disim.psvmsa.unify.view.Pages;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
+import it.univaq.disim.psvmsa.unify.view.ViewDispatcherException;
+import it.univaq.disim.psvmsa.unify.view.components.MusicPlayer;
 import it.univaq.disim.psvmsa.unify.view.components.SingleAlbum;
 import it.univaq.disim.psvmsa.unify.view.components.SongRow;
+import it.univaq.disim.psvmsa.unify.view.components.SongsListView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -122,13 +125,27 @@ public class ArtistDetailsController implements Initializable, DataInitializable
             List<Album> albums = albumService.searchAlbumsByArtist(existingArtist);
             for (Song song : songs) {
                 songLabel.visibleProperty().set(true);
-                artistSongs.getChildren().add(new SongRow(new UserWithData<>(user, song), user instanceof Admin));
             }
+            SongsListView songsListView = new SongsListView(songs, user, false);
+            artistSongs.getChildren().add(songsListView);
+
+            songsListView.setOnDetailsClicked(song -> {
+                try {
+                    ViewDispatcher.getInstance().navigateTo(Pages.SONGDETAILS, new UserWithData<>(user, song));
+                } catch (ViewDispatcherException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
+            songsListView.setOnPlayClicked(song -> {
+                MusicPlayer.getInstance().playOne(song);
+            });
+
             for (Album album : albums) {
                 SingleAlbum singleAlbum = new SingleAlbum(album);
                 singleAlbum.setOnAlbumClick(a -> {
                     try {
-                        ViewDispatcher.getInstance().navigateTo(Pages.SONGSLIST,new UserWithData<>(user, a.getSongs()));
+                        ViewDispatcher.getInstance().navigateTo(Pages.ALBUMDETAILS,new UserWithData<>(user, a));
                     }catch (Exception e){
                         e.printStackTrace();
                     }

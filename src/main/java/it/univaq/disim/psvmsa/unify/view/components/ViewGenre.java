@@ -1,4 +1,5 @@
 package it.univaq.disim.psvmsa.unify.view.components;
+import it.univaq.disim.psvmsa.unify.business.AlbumService;
 import it.univaq.disim.psvmsa.unify.business.GenreService;
 import it.univaq.disim.psvmsa.unify.business.SongService;
 import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
@@ -17,8 +18,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 public class ViewGenre extends VBox {
 
     private Label label;
@@ -38,6 +43,8 @@ public class ViewGenre extends VBox {
     private GenreService genreService;
 
     private SongService songService;
+
+    private AlbumService albumService;
 
 
     public ViewGenre(Genre genre, User user) {
@@ -71,7 +78,6 @@ public class ViewGenre extends VBox {
                     singleSong.setOnSongClick(s -> {
                         try {
                             ViewDispatcher.getInstance().navigateTo(Pages.SONGDETAILS,new UserWithData<>(user,s));
-
                         }catch (Exception e){
                             e.printStackTrace();
                         }
@@ -79,12 +85,22 @@ public class ViewGenre extends VBox {
                     songsBox.getChildren().add(singleSong);
                 }
             }
-            ArrayList<Album> albums = new ArrayList<>(); //TODO what?
+
+            albumService = UnifyServiceFactory.getInstance().getAlbumService();
+            ArrayList<Album> albums = new ArrayList<>(albumService.getAlbums());
+            Set<Album> matchedAlbums = new HashSet<>();
             for(Album album : albums){
+                for(Song song : album.getSongs()) {
+                    if(song.getGenres().contains(genre)) {
+                        matchedAlbums.add(album);
+                    }
+                }
+            }
+            for (Album album : matchedAlbums) {
                 SingleAlbum singleAlbum = new SingleAlbum(album);
                 singleAlbum.setOnAlbumClick(a -> {
                     try {
-                        ViewDispatcher.getInstance().navigateTo(Pages.SONGSLIST,new UserWithData<>(user, a.getSongs()));
+                        ViewDispatcher.getInstance().navigateTo(Pages.ALBUMDETAILS,new UserWithData<>(user, a));
                     }catch (Exception e){
                         e.printStackTrace();
                     }

@@ -118,7 +118,7 @@ public class HomeController implements DataInitializable<User>, Initializable {
                 SingleAlbum singleAlbum = new SingleAlbum(a);
                 singleAlbum.setOnAlbumClick(album -> {
                     try {
-                        ViewDispatcher.getInstance().navigateTo(Pages.SONGSLIST,new UserWithData<>(user,album.getSongs()));
+                        ViewDispatcher.getInstance().navigateTo(Pages.ALBUMDETAILS,new UserWithData<>(user,album));
                     }catch (Exception e){
                         e.printStackTrace();
                     }

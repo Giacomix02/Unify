@@ -64,7 +64,7 @@ public class SongController implements Initializable, DataInitializable<User> {
                     if (empty || item == null) {
                         setGraphic(null);
                     } else {
-                        SongRow songRow = new SongRow(new UserWithData<>(user, item), user instanceof Admin);
+                        SongRow songRow = new SongRow(item, user instanceof Admin);
                         setGraphic(songRow);
 
                         songRow.setOnSongClicked(s -> {

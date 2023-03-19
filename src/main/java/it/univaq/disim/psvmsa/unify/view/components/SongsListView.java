@@ -1,7 +1,5 @@
 package it.univaq.disim.psvmsa.unify.view.components;
 
-import it.univaq.disim.psvmsa.unify.controller.SongsListController;
-import it.univaq.disim.psvmsa.unify.controller.UserWithData;
 import it.univaq.disim.psvmsa.unify.model.Song;
 import it.univaq.disim.psvmsa.unify.model.User;
 import javafx.collections.FXCollections;
@@ -19,7 +17,7 @@ public class SongsListView extends ListView<Song> {
 
     ObservableList<Song> songsObservable = FXCollections.observableArrayList();
 
-    public SongsListView(List<Song> songs, User user,boolean editable) {
+    public SongsListView(List<Song> songs, User user, boolean editable) {
         super();
         this.setCellFactory(param -> new ListCell<>(){
             @Override
@@ -28,7 +26,7 @@ public class SongsListView extends ListView<Song> {
                 if (empty || item == null) {
                     setGraphic(null);
                 } else {
-                    SongRow row = new SongRow(new UserWithData<>(user, item), editable);
+                    SongRow row = new SongRow(item, editable);
                     row.setOnEditClicked(onEditClicked);
                     row.setOnSongClicked(onSongClicked);
                     row.setOnPlayButtonClicked(onPlayButtonClicked);
@@ -36,7 +34,6 @@ public class SongsListView extends ListView<Song> {
                 }
             }
         });
-        //style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS"
         this.setStyle("-fx-background-color: transparent;");
         this.setPrefHeight(USE_COMPUTED_SIZE);
         this.setPrefWidth(USE_COMPUTED_SIZE);
@@ -45,7 +42,6 @@ public class SongsListView extends ListView<Song> {
         this.setMaxHeight(USE_COMPUTED_SIZE);
         this.setMaxWidth(USE_COMPUTED_SIZE);
         this.setItems(songsObservable);
-        //set vbox grow
         songsObservable.addAll(songs);
     }
 
@@ -62,7 +58,7 @@ public class SongsListView extends ListView<Song> {
             }
         });
     }
-    public void setOnSongClicked(Consumer<Song> consumer){
+    public void setOnDetailsClicked(Consumer<Song> consumer){
         this.onSongClicked = consumer;
         this.getChildren().forEach(node -> {
             if(node instanceof SongRow){
@@ -70,7 +66,7 @@ public class SongsListView extends ListView<Song> {
             }
         });
     }
-    public void setOnPlayButtonClicked(Consumer<Song> consumer){
+    public void setOnPlayClicked(Consumer<Song> consumer){
         this.onPlayButtonClicked = consumer;
         this.getChildren().forEach(node -> {
             if(node instanceof SongRow){
