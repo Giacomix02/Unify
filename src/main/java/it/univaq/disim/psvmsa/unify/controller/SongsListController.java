@@ -7,9 +7,8 @@ import it.univaq.disim.psvmsa.unify.model.Admin;
 import it.univaq.disim.psvmsa.unify.model.Song;
 import it.univaq.disim.psvmsa.unify.model.User;
 import it.univaq.disim.psvmsa.unify.view.Pages;
-import it.univaq.disim.psvmsa.unify.view.components.AddLinkButton;
-import it.univaq.disim.psvmsa.unify.view.components.SearchBar;
-import it.univaq.disim.psvmsa.unify.view.components.SongRow;
+import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
+import it.univaq.disim.psvmsa.unify.view.components.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -17,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 public class SongsListController implements Initializable, DataInitializable<UserWithData<List<Song>>> {
 
     @FXML
-    private ListView<Song> listView;
+    private VBox listViewWrapper;
     @FXML
     private HBox searchBox;
     @FXML
@@ -36,26 +36,25 @@ public class SongsListController implements Initializable, DataInitializable<Use
 
     private List<Song> songs;
 
-
+    private SongsListView songsList;
     ObservableList<Song> songsObservable = FXCollections.observableArrayList();
 
 
     @Override
     public void initializeData(UserWithData<List<Song>> userWithData) {
         this.songs = userWithData.getData();
-        songsObservable = FXCollections.observableList(new ArrayList<>(this.songs));
-            listView.setItems(songsObservable);
-            listView.setCellFactory(song -> new ListCell<>(){
-                @Override
-                protected void updateItem(Song item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (empty || item == null) {
-                        setGraphic(null);
-                    } else {
-                        setGraphic(new SongRow(new UserWithData<>(userWithData.getUser(), item), false));
-                    }
-                }
-            });
+        songsList = new SongsListView(this.songs, userWithData.getUser(), false);
+        listViewWrapper.getChildren().add(songsList);
+        songsList.setOnSongClicked(song -> {
+            try {
+                ViewDispatcher.getInstance().navigateTo(Pages.SONGDETAILS,new UserWithData<>(userWithData.getUser(), song));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        songsList.setOnPlayButtonClicked(song -> {
+            MusicPlayer.getInstance().playOne(song);
+        });
     }
 
     public void initialize(URL location, ResourceBundle resources) {
@@ -73,7 +72,6 @@ public class SongsListController implements Initializable, DataInitializable<Use
                                     .toLowerCase()
                                     .contains(text.toLowerCase()))
                     .collect(Collectors.toList());
-            songsObservable.clear();
-            songsObservable.addAll(searchedSongs);
+        songsList.setSongs(searchedSongs);
     }
 }
