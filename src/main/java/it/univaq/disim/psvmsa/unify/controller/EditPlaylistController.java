@@ -14,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.util.StringConverter;
 import org.controlsfx.control.CheckComboBox;
 
 import java.net.URL;
@@ -82,6 +83,22 @@ public class EditPlaylistController implements Initializable, DataInitializable<
             this.saveButton.setText("Save");
             label.setText("Add playlist");
         }
+
+        songChoice.setConverter(new StringConverter<>() {   // Convert Genre to String
+            @Override
+            public String toString(Song song) {
+                if (song == null) return "";
+                return song.getName();
+            }
+
+            @Override
+            public Song fromString(String s) {
+                for(Song song : playlist.getSongs()){
+                    if(song.getName().equals(s)) return song;
+                }
+                return null;
+            }
+        });
 
     }
 

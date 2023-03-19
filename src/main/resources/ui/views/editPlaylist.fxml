@@ -34,16 +34,16 @@
       </VBox>
       <HBox>
          <children>
-            <Button id="delete" fx:id="deleteButton" minWidth="200.0" mnemonicParsing="false" onAction="#deletePlaylist" prefWidth="200.0" styleClass="custom-button" text="Delete" />
+            <Button id="delete" fx:id="deleteButton" minWidth="100.0" mnemonicParsing="false" onAction="#deletePlaylist" styleClass="custom-button" text="Delete" />
             <HBox HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
             </HBox>
-            <Button fx:id="saveButton" mnemonicParsing="false" onAction="#savePlaylist" prefWidth="200.0" styleClass="custom-button" text="Save" />
+            <Button fx:id="saveButton" minWidth="100.0" mnemonicParsing="false" onAction="#savePlaylist" styleClass="custom-button" text="Save" />
          </children>
          <VBox.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" />
+            <Insets bottom="10.0" left="20.0" right="20.0" />
          </VBox.margin>
       </HBox>
    </children>
