@@ -2,8 +2,10 @@ package it.univaq.disim.psvmsa.unify.controller;
 
 
 import it.univaq.disim.psvmsa.unify.business.PlaylistService;
+import it.univaq.disim.psvmsa.unify.business.SongService;
 import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.model.Playlist;
+import it.univaq.disim.psvmsa.unify.model.Song;
 import it.univaq.disim.psvmsa.unify.model.User;
 import it.univaq.disim.psvmsa.unify.view.Pages;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
@@ -12,8 +14,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import org.controlsfx.control.CheckComboBox;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 
@@ -39,6 +43,16 @@ public class EditPlaylistController implements Initializable, DataInitializable<
     @FXML
     private Label label;
 
+    @FXML
+    private Label labelSongEdit;
+
+    @FXML
+    private CheckComboBox<Song> songChoice;
+
+    @FXML
+    private Button savePlaylistButton;
+
+
     private PlaylistService playlistService;
 
 
@@ -55,9 +69,16 @@ public class EditPlaylistController implements Initializable, DataInitializable<
         if(playlist!=null){
             this.playlistInput.setText(playlist.getName());
             this.deleteButton.setVisible(true);
+            this.songChoice.setVisible(true);
+            labelSongEdit.setVisible(true);
             label.setText("Edit playlist");
+            songChoice.getItems().addAll(playlist.getSongs());
+            songChoice.getCheckModel().checkAll();
+
         }else{
             this.deleteButton.setVisible(false);
+            this.songChoice.setVisible(false);
+            labelSongEdit.setVisible(false);
             this.saveButton.setText("Save");
             label.setText("Add playlist");
         }
@@ -84,7 +105,9 @@ public class EditPlaylistController implements Initializable, DataInitializable<
             playlistInput.clear();
             exceptionLabel.setText("Playlist saved");
         }else{
+            ArrayList<Song> songs = new ArrayList<>(songChoice.getCheckModel().getCheckedItems());
             playlist.setName(playlistInput.getText());
+            playlist.setSongs(songs);
             try {
             playlistService.update(playlist);
             }catch (Exception e){
