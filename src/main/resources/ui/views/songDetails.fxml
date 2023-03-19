@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import org.controlsfx.control.CheckComboBox?>
 
-<VBox stylesheets="@../" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.psvmsa.unify.controller.SongDetailsController">
+<VBox stylesheets="@../app.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.psvmsa.unify.controller.SongDetailsController">
    <children>
       <VBox alignment="TOP_CENTER" minWidth="700.0" VBox.vgrow="ALWAYS">
          <children>
@@ -107,7 +107,15 @@
                      <HBox.margin>
                         <Insets left="15.0" />
                      </HBox.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </Button>
+                  <Label fx:id="playlistLabel" text="Playlist updated">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Label>
                </children>
             </HBox>
          </children>

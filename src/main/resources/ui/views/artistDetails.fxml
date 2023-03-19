@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox minWidth="700.0" stylesheets="@../css/home.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.psvmsa.unify.controller.ArtistDetailsController">
+<VBox minWidth="700.0" stylesheets="@../app.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.psvmsa.unify.controller.ArtistDetailsController">
     <children>
       <HBox prefHeight="100.0" prefWidth="200.0" spacing="30.0">
          <children>
             <ImageView fx:id="artistImagePreview" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
             <VBox>
                <children>
-                        <Label fx:id="artistName" style="-fx-font-size: 20;" text="Artist " />
+                        <Label fx:id="artistName" styleClass="title-text" text="Artist " />
                   <Label fx:id="artistBiography" />
                   <VBox>
                      <children>
@@ -39,7 +41,7 @@
                   <FlowPane fx:id="artistPictures" hgap="10.0" vgap="10.0" />
                   <HBox>
                      <children>
-                        <Label fx:id="albumLabel" style="-fx-font-size: 16;" text="Albums:" />
+                        <Label fx:id="albumLabel" styleClass="title-text" text="Albums:" />
                      </children>
                      <padding>
                         <Insets top="20.0" />
@@ -51,7 +53,7 @@
                   <FlowPane fx:id="artistAlbums" hgap="10.0" />
                   <HBox>
                      <children>
-                        <Label fx:id="songLabel" style="-fx-font-size: 16;" text="Songs:" />
+                        <Label fx:id="songLabel" styleClass="title-text" text="Songs:" />
                      </children>
                      <padding>
                         <Insets top="20.0" />

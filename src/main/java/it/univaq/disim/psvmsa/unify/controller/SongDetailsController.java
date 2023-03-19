@@ -50,6 +50,9 @@ public class SongDetailsController implements Initializable, DataInitializable<U
     @FXML
     private Button savePlaylistButton;
 
+     @FXML
+     private Label playlistLabel;
+
     @FXML
     private CheckComboBox<Playlist> playlistsChoice;
 
@@ -82,6 +85,8 @@ public class SongDetailsController implements Initializable, DataInitializable<U
     public void initializeData(UserWithData<Song> data) {
         song = data.getData();
         user = data.getUser();
+        playlistLabel.setText("Playlist updated");
+        playlistLabel.setVisible(false);
 
         try {
             userPlaylists = playlistService.getPlaylistsByUser(user);
@@ -122,6 +127,10 @@ public class SongDetailsController implements Initializable, DataInitializable<U
                 this.playlistsChoice.getCheckModel().check(p);
             }
         }
+
+        playlistsChoice.addEventHandler(ComboBox.ON_SHOWING, event -> {
+            playlistLabel.setVisible(false);
+        });
     }
 
     public void savePlaylists(){
@@ -146,6 +155,8 @@ public class SongDetailsController implements Initializable, DataInitializable<U
                 e.printStackTrace();
             }
         }
+
+        playlistLabel.setVisible(true);
 
     }
 
