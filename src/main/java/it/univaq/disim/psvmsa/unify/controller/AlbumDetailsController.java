@@ -57,12 +57,7 @@ public class AlbumDetailsController implements Initializable, DataInitializable<
         albumName.setText(album.getName());
         albumImagePreview.setImage(new Image(album.getSongs().get(0).getPicture().toStream()));
 
-        if (!(album.getArtist() instanceof GroupArtist)) {
-            artistLabel.setText("Artist: " + album.getArtist().getName());
-        } else {
-            String joinArtist = ((GroupArtist) album.getArtist()).getArtists().stream().map(artist -> artist.getName()).collect(Collectors.joining(", "));
-            artistLabel.setText("Artists: "+ joinArtist);
-        }
+        artistLabel.setText("Artist: " + album.getArtist().getName());
 
         for (Song song : album.getSongs()) {
             joinGenre = song.getGenres().stream().map(genre->genre.getName()).collect(Collectors.joining(", "));

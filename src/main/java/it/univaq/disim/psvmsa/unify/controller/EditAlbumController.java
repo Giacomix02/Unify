@@ -27,7 +27,9 @@ import java.util.ResourceBundle;
 public class EditAlbumController implements Initializable, DataInitializable<UserWithData<Album>> {
 
     private AlbumService albumService;
+
     private SongService songService;
+
     private ArtistService artistService;
 
     private ViewDispatcher viewDispatcher;
@@ -40,6 +42,7 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
 
     @FXML
     private ChoiceBox<Artist> artistPicker;
+
     @FXML
     private Button removeButton;
 

@@ -84,6 +84,7 @@ public class EditArtistController implements Initializable, DataInitializable<Us
         delete.visibleProperty().set(true);
         boolean isGroup = existingArtist instanceof GroupArtist;
         artistTypeChoiceBox.setValue(isGroup ? "Group" : "Single");
+        membersPicker.getItems().remove(existingArtist);
         if(isGroup){
             membersPicker.getCheckModel().clearChecks();
             for (Artist member : ((GroupArtist) existingArtist).getArtists()) {
@@ -91,7 +92,6 @@ public class EditArtistController implements Initializable, DataInitializable<Us
             }
         }
         images = existingArtist.getPictures();
-
         setImages(existingArtist.getPictures());
     }
 
@@ -168,17 +168,11 @@ public class EditArtistController implements Initializable, DataInitializable<Us
             }catch (Exception e){
                 e.printStackTrace();
             }
-
         }
     }
 
     @FXML
     private void onAction() {
-        /*
-        for (Picture picture: images){
-            pictureService.add(picture);
-        }*/
-
         if (artistTypeChoiceBox.getSelectionModel().getSelectedItem().equals("Single")) {
             Artist singleArtist = new Artist(artistNameInput.getText(), artistBiographyInput.getText(), images);
             save(singleArtist);
@@ -194,15 +188,13 @@ public class EditArtistController implements Initializable, DataInitializable<Us
             if (existingArtist == null) {
                 artistService.add(artist);
                 images.clear();
-
             } else {
                 artist.setId(existingArtist.getId());
                 artistService.update(artist);
                 dispatcher.navigateTo(Pages.ARTISTS,this.user);
             }
-
             clearFields();
-        }catch(Exception e){
+        } catch(Exception e){
             e.printStackTrace();
         }
     }
