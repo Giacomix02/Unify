@@ -43,16 +43,12 @@ public class ViewAlbum extends HBox {
 
     private LinkedList<Song> queue = new LinkedList<>();
 
-    private MusicPlayer musicPlayer;
-
-
 
 
     public ViewAlbum(Album album, boolean editable){
         super();
         this.editable = editable;
         this.album = album;
-        this.musicPlayer = MusicPlayer.getInstance();
         init();
     }
 
@@ -91,9 +87,8 @@ public class ViewAlbum extends HBox {
             e.printStackTrace();
         }
 
-        playAlbum();
-
     }
+
     public void setOnAlbumClicked(Consumer<Album> consumer) {
         this.albumDetails.setOnMouseClicked(event -> {
             consumer.accept(album);
@@ -102,6 +97,12 @@ public class ViewAlbum extends HBox {
 
     public void setOnEditClicked(Consumer<Album> consumer) {
         this.editButton.setOnAction(event -> {
+            consumer.accept(album);
+        });
+    }
+
+    public void setOnPlayClicked(Consumer<Album> consumer) {
+        this.playButton.setOnAction(event -> {
             consumer.accept(album);
         });
     }
@@ -117,13 +118,6 @@ public class ViewAlbum extends HBox {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public void playAlbum() {
-        this.playButton.setOnMouseClicked(event -> {
-            musicPlayer.setQueue(album.getSongs());
-            musicPlayer.startQueuePlayback();
-        });
     }
 
 

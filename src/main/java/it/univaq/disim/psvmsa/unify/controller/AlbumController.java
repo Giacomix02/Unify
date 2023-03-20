@@ -8,6 +8,7 @@ import it.univaq.disim.psvmsa.unify.model.User;
 import it.univaq.disim.psvmsa.unify.view.Pages;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import it.univaq.disim.psvmsa.unify.view.components.AddLinkButton;
+import it.univaq.disim.psvmsa.unify.view.components.MusicPlayer;
 import it.univaq.disim.psvmsa.unify.view.components.SearchBar;
 import it.univaq.disim.psvmsa.unify.view.components.ViewAlbum;
 import javafx.collections.FXCollections;
@@ -41,9 +42,13 @@ public class AlbumController implements Initializable, DataInitializable<User> {
 
     private ViewAlbum viewAlbum;
 
+    private MusicPlayer musicPlayer;
+
+
     public AlbumController() {
         UnifyServiceFactory factoryInstance = UnifyServiceFactory.getInstance();
         this.albumService = factoryInstance.getAlbumService();
+        this.musicPlayer = MusicPlayer.getInstance();
     }
 
     @Override
@@ -82,6 +87,12 @@ public class AlbumController implements Initializable, DataInitializable<User> {
                             ex.printStackTrace();
                         }
                     });
+
+                    viewAlbum.setOnPlayClicked(a -> {
+                        musicPlayer.setQueue(album.getSongs());
+                        musicPlayer.startQueuePlayback();
+                    });
+
                     setGraphic(viewAlbum);
                 }
             }
