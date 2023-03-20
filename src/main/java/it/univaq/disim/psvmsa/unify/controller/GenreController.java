@@ -16,9 +16,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -65,16 +65,19 @@ public class GenreController implements Initializable, DataInitializable<User> {
 
     public void initialize(URL location, ResourceBundle resources){
         searchBar = new SearchBar("Search a Genre");
+        searchBox.getChildren().add(searchBar);
         searchBar.setOnSearch(text ->{
             showSearch(text);
         });
-        searchBox.getChildren().add(searchBar);
     }
 
     public void showSearch(String text){
-        List<Genre> genres = genreService.searchByName(text);
-        viewList.getItems().clear();
-        viewList.getItems().addAll(genres);
+        try{
+            List<Genre> searchedGenres = new ArrayList<>(genreService.searchByName(text));
+            viewList.setItems(FXCollections.observableList(searchedGenres));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
