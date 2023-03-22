@@ -55,7 +55,10 @@ public class AlbumDetailsController implements Initializable, DataInitializable<
         this.album = data.getData();
         this.user = data.getUser();
         albumName.setText(album.getName());
-        albumImagePreview.setImage(new Image(album.getSongs().get(0).getPicture().toStream()));
+
+        if(album.getSongs() != null) {
+            albumImagePreview.setImage(new Image(album.getSongs().get(0).getPicture().toStream()));
+        }
 
         artistLabel.setText("Artist: " + album.getArtist().getName());
 
