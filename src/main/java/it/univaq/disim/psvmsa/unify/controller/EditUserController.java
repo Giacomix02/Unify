@@ -3,6 +3,8 @@ package it.univaq.disim.psvmsa.unify.controller;
 import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.business.UserService;
 import it.univaq.disim.psvmsa.unify.model.User;
+import it.univaq.disim.psvmsa.unify.view.Pages;
+import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -97,6 +99,7 @@ public class EditUserController implements Initializable, DataInitializable<User
             usernameInput.clear();
             passwordInput.clear();
             removeButton.visibleProperty().set(false);
+            ViewDispatcher.getInstance().navigateTo(Pages.MANAGE_USERS, this.user);
         } catch (Exception e){
             e.printStackTrace();
         }

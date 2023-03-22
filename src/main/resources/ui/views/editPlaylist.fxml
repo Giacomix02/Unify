@@ -21,7 +21,7 @@
             </Label>
             <VBox prefWidth="200.0" spacing="10.0" VBox.vgrow="NEVER">
                <children>
-                  <TextField fx:id="playlistInput" onMouseClicked="#textFieldClick" prefHeight="30.0" prefWidth="244.0" promptText="Write playlist name" style="-fx-background-radius: 7;">
+                  <TextField fx:id="playlistInput" focusTraversable="false" onMouseClicked="#textFieldClick" prefHeight="30.0" prefWidth="244.0" promptText="Write playlist name" style="-fx-background-radius: 7;">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>

@@ -15,12 +15,12 @@
                 </Label>
                 <VBox prefWidth="200.0" spacing="10.0" VBox.vgrow="NEVER">
                     <children>
-                        <TextField fx:id="usernameInput" prefHeight="30.0" prefWidth="244.0" promptText="" style="-fx-background-radius: 7;">
+                        <TextField fx:id="usernameInput" focusTraversable="false" prefHeight="30.0" prefWidth="244.0" promptText="Write username" style="-fx-background-radius: 7;">
                             <VBox.margin>
                                 <Insets />
                             </VBox.margin>
                         </TextField>
-                  <PasswordField fx:id="passwordInput" prefHeight="30.0" prefWidth="244.0" style="-fx-background-radius: 7;" />
+                  <PasswordField fx:id="passwordInput" focusTraversable="false" prefHeight="30.0" prefWidth="244.0" promptText="Write password" style="-fx-background-radius: 7;" />
                   <HBox>
                      <children>
                         <Button fx:id="removeButton" minWidth="75.0" mnemonicParsing="false" onAction="#removeUser" prefWidth="75.0" styleClass="custom-button" text="Remove" />
