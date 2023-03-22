@@ -74,4 +74,5 @@ public class ArtistController implements Initializable, DataInitializable<User> 
         });
         searchBox.getChildren().add(searchBar);
     }
+
 }

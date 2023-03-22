@@ -174,7 +174,7 @@ public class EditSongController implements Initializable, DataInitializable<User
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
         fileChooser.setTitle("Choose a song");
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Song Files", "*.mp3", "*.wav")
+                new FileChooser.ExtensionFilter("Song Files", "*.mp3")
         );
         Stage stage = new Stage();
         File file = fileChooser.showOpenDialog(stage);

@@ -83,7 +83,7 @@ TextField, PasswordField, .combo-box-base, .text-area .content, .choice-box {
     -fx-min-width: 100;
     -fx-font-size: 14;
     -fx-background-radius: 7;
-    -fx-cursor: pointer;
+    -fx-cursor: hand;
 }
 
 .button:hover {

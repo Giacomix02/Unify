@@ -100,4 +100,11 @@ public class AlbumDetailsController implements Initializable, DataInitializable<
         }
 
     }
+
+    @FXML
+    public void playAlbum(){
+        MusicPlayer musicPlayer = MusicPlayer.getInstance();
+        musicPlayer.setQueue(album.getSongs());
+        musicPlayer.startQueuePlayback();
+    }
 }

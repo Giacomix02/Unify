@@ -36,6 +36,7 @@ public class AlbumController implements Initializable, DataInitializable<User> {
     @FXML
     private SearchBar searchBar;
 
+
     private User user;
 
     private AlbumService albumService;
@@ -117,6 +118,5 @@ public class AlbumController implements Initializable, DataInitializable<User> {
             e.printStackTrace();
         }
     }
-
 }
 
