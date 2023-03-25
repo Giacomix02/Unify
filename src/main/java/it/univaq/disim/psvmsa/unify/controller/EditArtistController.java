@@ -92,7 +92,7 @@ public class EditArtistController implements Initializable, DataInitializable<Us
             }
         }
         images = existingArtist.getPictures();
-        setImages(existingArtist.getPictures());
+        setImages(images);
     }
 
     @Override
@@ -158,7 +158,6 @@ public class EditArtistController implements Initializable, DataInitializable<Us
 
     private void setImages(List<Picture> pictures){
         artistPictures.getChildren().clear();
-
         for(Picture picture: pictures){
             try{
                 ImageView img = new ImageView(new Image(picture.toStream()));

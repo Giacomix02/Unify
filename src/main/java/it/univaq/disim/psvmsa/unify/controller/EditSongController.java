@@ -24,8 +24,8 @@ import java.util.ResourceBundle;
 public class EditSongController implements Initializable, DataInitializable<UserWithData<Song>> {
 
     private Image DEFAULT_IMAGE = null;
-    private final SongService songService;
 
+    private final SongService songService;
     private final AlbumService albumService;
     private final ArtistService artistService;
     private final GenreService genreService;
@@ -50,7 +50,6 @@ public class EditSongController implements Initializable, DataInitializable<User
     @FXML
     private Button uploadSongButton;
 
-
     @FXML
     private ChoiceBox<Artist> artistBoxChoice;
 
@@ -72,6 +71,7 @@ public class EditSongController implements Initializable, DataInitializable<User
 
     private User user;
 
+
     public EditSongController() {
         UnifyServiceFactory factoryInstance = UnifyServiceFactory.getInstance();
         this.songService = factoryInstance.getSongService();
@@ -85,6 +85,7 @@ public class EditSongController implements Initializable, DataInitializable<User
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     }
+
     public void initializeData(UserWithData<Song> data) {
         this.user = data.getUser();
         this.song = data.getData();
@@ -158,7 +159,6 @@ public class EditSongController implements Initializable, DataInitializable<User
     public void uploadImage() throws IOException {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-
         fileChooser.setTitle("Choose a picture");
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg")

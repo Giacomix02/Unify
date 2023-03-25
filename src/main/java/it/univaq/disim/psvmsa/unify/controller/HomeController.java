@@ -84,7 +84,6 @@ public class HomeController implements DataInitializable<User>, Initializable {
                                 ViewPlaylist viewPlaylist = new ViewPlaylist(playlist);
                                 viewPlaylist.setOnEditClicked(playlist1 -> {
                                     try {
-
                                         ViewDispatcher.getInstance().navigateTo(Pages.EDITPLAYLIST, new UserWithData<>(user,playlist1));
                                     } catch (Exception e) {
                                         e.printStackTrace();

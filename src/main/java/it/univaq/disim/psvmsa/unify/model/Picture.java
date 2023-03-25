@@ -20,6 +20,7 @@ public class Picture {
         this(content);
         this.id = id;
     }
+
     public Integer getId() {
         return id;
     }
@@ -28,11 +29,11 @@ public class Picture {
         this.id = id;
     }
 
-
     public void setContent(InputStream content) {
         this.content = content;
         cache = null;
     }
+
     public InputStream toStream()  {
         if (cache == null) {
             try {

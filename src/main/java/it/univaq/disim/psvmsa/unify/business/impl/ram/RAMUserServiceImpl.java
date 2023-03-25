@@ -4,6 +4,7 @@ import it.univaq.disim.psvmsa.unify.business.BusinessException;
 import it.univaq.disim.psvmsa.unify.business.UserService;
 import it.univaq.disim.psvmsa.unify.model.User;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +47,7 @@ public class RAMUserServiceImpl implements UserService   {
 
     @Override
     public List<User> getUsers() {
-        return null;
+        return new ArrayList<>(users.values());
     }
 
     @Override

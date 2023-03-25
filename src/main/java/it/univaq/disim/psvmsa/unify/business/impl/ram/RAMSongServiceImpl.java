@@ -61,7 +61,7 @@ public class RAMSongServiceImpl implements SongService {
 
     @Override
     public List<Song> searchByArtist(Artist artist) {
-ArrayList<Song> songs = new ArrayList<>();
+        ArrayList<Song> songs = new ArrayList<>();
         for(Song song : this.songs.values()) {
             if(song.getArtist().equals(artist)) {
                 songs.add(song);
