@@ -130,6 +130,14 @@ public class FileAlbumServiceImpl implements AlbumService {
         for (Song song : songs) {
             Song s = this.songService.add(song);
             song = s == null ? song : s; //if the song is already present, it is not added again
+            try{
+                if(s == null){
+                    this.songService.update(song);
+                }
+            }catch (BusinessException e){
+                e.printStackTrace();
+            }
+
             IndexedFile.Row row = new IndexedFile.Row(this.SEPARATOR);
             int id = file.incrementId();
             row.set(SongsSchema.RELATION_ID, id)

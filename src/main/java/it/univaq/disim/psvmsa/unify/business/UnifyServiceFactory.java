@@ -6,8 +6,8 @@ import it.univaq.disim.psvmsa.unify.business.impl.ram.RAMUnifyServiceFactory;
 
 public abstract class UnifyServiceFactory {
 
-    private static UnifyServiceFactory instance = new RAMUnifyServiceFactory();
-    //private static UnifyServiceFactory instance = new FileUnifyServiceFactory();
+    //private static UnifyServiceFactory instance = new RAMUnifyServiceFactory();
+    private static UnifyServiceFactory instance = new FileUnifyServiceFactory();
 
     public abstract AlbumService getAlbumService();
 

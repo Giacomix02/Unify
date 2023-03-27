@@ -75,7 +75,6 @@ public class SongController implements Initializable, DataInitializable<User> {
                                 e.printStackTrace();
                             }
                         });
-
                         songRow.setOnEditClicked(s -> {
                             try {
                                 UserWithData<Song> data = new UserWithData<>(user, s);

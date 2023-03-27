@@ -23,13 +23,10 @@ import java.util.ResourceBundle;
 
 public class EditSongController implements Initializable, DataInitializable<UserWithData<Song>> {
 
-    private Image DEFAULT_IMAGE = null;
 
     private final SongService songService;
-    private final AlbumService albumService;
     private final ArtistService artistService;
     private final GenreService genreService;
-    private final PictureService pictureService;
 
     private ViewDispatcher viewDispatcher;
 
@@ -76,9 +73,7 @@ public class EditSongController implements Initializable, DataInitializable<User
         UnifyServiceFactory factoryInstance = UnifyServiceFactory.getInstance();
         this.songService = factoryInstance.getSongService();
         this.artistService = factoryInstance.getArtistService();
-        this.albumService = factoryInstance.getAlbumService();
         this.genreService = factoryInstance.getGenreService();
-        this.pictureService = factoryInstance.getPictureService();
         viewDispatcher = ViewDispatcher.getInstance();
     }
 
