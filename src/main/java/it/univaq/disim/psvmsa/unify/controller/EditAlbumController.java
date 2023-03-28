@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
@@ -48,6 +49,9 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
     private TextField albumInput;
 
     @FXML
+    private ChoiceBox<Song> existingSongPicker;
+
+    @FXML
     private Label exceptionLabel;
 
     @FXML
@@ -82,6 +86,10 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
     private TextField songNameInput;
     @FXML
     private TextArea songLyricsInput;
+    @FXML
+    private HBox existingSongBox;
+    @FXML
+    private HBox editSongPickerBox;
 
     public EditAlbumController() {
         UnifyServiceFactory factoryInstance = UnifyServiceFactory.getInstance();
@@ -100,6 +108,7 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
             albumInput.setText(album.getName());
             artistPicker.setValue(album.getArtist());
             currentSongPicker.getItems().addAll(album.getSongs());
+
             label.setText("Edit album");
         }
     }
@@ -107,6 +116,25 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        existingSongPicker.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(Song object) {
+                if (object == null) return "";
+                return object.getName();
+            }
+
+            @Override
+            public Song fromString(String string) {
+                for (Song s : existingSongPicker.getItems()) {
+                    if (s.getName().equals(string)) {
+                        return s;
+                    }
+                }
+                return null;
+            }
+        });
+
         viewDispatcher = ViewDispatcher.getInstance();
         exceptionLabel.setText("");
         removeButton.visibleProperty().set(false);
@@ -117,6 +145,30 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
                 .bind(albumInput
                         .textProperty()
                         .isEmpty());
+        this.existingSongBox
+                .disableProperty()
+                .bind(artistPicker
+                        .valueProperty()
+                        .isNull().or(
+                                currentSongPicker
+                                .valueProperty()
+                                .isNotNull()));
+        this.editSongPickerBox
+                .disableProperty()
+                .bind(existingSongPicker
+                        .valueProperty()
+                        .isNotNull());
+        artistPicker.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue != null){
+                existingSongPicker.getItems().clear();
+                try {
+                    existingSongPicker.getItems().addAll(songService.searchByArtist(newValue));
+                } catch (BusinessException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
         List<Artist> artists = artistService.getArtists();
         artistPicker.converterProperty().set(new StringConverter<>() {
             @Override
@@ -242,6 +294,13 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
     }
     @FXML
     public void addCurrentSongToAlbum() {
+
+        if(existingSongPicker.getSelectionModel().getSelectedItem() != null){
+            Song song = existingSongPicker.getSelectionModel().getSelectedItem();
+            currentSongPicker.getItems().add(song);
+            clearSong();
+        }
+
         if(currentSong != null){
             currentSong.setName(songNameInput.getText());
             currentSong.setLyrics(songLyricsInput.getText());

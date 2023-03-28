@@ -56,7 +56,17 @@
                         <children>
                             <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                                 <children>
-                              <HBox alignment="CENTER_LEFT" spacing="20.0">
+                              <HBox fx:id="existingSongBox" alignment="CENTER_LEFT" spacing="10.0">
+                                 <children>
+                                    <Label text="Select existing songs" />
+                                    <ChoiceBox fx:id="existingSongPicker" prefWidth="150.0" />
+                                    <HBox HBox.hgrow="ALWAYS" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets bottom="11.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox fx:id="editSongPickerBox" alignment="CENTER_LEFT" spacing="20.0">
                                  <children>
                                     <Label lineSpacing="20.0" text="Select song to edit">
                                        <HBox.margin>
