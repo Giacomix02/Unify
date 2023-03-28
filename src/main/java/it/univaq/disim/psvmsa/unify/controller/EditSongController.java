@@ -68,12 +68,15 @@ public class EditSongController implements Initializable, DataInitializable<User
 
     private User user;
 
+    private AlbumService albumService;
+
 
     public EditSongController() {
         UnifyServiceFactory factoryInstance = UnifyServiceFactory.getInstance();
         this.songService = factoryInstance.getSongService();
         this.artistService = factoryInstance.getArtistService();
         this.genreService = factoryInstance.getGenreService();
+        this.albumService = factoryInstance.getAlbumService();
         viewDispatcher = ViewDispatcher.getInstance();
     }
 
@@ -179,6 +182,12 @@ public class EditSongController implements Initializable, DataInitializable<User
 
     public void delete() {
         try{
+            for (Album album : albumService.getAlbums()) {
+                album.getSongs().remove(song);
+                albumService.update(album);
+
+                if (album.getSongs().isEmpty()) albumService.delete(album);
+            }
             songService.deleteById(song.getId());
             viewDispatcher.navigateTo(Pages.SONGS, user);
         } catch(Exception e) {
