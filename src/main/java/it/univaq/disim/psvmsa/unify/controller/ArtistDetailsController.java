@@ -145,7 +145,11 @@ public class ArtistDetailsController implements Initializable, DataInitializable
                 SingleAlbum singleAlbum = new SingleAlbum(album);
                 singleAlbum.setOnAlbumClick(a -> {
                     try {
-                        ViewDispatcher.getInstance().navigateTo(Pages.ALBUMDETAILS,new UserWithData<>(user, a));
+                        if (a.getSongs().size() == 0) {
+                            ViewDispatcher.getInstance().navigateTo(Pages.EDITALBUM, new UserWithData<>(user, a));
+                        } else {
+                            ViewDispatcher.getInstance().navigateTo(Pages.ALBUMDETAILS,new UserWithData<>(user, a));
+                        }
                     }catch (Exception e){
                         e.printStackTrace();
                     }

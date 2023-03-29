@@ -1,5 +1,6 @@
 package it.univaq.disim.psvmsa.unify.view.components;
 
+import it.univaq.disim.psvmsa.unify.business.PictureService;
 import it.univaq.disim.psvmsa.unify.business.SongService;
 import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.controller.UserWithData;
@@ -17,6 +18,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
+import java.io.FileInputStream;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -108,10 +110,14 @@ public class ViewAlbum extends HBox {
     }
 
     public Picture getAlbumPicture() {
+
         try {
             songService = UnifyServiceFactory.getInstance().getSongService();
             List<Song> songs = album.getSongs();
-            if(songs.size() == 0) return null;
+            if(songs.size() == 0) {
+                Picture picture = new Picture(new FileInputStream("src/main/resources/ui/images/music-placeholder.png"));
+                return picture;
+            }
             return songs.get(0).getPicture();
         }
         catch (Exception e) {

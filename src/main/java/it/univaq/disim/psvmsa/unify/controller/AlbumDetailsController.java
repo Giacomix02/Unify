@@ -14,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
+import java.io.FileInputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,8 +57,15 @@ public class AlbumDetailsController implements Initializable, DataInitializable<
         this.user = data.getUser();
         albumName.setText(album.getName());
 
-        if(album.getSongs() != null) {
+        if(album.getSongs().size() > 0) {
             albumImagePreview.setImage(new Image(album.getSongs().get(0).getPicture().toStream()));
+        }else{
+            try {
+                Picture picture = new Picture(new FileInputStream("src/main/resources/ui/images/music-placeholder.png"));
+                albumImagePreview.setImage(new Image(picture.toStream()));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
 
         artistLabel.setText("Artist: " + album.getArtist().getName());
@@ -66,7 +74,11 @@ public class AlbumDetailsController implements Initializable, DataInitializable<
             joinGenre = song.getGenres().stream().map(genre->genre.getName()).collect(Collectors.joining(", "));
         }
 
-        genreLabel.setText("Genres: " + joinGenre);
+        if (joinGenre != null) {
+            genreLabel.setText("Genre: " + joinGenre);
+        } else {
+            genreLabel.setText("Genre: can not find genres");
+        }
 
         setSongs();
     }

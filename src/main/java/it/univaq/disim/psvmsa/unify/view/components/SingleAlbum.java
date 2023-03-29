@@ -18,6 +18,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -63,6 +64,15 @@ public class SingleAlbum extends HBox {
             }
             if(picture != null){
                 Image i = new Image(picture.toStream());
+                Rectangle rectangle = new Rectangle(0, 0, 30, 30);
+                rectangle.setArcWidth(14);   // Corner radius
+                rectangle.setArcHeight(14);
+                ImagePattern pattern = new ImagePattern(i);
+                rectangle.setFill(pattern);
+                image.setClip(rectangle);
+                image.setImage(i);
+            } else {
+                Image i = new Image((new FileInputStream("src/main/resources/ui/images/music-placeholder.png")));
                 Rectangle rectangle = new Rectangle(0, 0, 30, 30);
                 rectangle.setArcWidth(14);   // Corner radius
                 rectangle.setArcHeight(14);
