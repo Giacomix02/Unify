@@ -73,7 +73,7 @@ public class FilePictureServiceImpl implements PictureService {
         return picture;
     }
     private boolean existsPicture(Picture picture){
-        if(picture.getId() == null) return false;
+        if(picture.getId() == null) return true;
         return loader.getRowById(picture.getId() ) != null;
     }
     @Override
