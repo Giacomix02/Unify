@@ -10,8 +10,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
@@ -50,9 +48,6 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
     private TextField albumInput;
 
     @FXML
-    private ChoiceBox<Song> existingSongPicker;
-
-    @FXML
     private Label exceptionLabel;
 
     @FXML
@@ -87,12 +82,6 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
     private TextField songNameInput;
     @FXML
     private TextArea songLyricsInput;
-    @FXML
-    private HBox existingSongBox;
-    @FXML
-    private HBox editSongPickerBox;
-    @FXML
-    private VBox songsVBox;
 
     public EditAlbumController() {
         UnifyServiceFactory factoryInstance = UnifyServiceFactory.getInstance();
@@ -111,7 +100,6 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
             albumInput.setText(album.getName());
             artistPicker.setValue(album.getArtist());
             currentSongPicker.getItems().addAll(album.getSongs());
-
             label.setText("Edit album");
         }
     }
@@ -129,30 +117,7 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
                 .disableProperty()
                 .bind(albumInput
                         .textProperty()
-                        .isEmpty().or(
-                                existingSongPicker
-                                .valueProperty()
-                                .isNull())
-                );
-        this.existingSongBox
-                .disableProperty()
-                .bind(artistPicker
-                        .valueProperty()
-                        .isNull().or(
-                                currentSongPicker
-                                .valueProperty()
-                                .isNotNull()));
-        this.editSongPickerBox
-                .disableProperty()
-                .bind(existingSongPicker
-                        .valueProperty()
-                        .isNotNull());
-        artistPicker.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue != null){
-                setExistingSongPicker(newValue);
-            }
-        });
-
+                        .isEmpty());
         List<Artist> artists = artistService.getArtists();
         artistPicker.converterProperty().set(new StringConverter<>() {
             @Override
@@ -207,9 +172,6 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
         currentSongPicker.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             loadSong(newValue);
         });
-        existingSongPicker.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            songsVBox.setVisible(false);
-        });
         songGenrePicker.getItems().addAll(genres);
         artistPicker.getItems().addAll(artists);
     }
@@ -217,16 +179,7 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
     @FXML
     public void updateAlbum() {
         try {
-            List<Song> songs = new ArrayList<>();
-            if (this.album != null) {
-                songs.addAll(album.getSongs());
-            }
-            if(!existingSongPicker.getItems().isEmpty()){
-                songs.add(existingSongPicker.getSelectionModel().getSelectedItem());
-            }else{
-                songs = currentSongPicker.getItems();
-            }
-
+            List<Song> songs = currentSongPicker.getItems();
             Artist artist = artistPicker.getValue();
             if (this.album == null) {
                 for(Song song: songs){
@@ -246,8 +199,6 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
         } catch (Exception e) {
             e.printStackTrace();
         }
-        setExistingSongPicker(artistPicker.getValue());
-        songsVBox.setVisible(true);
     }
 
     private void setCurrentImage(ImageView imageView, Picture picture) {
@@ -292,8 +243,6 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
     }
     @FXML
     public void addCurrentSongToAlbum() {
-
-
         if(currentSong != null){
             currentSong.setName(songNameInput.getText());
             currentSong.setLyrics(songLyricsInput.getText());
@@ -359,40 +308,6 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
         songGenrePicker.getCheckModel().clearChecks();
         songFileLabel.setText("");
         saveButton.setText("Add song to album");
-    }
-
-    private void setExistingSongPicker(Artist artist){
-        try {
-            existingSongPicker.getItems().clear();
-            List<Song> songs = songService.searchByArtist(artist);
-            for(Song song: songs){
-                if(this.album == null) existingSongPicker.getItems().add(song);
-                else
-                if(!album.getSongs().contains(song)) {
-                    existingSongPicker.getItems().add(song);
-                }
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-        existingSongPicker.setConverter(new StringConverter<>() {   // Convert Song to String
-            @Override
-            public String toString(Song object) {
-                if (object == null) return "";
-                return object.getName();
-            }
-
-            @Override
-            public Song fromString(String string) {
-                for (Song s : existingSongPicker.getItems()) {
-                    if (s.getName().equals(string)) {
-                        return s;
-                    }
-                }
-                return null;
-            }
-        });
     }
 
 }
