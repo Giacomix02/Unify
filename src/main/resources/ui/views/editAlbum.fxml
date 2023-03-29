@@ -35,6 +35,16 @@
                         <ChoiceBox fx:id="artistPicker" prefWidth="150.0" />
                      </children>
                   </HBox>
+                  <HBox fx:id="existingSongBox" alignment="CENTER_LEFT">
+                     <children>
+                        <Label text="Add existing song" />
+                        <HBox HBox.hgrow="ALWAYS" />
+                        <ChoiceBox fx:id="existingSongPicker" prefWidth="150.0" />
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="11.0" />
+                     </VBox.margin>
+                  </HBox>
                         <HBox>
                             <children>
                                 <Button fx:id="removeButton" mnemonicParsing="false" onAction="#removeAlbum" styleClass="custom-button" text="Delete album" />
@@ -47,16 +57,16 @@
                 <Label fx:id="exceptionLabel" />
             </children>
         </VBox>
-   <Label styleClass="title-text" text="Songs" />
-    <VBox alignment="CENTER">
+    <VBox fx:id="songsVBox" alignment="CENTER">
         <children>
             <VBox alignment="TOP_CENTER" minWidth="700.0" VBox.vgrow="NEVER">
                 <children>
+               <Label styleClass="title-text" text="Songs" />
                     <HBox VBox.vgrow="NEVER">
                         <children>
                             <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                                 <children>
-                              <HBox alignment="CENTER_LEFT" spacing="20.0">
+                              <HBox fx:id="editSongPickerBox" alignment="CENTER_LEFT" spacing="20.0">
                                  <children>
                                     <Label lineSpacing="20.0" text="Select song to edit">
                                        <HBox.margin>
@@ -149,7 +159,10 @@
                     </HBox>
                     <HBox>
                         <children>
-                            <Button fx:id="exit" mnemonicParsing="false" onAction="#removeCurrentSongFromAlbum" style="-fx-background-color: #3D9CA2;" styleClass="custom-button" text="Remove song from album" />
+                            <Button fx:id="exit" mnemonicParsing="false" onAction="#removeCurrentSongFromAlbum" style="-fx-background-color: #3D9CA2;" styleClass="custom-button" text="Remove song from album">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin></Button>
                             <HBox HBox.hgrow="ALWAYS">
                                 <HBox.margin>
                                     <Insets />
@@ -159,7 +172,7 @@
                                </Button>
                         </children>
                         <VBox.margin>
-                            <Insets bottom="10.0" left="10.0" right="10.0" />
+                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                         </VBox.margin>
                     </HBox>
                 </children>
