@@ -109,6 +109,7 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
     public void initialize(URL location, ResourceBundle resources) {
         viewDispatcher = ViewDispatcher.getInstance();
         exceptionLabel.setText("");
+        songFileLabel.setText("");
         removeButton.visibleProperty().set(false);
         label.setText("Add album");
         DEFAULT_IMAGE = songImage.getImage();
