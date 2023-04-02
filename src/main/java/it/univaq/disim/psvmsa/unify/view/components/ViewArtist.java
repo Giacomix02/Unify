@@ -8,11 +8,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+
+import java.io.FileInputStream;
 
 
 public class ViewArtist extends HBox {
@@ -43,34 +44,28 @@ public class ViewArtist extends HBox {
             HBox root = FXMLLoader.load(getClass().getResource("/ui/components/viewArtist.fxml"));
             HBox.setHgrow(root, Priority.ALWAYS);
             getChildren().add(root);
-            //artistImage = (ImageView) root.lookup("#artistImage");
             label = (Label) root.lookup("#artistName");
             actionButton = (Button) root.lookup("#actionButton");
             artistInfo = (Button) root.lookup("#artistInfo");
 
             label.setText(artist.getName());
-            if(artist.getPictures().size() > 0){
-                Picture pfp = artist.getPictures().get(0);
-                Image image = new Image(pfp.toStream());
-                Rectangle rectangle = new Rectangle(0,0,50,50);
-                rectangle.setArcHeight(14);
-                rectangle.setArcWidth(14);
-                ImagePattern pattern = new ImagePattern(image);
-                rectangle.setFill(pattern);
-                RoundedImage roundedImage = new RoundedImage(image,20,50);
-                roundedImage.fitHeightProperty().set(50);
-                roundedImage.fitWidthProperty().set(50);
-                artistInfo.setGraphic(roundedImage);
 
-                artistInfo.setOnMouseClicked(mouseEvent -> {
-                    try{
-                        UserWithData<Artist> data = new UserWithData<>(user, artist);
-                        ViewDispatcher.getInstance().navigateTo(Pages.ARTISTDETAILS, data);
-                    } catch (Exception e){
-                        e.printStackTrace();
-                    }
-                });
+            if(artist.getPictures().size() > 0) {
+                Picture picture = artist.getPictures().get(0);
+                setImage(picture);
+            } else {
+                Picture picture = new Picture(new FileInputStream("src/main/resources/ui/images/artist-placeholder.png"));
+                setImage(picture);
             }
+
+            artistInfo.setOnMouseClicked(mouseEvent -> {
+                try{
+                    UserWithData<Artist> data = new UserWithData<>(user, artist);
+                    ViewDispatcher.getInstance().navigateTo(Pages.ARTISTDETAILS, data);
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            });
 
             actionButton.visibleProperty().set(editable);
             actionButton.setOnAction(actionEvent -> {
@@ -85,6 +80,19 @@ public class ViewArtist extends HBox {
             e.printStackTrace();
         }
 
+    }
+
+    public void setImage(Picture picture){
+        Image image = new Image(picture.toStream());
+        Rectangle rectangle = new Rectangle(0,0,50,50);
+        rectangle.setArcHeight(14);
+        rectangle.setArcWidth(14);
+        ImagePattern pattern = new ImagePattern(image);
+        rectangle.setFill(pattern);
+        RoundedImage roundedImage = new RoundedImage(image,20,50);
+        roundedImage.fitHeightProperty().set(50);
+        roundedImage.fitWidthProperty().set(50);
+        artistInfo.setGraphic(roundedImage);
     }
 }
 

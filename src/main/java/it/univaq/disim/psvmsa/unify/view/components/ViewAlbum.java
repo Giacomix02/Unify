@@ -115,7 +115,7 @@ public class ViewAlbum extends HBox {
             songService = UnifyServiceFactory.getInstance().getSongService();
             List<Song> songs = album.getSongs();
             if(songs.size() == 0) {
-                Picture picture = new Picture(new FileInputStream("src/main/resources/ui/images/music-placeholder.png"));
+                Picture picture = new Picture(new FileInputStream("src/main/resources/ui/images/album-placeholder.png"));
                 return picture;
             }
             return songs.get(0).getPicture();

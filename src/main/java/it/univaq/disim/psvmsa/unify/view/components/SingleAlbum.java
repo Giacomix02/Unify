@@ -2,12 +2,9 @@ package it.univaq.disim.psvmsa.unify.view.components;
 
 import it.univaq.disim.psvmsa.unify.business.SongService;
 import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
-import it.univaq.disim.psvmsa.unify.controller.UserWithData;
 import it.univaq.disim.psvmsa.unify.model.Album;
 import it.univaq.disim.psvmsa.unify.model.Picture;
 import it.univaq.disim.psvmsa.unify.model.Song;
-import it.univaq.disim.psvmsa.unify.model.User;
-import it.univaq.disim.psvmsa.unify.view.Pages;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -19,7 +16,6 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
 import java.io.FileInputStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -61,26 +57,11 @@ public class SingleAlbum extends HBox {
 
             if (songs.size() > 0) {
                 picture = songs.get(0).getPicture();
-            }
-            if(picture != null){
-                Image i = new Image(picture.toStream());
-                Rectangle rectangle = new Rectangle(0, 0, 30, 30);
-                rectangle.setArcWidth(14);   // Corner radius
-                rectangle.setArcHeight(14);
-                ImagePattern pattern = new ImagePattern(i);
-                rectangle.setFill(pattern);
-                image.setClip(rectangle);
-                image.setImage(i);
             } else {
-                Image i = new Image((new FileInputStream("src/main/resources/ui/images/music-placeholder.png")));
-                Rectangle rectangle = new Rectangle(0, 0, 30, 30);
-                rectangle.setArcWidth(14);   // Corner radius
-                rectangle.setArcHeight(14);
-                ImagePattern pattern = new ImagePattern(i);
-                rectangle.setFill(pattern);
-                image.setClip(rectangle);
-                image.setImage(i);
+                picture = new Picture(new FileInputStream("src/main/resources/ui/images/album-placeholder.png"));
             }
+            setImage(picture);
+
 
         }
         catch (Exception e){
@@ -95,5 +76,16 @@ public class SingleAlbum extends HBox {
         this.label.setOnMouseClicked(mouseEvent -> {
             consumer.accept(this.album);
         });
+    }
+
+    public void setImage(Picture picture) {
+        Image i = new Image(picture.toStream());
+        Rectangle rectangle = new Rectangle(0, 0, 30, 30);
+        rectangle.setArcWidth(14);   // Corner radius
+        rectangle.setArcHeight(14);
+        ImagePattern pattern = new ImagePattern(i);
+        rectangle.setFill(pattern);
+        image.setClip(rectangle);
+        image.setImage(i);
     }
 }

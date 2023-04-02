@@ -60,6 +60,7 @@ public class EditSongController implements Initializable, DataInitializable<User
     private ImageView songImage;
 
     private Picture picture;
+
     private Picture inputPicture;
 
     private InputStream songInputStream;

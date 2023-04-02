@@ -15,9 +15,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
+import java.io.FileInputStream;
+
 public class SingleArtistHome extends VBox {
     private Label label;
     private Button button;
+    private Picture picture;
 
     Artist artist;
     User user;
@@ -38,16 +41,13 @@ public class SingleArtistHome extends VBox {
             button = (Button) root.lookup("#artist");
 
             this.label.setText(artist.getName());
-            if(artist.getPictures().size() == 0)  return;
-            Picture pic = artist.getPictures().get(0);
-            if(pic == null) return;
-            Image image = new Image(pic.toStream());
-            Rectangle rectangle = new Rectangle(0, 0, 110, 110);
-            rectangle.setArcWidth(14);
-            rectangle.setArcHeight(14);
-            ImagePattern pattern = new ImagePattern(image);
-            rectangle.setFill(pattern);
-            button.setGraphic(rectangle);
+
+            if(artist.getPictures().size() == 0) {
+                picture = new Picture(new FileInputStream("src/main/resources/ui/images/artist-placeholder.png"));
+            } else {
+                picture = artist.getPictures().get(0);
+            }
+            setPicture(picture);
 
         }catch (Exception e) {
             e.printStackTrace();
@@ -63,5 +63,15 @@ public class SingleArtistHome extends VBox {
 
         });
 
+    }
+
+    public void setPicture(Picture picture) {
+        Image image = new Image(picture.toStream());
+        Rectangle rectangle = new Rectangle(0, 0, 110, 110);
+        rectangle.setArcWidth(14);
+        rectangle.setArcHeight(14);
+        ImagePattern pattern = new ImagePattern(image);
+        rectangle.setFill(pattern);
+        button.setGraphic(rectangle);
     }
 }

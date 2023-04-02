@@ -18,6 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 
+import java.io.FileInputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -100,10 +101,17 @@ public class ArtistDetailsController implements Initializable, DataInitializable
 
     private void setImages(List<Picture> pictures) {
         artistPictures.getChildren().clear();
-        Picture pfp = pictures.get(0);
-        if (pfp != null) {
-            artistImagePreview.setImage(new Image(pfp.toStream()));
+
+        if(pictures.size() > 0) {
+            artistImagePreview.setImage(new Image(pictures.get(0).toStream()));;
+        } else {
+            try {
+                artistImagePreview.setImage(new Image(new Picture(new FileInputStream("src/main/resources/ui/images/artist-placeholder.png")).toStream()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+
         for (int i = 1; i < pictures.size(); i++) {
             Picture picture = pictures.get(i);
             if (picture != null) {

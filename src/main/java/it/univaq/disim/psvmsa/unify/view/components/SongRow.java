@@ -39,7 +39,6 @@ public class SongRow extends HBox {
     private Text artistName;
 
     private Button editButton;
-    private MusicPlayer musicPlayer = new MusicPlayer();
 
 
     public SongRow (Song song,  boolean editable){
@@ -59,16 +58,10 @@ public class SongRow extends HBox {
             songName = (Label) root.lookup("#songName");
             genreName = (Text) root.lookup("#genreName");
             artistName = (Text) root.lookup("#artistName");
-            //picture = (ImageView) root.lookup("#picture");
             editButton = (Button) root.lookup("#editButton");
             playButton = (Button) root.lookup("#playButton");
 
-
             editButton.visibleProperty().set(editable);
-
-
-
-
 
             this.songName.setText(song.getName());
             this.genreName.setText(song.getGenre().getName());
@@ -80,7 +73,6 @@ public class SongRow extends HBox {
             rectangle.setArcHeight(14);
             ImagePattern pattern = new ImagePattern(image);
             rectangle.setFill(pattern);
-            //picture.setClip(rectangle);
             RoundedImage roundedImage = new RoundedImage(image,20,50);
             roundedImage.fitHeightProperty().set(50);
             roundedImage.fitWidthProperty().set(50);

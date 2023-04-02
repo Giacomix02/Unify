@@ -49,11 +49,12 @@ public class FileSongServiceImpl implements SongService {
         ensureSongsFolderExists();
     }
 
-    private boolean existsSong(Song song){
-        if(song.getId() == null) return false;
+    private boolean existsSong(Song song) {
+        if (song.getId() == null) return false;
         IndexedFile file = loader.load();
         return file.findRowById(song.getId()) != null;
     }
+
     public Song getById(Integer id) throws BusinessException {
         IndexedFile.Row row = loader.getRowById(id);
         try {
@@ -83,7 +84,8 @@ public class FileSongServiceImpl implements SongService {
         try {
             pictureService.add(song.getPicture());
             artistService.add(song.getArtist());
-        } catch (Exception ignored){}
+        } catch (Exception ignored) {
+        }
 
         IndexedFile file = loader.load();
         IndexedFile.Row row = new IndexedFile.Row(SEPARATOR);
@@ -98,15 +100,27 @@ public class FileSongServiceImpl implements SongService {
     }
 
     public void deleteById(Integer id) throws BusinessException {
-        if(loader.deleteRowById(id) == null) throw new BusinessException("Song not found");
+        if (loader.deleteRowById(id) == null) throw new BusinessException("Song not found");
     }
 
-    public Song add(Song song) throws BusinessException{
-        if(this.existsSong(song)) return null;
-        Picture pic = pictureService.upsert(song.getPicture());
+    public Song add(Song song) throws BusinessException {
+        if (this.existsSong(song)) return null;
+        Picture pic = null;
+
+        if (song.getPicture() != null) {
+            pic = pictureService.upsert(song.getPicture());
+            song.setPicture(pic);
+        } else {
+            try {
+                pic = pictureService.upsert(new Picture(new FileInputStream("src/main/resources/ui/images/music-placeholder.png")));
+                song.setPicture(pic);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         Artist art = artistService.upsert(song.getArtist());
         song.setArtist(art);
-        song.setPicture(pic);
         IndexedFile file = loader.load();
         IndexedFile.Row row = new IndexedFile.Row(SEPARATOR);
         song.setId(file.incrementId());
@@ -124,7 +138,7 @@ public class FileSongServiceImpl implements SongService {
 
     @Override
     public Song upsert(Song song) throws BusinessException {
-        if(this.existsSong(song)){
+        if (this.existsSong(song)) {
             this.update(song);
             return song;
         }
@@ -132,54 +146,53 @@ public class FileSongServiceImpl implements SongService {
     }
 
 
-
     public List<Song> getAllSongs() throws BusinessException {
         IndexedFile file = loader.load();
         List<IndexedFile.Row> rows = file.getRows();
         List<Song> songs = new ArrayList<>();
         for (IndexedFile.Row row : rows) {
-                Song song = new Song(
-                        row.getStringAt(Schema.SONG_NAME),
-                        artistService.getById(row.getIntAt(Schema.ARTIST_ID)),
-                        row.getStringAt(Schema.LYRICS),
-                        pictureService.getById(row.getIntAt(Schema.PICTURE_ID)),
-                        genreService.getById(row.getIntAt(Schema.GENRE_ID)),
-                        getSongStream(row.getIntAt(Schema.SONG_ID)),
-                        row.getIntAt(Schema.SONG_ID)
-                );
-                songs.add(song);
+            Song song = new Song(
+                    row.getStringAt(Schema.SONG_NAME),
+                    artistService.getById(row.getIntAt(Schema.ARTIST_ID)),
+                    row.getStringAt(Schema.LYRICS),
+                    pictureService.getById(row.getIntAt(Schema.PICTURE_ID)),
+                    genreService.getById(row.getIntAt(Schema.GENRE_ID)),
+                    getSongStream(row.getIntAt(Schema.SONG_ID)),
+                    row.getIntAt(Schema.SONG_ID)
+            );
+            songs.add(song);
         }
         return songs;
     }
 
 
-    private void saveSongToFile(Song song){
+    private void saveSongToFile(Song song) {
         File fileToSave = new File(this.songsFolderPath + song.getId() + ".mp3");
-            try (FileOutputStream outputStream = new FileOutputStream(fileToSave)) {
-                outputStream.write(song.toStream().readAllBytes());
-            }catch (IOException e) {
-                //TODO maybe relaunch error
-                e.printStackTrace();
-            }
+        try (FileOutputStream outputStream = new FileOutputStream(fileToSave)) {
+            outputStream.write(song.toStream().readAllBytes());
+        } catch (IOException e) {
+            //TODO maybe relaunch error
+            e.printStackTrace();
+        }
     }
 
-    private InputStream getSongStream(Integer id){
-        try{
+    private InputStream getSongStream(Integer id) {
+        try {
             File file = new File(this.songsFolderPath + id + ".mp3");
             return new FileInputStream(file);
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             //TODO maybe relaunch error
             return null;
         }
     }
 
-    private void ensureSongsFolderExists(){
+    private void ensureSongsFolderExists() {
         File folder = new File(this.songsFolderPath);
-        if(!folder.exists()) folder.mkdirs();
+        if (!folder.exists()) folder.mkdirs();
     }
 
-    public List<Song> searchByName(String name) throws BusinessException{
+    public List<Song> searchByName(String name) throws BusinessException {
         IndexedFile file = loader.load();
         List<IndexedFile.Row> rows = file.filterRows(
                 r -> r.getStringAt(Schema.SONG_NAME).toLowerCase().contains(name.toLowerCase())

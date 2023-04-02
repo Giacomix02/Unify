@@ -22,8 +22,6 @@ import java.util.ResourceBundle;
 
 public class EditAlbumController implements Initializable, DataInitializable<UserWithData<Album>> {
 
-    private Image DEFAULT_IMAGE = null;
-
     private AlbumService albumService;
 
     private SongService songService;
@@ -31,10 +29,12 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
     private ArtistService artistService;
 
     private GenreService genreService;
+
     private ViewDispatcher viewDispatcher;
 
     @FXML
     private Button editButton;
+
     @FXML
     private ChoiceBox<Artist> artistPicker;
 
@@ -58,17 +58,19 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
 
     @FXML
     private Button saveButton;
+
     @FXML
     private ChoiceBox<Song> currentSongPicker;
+
     @FXML
     private ChoiceBox<Genre> songGenrePicker;
-
 
     @FXML
     private Label songFileLabel;
 
     @FXML
     private Button uploadSongButton;
+
     @FXML
     private ImageView songImage;
 
@@ -76,11 +78,16 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
 
     private FileInputStream currentSongStream;
 
+
     private Picture currentSongPicture;
+
     @FXML
     private TextField songNameInput;
+
     @FXML
     private TextArea songLyricsInput;
+
+    private Image image;
 
     public EditAlbumController() {
         UnifyServiceFactory factoryInstance = UnifyServiceFactory.getInstance();
@@ -98,6 +105,7 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
             removeButton.visibleProperty().set(true);
             albumInput.setText(album.getName());
             artistPicker.setValue(album.getArtist());
+            genrePicker.setValue(album.getGenre());
             currentSongPicker.getItems().addAll(album.getSongs());
             label.setText("Edit album");
         }
@@ -111,12 +119,15 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
         songFileLabel.setText("");
         removeButton.visibleProperty().set(false);
         label.setText("Add album");
-        DEFAULT_IMAGE = songImage.getImage();
+        image = songImage.getImage();
         this.editButton
                 .disableProperty()
                 .bind(albumInput
                         .textProperty()
-                        .isEmpty());
+                        .isEmpty().or(artistPicker.valueProperty().isNull())
+                        .or(genrePicker.valueProperty().isNull()));
+
+        this.saveButton.disableProperty().set(true);
         List<Artist> artists = artistService.getArtists();
         artistPicker.converterProperty().set(new StringConverter<>() {
             @Override
@@ -225,7 +236,7 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
     private void setCurrentImage(ImageView imageView, Picture picture) {
         currentSongPicture = picture;
         if(currentSongPicture == null) {
-            imageView.setImage(DEFAULT_IMAGE);
+            imageView.setImage(image);
         }else{
             imageView.setImage(new Image(picture.toStream()));
         }
@@ -303,6 +314,7 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
         File file = fileChooser.showOpenDialog(stage);
         currentSongStream = new FileInputStream(file);
         songFileLabel.setText(file.getName());
+        saveButton.disableProperty().set(false);
     }
 
     @FXML

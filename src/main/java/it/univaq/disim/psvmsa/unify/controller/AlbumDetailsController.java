@@ -60,7 +60,7 @@ public class AlbumDetailsController implements Initializable, DataInitializable<
             albumImagePreview.setImage(new Image(album.getSongs().get(0).getPicture().toStream()));
         }else{
             try {
-                Picture picture = new Picture(new FileInputStream("src/main/resources/ui/images/music-placeholder.png"));
+                Picture picture = new Picture(new FileInputStream("src/main/resources/ui/images/album-placeholder.png"));
                 albumImagePreview.setImage(new Image(picture.toStream()));
             }catch (Exception e){
                 e.printStackTrace();
