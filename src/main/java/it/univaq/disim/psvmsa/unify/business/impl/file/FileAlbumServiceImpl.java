@@ -1,10 +1,8 @@
 package it.univaq.disim.psvmsa.unify.business.impl.file;
-import it.univaq.disim.psvmsa.unify.business.AlbumService;
-import it.univaq.disim.psvmsa.unify.business.ArtistService;
-import it.univaq.disim.psvmsa.unify.business.BusinessException;
-import it.univaq.disim.psvmsa.unify.business.SongService;
+import it.univaq.disim.psvmsa.unify.business.*;
 import it.univaq.disim.psvmsa.unify.model.Album;
 import it.univaq.disim.psvmsa.unify.model.Artist;
+import it.univaq.disim.psvmsa.unify.model.Genre;
 import it.univaq.disim.psvmsa.unify.model.Song;
 
 import java.util.ArrayList;
@@ -16,6 +14,8 @@ public class FileAlbumServiceImpl implements AlbumService {
         public static int ALBUM_ID = 0;
         public static int ALBUM_NAME = 1;
         public static int ARTIST_ID = 2;
+
+        public static int GENRE_ID = 3;
     }
     private static class SongsSchema {
         public static int RELATION_ID = 0;
@@ -29,12 +29,14 @@ public class FileAlbumServiceImpl implements AlbumService {
     private final IndexedFileLoader songsRelationsLoader;
     SongService songService;
     ArtistService artistService;
+    GenreService genreService;
 
-    public FileAlbumServiceImpl(String path, String songRelationsPath, SongService songService, ArtistService artistService) {
+    public FileAlbumServiceImpl(String path, String songRelationsPath, SongService songService, ArtistService artistService, GenreService genreService) {
         this.loader = new IndexedFileLoader(path, this.SEPARATOR);
         this.songsRelationsLoader = new IndexedFileLoader(songRelationsPath, this.SEPARATOR);
         this.songService = songService;
         this.artistService = artistService;
+        this.genreService = genreService;
     }
 
     @Override
@@ -46,6 +48,7 @@ public class FileAlbumServiceImpl implements AlbumService {
                 row.getStringAt(Schema.ALBUM_NAME),
                 songs,
                 artistService.getById(row.getIntAt(Schema.ARTIST_ID)),
+                genreService.getById(row.getIntAt(Schema.GENRE_ID)),
                 row.getIntAt(Schema.ALBUM_ID)
         );
     }
@@ -61,6 +64,7 @@ public class FileAlbumServiceImpl implements AlbumService {
                     row.getStringAt(Schema.ALBUM_NAME),
                     songs,
                     artistService.getById(row.getIntAt(Schema.ARTIST_ID)),
+                    genreService.getById(row.getIntAt(Schema.GENRE_ID)),
                     row.getIntAt(Schema.ALBUM_ID)
             ));
         }
@@ -73,14 +77,15 @@ public class FileAlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public Album add(Album album) {
+    public Album add(Album album) throws BusinessException{
         IndexedFile file = loader.load();
         IndexedFile.Row row = new IndexedFile.Row(this.SEPARATOR);
         int id = file.incrementId();
         album.setId(id);
         row.set(Schema.ALBUM_ID, album.getId())
                 .set(Schema.ALBUM_NAME, album.getName())
-                .set(Schema.ARTIST_ID, album.getArtist().getId());
+                .set(Schema.ARTIST_ID, album.getArtist().getId())
+                .set(Schema.GENRE_ID, album.getGenre().getId());
         file.appendRow(row);
         loader.save(file);
         addSongsRelations(id, album.getSongs());
@@ -94,13 +99,22 @@ public class FileAlbumServiceImpl implements AlbumService {
         IndexedFile.Row row = new IndexedFile.Row(this.SEPARATOR);
         row.set(Schema.ALBUM_ID, album.getId())
                 .set(Schema.ALBUM_NAME, album.getName())
-                .set(Schema.ARTIST_ID, album.getArtist().getId());
+                .set(Schema.ARTIST_ID, album.getArtist().getId())
+                .set(Schema.GENRE_ID, album.getGenre().getId());
         file.updateRow(row);
         loader.save(file);
         deleteSongsRelations(album.getId());
         addSongsRelations(album.getId(), album.getSongs());
     }
 
+    public Album upsert(Album album) throws BusinessException {
+        if(album.getId() == null || getById(album.getId()) == null){
+            return add(album);
+        }else{
+            update(album);
+            return album;
+        }
+    }
     @Override
     public void delete(Album album) throws BusinessException {
         deleteById(album.getId());
@@ -125,19 +139,10 @@ public class FileAlbumServiceImpl implements AlbumService {
         songsRelationsLoader.save(file);
     }
 
-    public void addSongsRelations(Integer albumId, List<Song> songs){
+    public void addSongsRelations(Integer albumId, List<Song> songs) throws BusinessException{
         IndexedFile file = songsRelationsLoader.load();
         for (Song song : songs) {
-            Song s = this.songService.add(song);
-            song = s == null ? song : s; //if the song is already present, it is not added again
-            try{
-                if(s == null){
-                    this.songService.update(song);
-                }
-            }catch (BusinessException e){
-                e.printStackTrace();
-            }
-
+            song = songService.upsert(song);
             IndexedFile.Row row = new IndexedFile.Row(this.SEPARATOR);
             int id = file.incrementId();
             row.set(SongsSchema.RELATION_ID, id)
@@ -151,6 +156,17 @@ public class FileAlbumServiceImpl implements AlbumService {
     @Override
     public List<Album> searchAlbumsByName(String name) throws BusinessException {
         List<IndexedFile.Row> rows = loader.loadFiltered(r -> r.getStringAt(Schema.ALBUM_NAME).toLowerCase().contains(name.toLowerCase()));
+        List<Album> albums = new ArrayList<>();
+        for (IndexedFile.Row row : rows) {
+            Album album = this.getById(row.getIntAt(Schema.ALBUM_ID));
+            albums.add(album);
+        }
+        return albums;
+    }
+
+    @Override
+    public List<Album> searchAlbumsByGenre(Genre genre) throws BusinessException {
+        List<IndexedFile.Row> rows = loader.loadFiltered(r -> r.getIntAt(Schema.GENRE_ID) == genre.getId());
         List<Album> albums = new ArrayList<>();
         for (IndexedFile.Row row : rows) {
             Album album = this.getById(row.getIntAt(Schema.ALBUM_ID));

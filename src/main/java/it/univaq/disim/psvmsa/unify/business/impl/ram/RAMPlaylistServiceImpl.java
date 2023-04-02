@@ -38,6 +38,16 @@ public class RAMPlaylistServiceImpl implements PlaylistService {
         playlists.put(existing.getId(), playlist);
     }
 
+    @Override
+    public Playlist upsert(Playlist playlist) throws BusinessException {
+        if(playlist.getId()==null || getById(playlist.getId()) == null){
+            return add(playlist);
+        }else{
+            update(playlist);
+            return playlist;
+        }
+    }
+
     public void delete(Playlist playlist) throws BusinessException{
         Playlist existing = this.getById(playlist.getId());
         if(existing == null) throw new BusinessException("Playlist not found");

@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public class Song {
     private String name;
-    private List<Genre> genres;
+    private Genre genre;
     private Artist artist;
     private String lyrics;
     private Picture picture;
@@ -18,17 +18,17 @@ public class Song {
     private byte[] cache;
 
 
-    public Song(String name, Artist artist, String lyrics, Picture picture, List<Genre> genres, InputStream content) {
+    public Song(String name, Artist artist, String lyrics, Picture picture, Genre genre, InputStream content) {
         this.name = name;
         this.artist = artist;
         this.lyrics = lyrics;
         this.picture = picture;
-        this.genres = genres;
+        this.genre = genre;
         this.content = content;
     }
 
-    public Song (String name, Artist artist, String lyrics, Picture picture, List<Genre> genres, InputStream content, Integer id) {
-        this(name, artist, lyrics, picture, genres, content);
+    public Song (String name, Artist artist, String lyrics, Picture picture, Genre genre, InputStream content, Integer id) {
+        this(name, artist, lyrics, picture, genre, content);
         this.id = id;
     }
     public void setContent(InputStream content) {
@@ -54,12 +54,12 @@ public class Song {
     }
 
 
-    public List<Genre> getGenres() {
-        return genres;
+    public Genre getGenre() {
+        return genre;
     }
 
-    public void setGenres(List<Genre> genres) {
-        this.genres = genres;
+    public void setGenre(Genre genre) {
+        this.genre = genre;
     }
 
     public Artist getArtist() {
@@ -103,7 +103,7 @@ public class Song {
                 Objects.equals(artist, song.artist) &&
                 Objects.equals(lyrics, song.lyrics) &&
                 Objects.equals(picture, song.picture) &&
-                Objects.equals(genres, song.genres) &&
+                Objects.equals(genre, song.genre) &&
                 Objects.equals(id, song.id);
 
     }
@@ -111,7 +111,7 @@ public class Song {
     @Override
     public int hashCode() {
         return Objects.hash(name, artist,
-                            lyrics, picture, genres, id);
+                            lyrics, picture, genre, id);
     }
 
 }

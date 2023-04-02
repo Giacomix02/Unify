@@ -97,8 +97,7 @@ public class SongDetailsController implements Initializable, DataInitializable<U
         this.songName.setText(song.getName());
         this.songLyrics.setText(song.getLyrics());
         this.artistLabel.setText(song.getArtist().getName());
-        String join = song.getGenres().stream().map(genre->genre.getName()).collect(Collectors.joining(", "));
-        this.genresLabel.setText(join);
+        this.genresLabel.setText(song.getGenre().getName());
         try{
             this.songImage.setImage(new Image(song.getPicture().toStream()));
         }catch (Exception e){

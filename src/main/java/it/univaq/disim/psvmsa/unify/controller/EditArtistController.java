@@ -30,8 +30,6 @@ import java.util.ResourceBundle;
 public class EditArtistController implements Initializable, DataInitializable<UserWithData<Artist>> {
     private ArtistService artistService;
 
-    private PictureService pictureService;
-
     @FXML
     private Button actionButton;
 
@@ -73,7 +71,6 @@ public class EditArtistController implements Initializable, DataInitializable<Us
     public EditArtistController() {
         UnifyServiceFactory factoryInstance = UnifyServiceFactory.getInstance();
         this.artistService = factoryInstance.getArtistService();
-        this.pictureService = factoryInstance.getPictureService();
     }
 
     public void initializeData(UserWithData<Artist> data) {
@@ -136,7 +133,6 @@ public class EditArtistController implements Initializable, DataInitializable<Us
             }
         });
         membersPicker.getItems().addAll(artistService.getArtists());
-
     }
 
     private void askForPicture() {
@@ -180,6 +176,8 @@ public class EditArtistController implements Initializable, DataInitializable<Us
             GroupArtist groupArtist = new GroupArtist(artistNameInput.getText(), artistBiographyInput.getText(), images, members);
             save(groupArtist);
         }
+        membersPicker.getItems().clear();
+        membersPicker.getItems().addAll(artistService.getArtists());
     }
 
     private void save(Artist artist) {

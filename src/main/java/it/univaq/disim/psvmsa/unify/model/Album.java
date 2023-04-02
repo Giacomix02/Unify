@@ -7,18 +7,20 @@ public class Album {
     private String name;
     private Integer id;
     private List<Song> songs;
-
+    private Genre genre;
     private Artist artist;
-    public Album(String name, List<Song> songs, Artist artist) {
+    public Album(String name, List<Song> songs, Artist artist, Genre genre) {
         this.name = name;
         this.songs = songs;
         this.artist = artist;
+        this.genre = genre;
     }
-    public Album(String name,List<Song> songs, Artist artist, Integer id) {
+    public Album(String name,List<Song> songs, Artist artist, Genre genre, Integer id) {
         this.name = name;
         this.id = id;
         this.songs = songs;
         this.artist = artist;
+        this.genre = genre;
     }
 
 
@@ -30,6 +32,13 @@ public class Album {
         this.name = name;
     }
 
+    public void getGenre(Genre genre) {
+        this.genre = genre;
+    }
+
+    public Genre getGenre() {
+        return genre;
+    }
     public Integer getId() {
         return id;
     }

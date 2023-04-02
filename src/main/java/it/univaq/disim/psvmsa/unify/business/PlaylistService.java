@@ -8,7 +8,9 @@ import java.util.List;
 public interface PlaylistService {
         List<Playlist> getPlaylistsByUser(User user) throws BusinessException;
         Playlist getById(Integer id) throws BusinessException;
-        Playlist add(Playlist playlist);
+        Playlist add(Playlist playlist) throws BusinessException;
         void delete(Playlist playlist) throws BusinessException;
         void update(Playlist playlist) throws BusinessException;
+
+        Playlist upsert(Playlist playlist) throws BusinessException;
 }

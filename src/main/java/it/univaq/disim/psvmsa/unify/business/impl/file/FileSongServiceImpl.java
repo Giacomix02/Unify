@@ -23,16 +23,11 @@ public class FileSongServiceImpl implements SongService {
         public static int ARTIST_ID = 2;
         public static int LYRICS = 3;
         public static int PICTURE_ID = 4;
-    }
 
-    private static class RelationSchema {
-        public static int RELATION_ID = 0;
-        public static int SONG_ID = 1;
-        public static int GENRE_ID = 2;
+        public static int GENRE_ID = 5;
     }
 
     private final IndexedFileLoader loader;
-    private final IndexedFileLoader genresRelationLoader;
     private final ArtistService artistService;
     private final PictureService pictureService;
     private final GenreService genreService;
@@ -41,14 +36,12 @@ public class FileSongServiceImpl implements SongService {
 
     public FileSongServiceImpl(
             String path,
-            String genresRelationPath,
             String songsFolderPath,
             ArtistService artistService,
             PictureService pictureService,
             GenreService genreService
     ) {
         this.loader = new IndexedFileLoader(path, this.SEPARATOR, Schema.SONG_ID);
-        this.genresRelationLoader = new IndexedFileLoader(genresRelationPath, this.SEPARATOR, RelationSchema.RELATION_ID);
         this.songsFolderPath = songsFolderPath;
         this.artistService = artistService;
         this.pictureService = pictureService;
@@ -63,21 +56,13 @@ public class FileSongServiceImpl implements SongService {
     }
     public Song getById(Integer id) throws BusinessException {
         IndexedFile.Row row = loader.getRowById(id);
-        List<IndexedFile.Row> relationRows = genresRelationLoader.loadFiltered(
-                r -> r.getIntAt(RelationSchema.SONG_ID) == id
-        );
-        List<Genre> genres = new ArrayList<>();
-        for (IndexedFile.Row relationRow : relationRows) {
-            Genre genre = genreService.getById(relationRow.getIntAt(RelationSchema.GENRE_ID));
-            genres.add(genre);
-        }
         try {
             return new Song(
                     row.getStringAt(Schema.SONG_NAME),
                     artistService.getById(row.getIntAt(Schema.ARTIST_ID)),
                     row.getStringAt(Schema.LYRICS),
                     pictureService.getById(row.getIntAt(Schema.PICTURE_ID)),
-                    genres,
+                    genreService.getById(row.getIntAt(Schema.GENRE_ID)),
                     getSongStream(row.getIntAt(Schema.SONG_ID)),
                     row.getIntAt(Schema.SONG_ID)
             );
@@ -91,7 +76,6 @@ public class FileSongServiceImpl implements SongService {
     public void delete(Song song) throws BusinessException {
         IndexedFile file = loader.load();
         file.deleteRowById(song.getId());
-        this.deleteRelations(song);
         loader.save(file);
     }
 
@@ -107,9 +91,8 @@ public class FileSongServiceImpl implements SongService {
                 .set(Schema.SONG_NAME, song.getName())
                 .set(Schema.ARTIST_ID, song.getArtist().getId())
                 .set(Schema.LYRICS, song.getLyrics())
-                .set(Schema.PICTURE_ID, song.getPicture().getId());
-        this.deleteRelations(song);
-        this.addRelations(song);
+                .set(Schema.PICTURE_ID, song.getPicture().getId())
+                .set(Schema.GENRE_ID, song.getGenre().getId());
         file.updateRow(row);
         loader.save(file);
     }
@@ -118,12 +101,10 @@ public class FileSongServiceImpl implements SongService {
         if(loader.deleteRowById(id) == null) throw new BusinessException("Song not found");
     }
 
-    public Song add(Song song) {
+    public Song add(Song song) throws BusinessException{
         if(this.existsSong(song)) return null;
-        Picture pic = pictureService.add(song.getPicture());
-        Artist art = artistService.add(song.getArtist());
-        pic = pic == null ? song.getPicture() : pic; // if the picture already exists, it will be returned
-        art = art == null ? song.getArtist() : art; // if the artist already exists, it will be returned
+        Picture pic = pictureService.upsert(song.getPicture());
+        Artist art = artistService.upsert(song.getArtist());
         song.setArtist(art);
         song.setPicture(pic);
         IndexedFile file = loader.load();
@@ -133,73 +114,40 @@ public class FileSongServiceImpl implements SongService {
                 .set(Schema.SONG_NAME, song.getName())
                 .set(Schema.ARTIST_ID, art.getId())
                 .set(Schema.LYRICS, song.getLyrics())
-                .set(Schema.PICTURE_ID, pic.getId());
+                .set(Schema.PICTURE_ID, pic.getId())
+                .set(Schema.GENRE_ID, song.getGenre().getId());
         this.saveSongToFile(song);
         file.appendRow(row);
-        this.addRelations(song);
         loader.save(file);
-
         return song;
     }
 
-    private void deleteRelations(Song song) throws BusinessException {
-        IndexedFile relationFile = genresRelationLoader.load();
-        List<IndexedFile.Row> rows = relationFile.filterRows(
-                r -> r.getIntAt(RelationSchema.SONG_ID) == song.getId()
-        );
-        for (IndexedFile.Row row : rows) {
-            relationFile.deleteRowById(row.getIntAt(RelationSchema.RELATION_ID));
+    @Override
+    public Song upsert(Song song) throws BusinessException {
+        if(this.existsSong(song)){
+            this.update(song);
+            return song;
         }
-        genresRelationLoader.save(relationFile);
+        return this.add(song);
     }
 
-    private void addRelations(Song song) {
-        IndexedFile relationFile = genresRelationLoader.load();
-        for (Genre genre : song.getGenres()) {
-                Genre g = genreService.add(genre);
-                genre = g == null ? genre : g; // if the genre already exists, it will be returned
-            IndexedFile.Row row = new IndexedFile.Row(SEPARATOR);
-            int id = relationFile.incrementId();
-            row.set(RelationSchema.RELATION_ID, id)
-                    .set(RelationSchema.SONG_ID, song.getId())
-                    .set(RelationSchema.GENRE_ID, genre.getId());
-            relationFile.appendRow(row);
-        }
-        genresRelationLoader.save(relationFile);
-    }
 
 
     public List<Song> getAllSongs() throws BusinessException {
         IndexedFile file = loader.load();
-        IndexedFile relationFile = genresRelationLoader.load();
-
         List<IndexedFile.Row> rows = file.getRows();
         List<Song> songs = new ArrayList<>();
-
         for (IndexedFile.Row row : rows) {
-
-            List<Genre> genres = new ArrayList<>();
-
-            List<IndexedFile.Row> relationRows = relationFile.filterRows(
-                    r -> r.getIntAt(RelationSchema.SONG_ID) == row.getIntAt(Schema.SONG_ID)
-            );
-
-            for (IndexedFile.Row relationRow : relationRows) {
-                Genre genre = genreService.getById(relationRow.getIntAt(RelationSchema.GENRE_ID));
-                genres.add(genre);
-            }
-
                 Song song = new Song(
                         row.getStringAt(Schema.SONG_NAME),
                         artistService.getById(row.getIntAt(Schema.ARTIST_ID)),
                         row.getStringAt(Schema.LYRICS),
                         pictureService.getById(row.getIntAt(Schema.PICTURE_ID)),
-                        genres,
+                        genreService.getById(row.getIntAt(Schema.GENRE_ID)),
                         getSongStream(row.getIntAt(Schema.SONG_ID)),
                         row.getIntAt(Schema.SONG_ID)
                 );
                 songs.add(song);
-
         }
         return songs;
     }
@@ -248,6 +196,20 @@ public class FileSongServiceImpl implements SongService {
         IndexedFile file = loader.load();
         List<IndexedFile.Row> rows = file.filterRows(
                 r -> r.getIntAt(Schema.ARTIST_ID) == artist.getId()
+        );
+        List<Song> songs = new ArrayList<>();
+        for (IndexedFile.Row row : rows) {
+            Song song = this.getById(row.getIntAt(Schema.SONG_ID));
+            songs.add(song);
+        }
+        return songs;
+    }
+
+    @Override
+    public List<Song> searchByGenre(Genre genre) throws BusinessException {
+        IndexedFile file = loader.load();
+        List<IndexedFile.Row> rows = file.filterRows(
+                r -> r.getIntAt(Schema.GENRE_ID) == genre.getId()
         );
         List<Song> songs = new ArrayList<>();
         for (IndexedFile.Row row : rows) {

@@ -51,7 +51,7 @@ public class EditSongController implements Initializable, DataInitializable<User
     private ChoiceBox<Artist> artistBoxChoice;
 
     @FXML
-    private CheckComboBox<Genre> genreBoxChoice;
+    private ChoiceBox<Genre> genreBoxChoice;
 
     @FXML
     private Label saveSongLabel;
@@ -146,9 +146,7 @@ public class EditSongController implements Initializable, DataInitializable<User
             }catch (Exception e){
                 e.printStackTrace();
             }
-            for (Genre genre : song.getGenres()) {
-                genreBoxChoice.getCheckModel().check(genre); //set previous song genres
-            }
+            genreBoxChoice.setValue(song.getGenre());
             artistBoxChoice.setValue(song.getArtist());
 
         }
@@ -196,14 +194,13 @@ public class EditSongController implements Initializable, DataInitializable<User
     }
 
     public void saveSong() {
-        ArrayList<Genre> genres = new ArrayList<>(genreBoxChoice.getCheckModel().getCheckedItems());
         try{
             Song song = new Song(
                     songNameInput.getText(),
-                    artistService.getById(artistBoxChoice.getSelectionModel().getSelectedItem().getId()),
+                    artistService.getById(artistBoxChoice.getValue().getId()),
                     songLyricsInput.getText(),
                     this.picture,
-                    genres,
+                    genreBoxChoice.getValue(),
                     songInputStream
             );
             if(this.song != null) {
@@ -224,7 +221,7 @@ public class EditSongController implements Initializable, DataInitializable<User
         songNameInput.clear();
         songLyricsInput.clear();
         songImage.setImage(null);
-        genreBoxChoice.getCheckModel().clearChecks();
+        genreBoxChoice.getSelectionModel().clearSelection();
         artistBoxChoice.setValue(null);
     }
 

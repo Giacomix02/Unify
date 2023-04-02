@@ -67,20 +67,11 @@ public class SongRow extends HBox {
             editButton.visibleProperty().set(editable);
 
 
-            List<Genre> genres = song.getGenres();
 
 
-            ArrayList<String> genresNames = new ArrayList<>();
-
-            for (Genre genre : genres) {
-                if (genre != null) {
-                    genresNames.add(genre.getName());
-                }
-            }
-            String allGenres = String.join(", ", genresNames);
 
             this.songName.setText(song.getName());
-            this.genreName.setText(allGenres);
+            this.genreName.setText(song.getGenre().getName());
             this.artistName.setText(song.getArtist().getName());
 
             Image image = new Image(song.getPicture().toStream());

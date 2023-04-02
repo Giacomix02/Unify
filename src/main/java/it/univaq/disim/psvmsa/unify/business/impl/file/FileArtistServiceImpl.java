@@ -133,11 +133,10 @@ public class FileArtistServiceImpl implements ArtistService {
         }
         return pictures;
     }
-    private void addImagesRelations(Artist artist){
+    private void addImagesRelations(Artist artist) throws BusinessException{
         IndexedFile relationFile = imagesRelationsLoader.load();
         for(Picture picture: artist.getPictures()){
-            Picture p = pictureService.add(picture);
-            picture = p == null ? picture : p; //if the picture already exists it will return null
+            picture = pictureService.upsert(picture);
             IndexedFile.Row row = new IndexedFile.Row(this.SEPARATOR);
             row.set(ImagesSchema.RELATION_ID, relationFile.incrementId())
                     .set(ImagesSchema.IMAGE_ID, picture.getId())
@@ -158,7 +157,7 @@ public class FileArtistServiceImpl implements ArtistService {
         imagesRelationsLoader.save(relationFile);
     }
     @Override
-    public Artist add(Artist artist) {
+    public Artist add(Artist artist) throws BusinessException{
         if(existsArtist(artist)) return null;
         IndexedFile file = loader.load();
         IndexedFile.Row row = new IndexedFile.Row(this.SEPARATOR);
@@ -179,6 +178,17 @@ public class FileArtistServiceImpl implements ArtistService {
         loader.save(file);
         return artist;
     }
+
+    @Override
+    public Artist upsert(Artist artist) throws BusinessException {
+        if(existsArtist(artist)){
+            update(artist);
+            return artist;
+        }else{
+            return add(artist);
+        }
+    }
+
     private boolean existsArtist(Artist artist){
         if(artist.getId() == null) return false;
         return loader.getRowById(artist.getId()) != null;
@@ -222,13 +232,10 @@ public class FileArtistServiceImpl implements ArtistService {
         }
         return artists;
     }
-    public void addGroupRelations(GroupArtist group){
+    public void addGroupRelations(GroupArtist group) throws BusinessException{
         IndexedFile file = groupRelationsLoader.load();
         for(Artist member: group.getArtists()){
-                if(!existsArtist(member)){
-                    Artist m = add(member);
-                    member = m == null ? member : m; //if the artist already exists it will return null
-                }
+            member = upsert(member);
             IndexedFile.Row row = new IndexedFile.Row(this.SEPARATOR);
             int id = file.incrementId();
             row.set(GroupSchema.RELATION_ID, id)

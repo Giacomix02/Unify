@@ -29,7 +29,6 @@ public class FileUnifyServiceFactory extends UnifyServiceFactory {
         fileSongService = new FileSongServiceImpl(
                 BASE_PATH + "songs.txt",
                 BASE_PATH + "song_relation.txt",
-                BASE_PATH + "songs/",
                 fileArtistService,
                 filePictureService,
                 fileGenreService
@@ -47,7 +46,8 @@ public class FileUnifyServiceFactory extends UnifyServiceFactory {
                 BASE_PATH + "albums.txt",
                 BASE_PATH + "album_relation.txt",
                 fileSongService,
-                fileArtistService
+                fileArtistService,
+                fileGenreService
         );
     }
 

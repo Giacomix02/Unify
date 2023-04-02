@@ -1,5 +1,6 @@
 package it.univaq.disim.psvmsa.unify.business;
 
+import it.univaq.disim.psvmsa.unify.model.Album;
 import it.univaq.disim.psvmsa.unify.model.Artist;
 
 import java.util.List;
@@ -12,7 +13,9 @@ public interface ArtistService {
 
     void deleteById(Integer id) throws BusinessException;
 
-    Artist add(Artist artist);
+    Artist add(Artist artist) throws BusinessException;
+
+    Artist upsert (Artist artist) throws BusinessException;
 
     void update (Artist artist) throws BusinessException;
 

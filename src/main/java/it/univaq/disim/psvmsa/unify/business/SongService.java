@@ -2,6 +2,7 @@ package it.univaq.disim.psvmsa.unify.business;
 
 import it.univaq.disim.psvmsa.unify.business.impl.file.IndexedFile;
 import it.univaq.disim.psvmsa.unify.model.Artist;
+import it.univaq.disim.psvmsa.unify.model.Genre;
 import it.univaq.disim.psvmsa.unify.model.Song;
 
 import java.util.List;
@@ -17,10 +18,12 @@ public interface SongService {
 
     void deleteById(Integer id) throws BusinessException;
 
-    Song add(Song song);
+    Song add(Song song) throws BusinessException;
 
+    Song upsert(Song song) throws BusinessException;
     List<Song> getAllSongs() throws BusinessException;
 
     List<Song> searchByName(String name) throws BusinessException;
     List<Song> searchByArtist(Artist artist) throws BusinessException;
+    List<Song> searchByGenre(Genre genre) throws BusinessException;
 }

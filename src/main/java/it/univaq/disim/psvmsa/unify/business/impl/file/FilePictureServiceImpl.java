@@ -49,6 +49,15 @@ public class FilePictureServiceImpl implements PictureService {
     }
 
     @Override
+    public Picture upsert(Picture picture) throws BusinessException {
+        if(existsPicture(picture)) {
+            return this.update(picture);
+        } else {
+            return this.add(picture);
+        }
+    }
+
+    @Override
     public Picture add(Picture picture) {
         if(this.existsPicture(picture)) return null;
         IndexedFile file = loader.load();
@@ -64,8 +73,7 @@ public class FilePictureServiceImpl implements PictureService {
     @Override
     public Picture update(Picture picture) throws BusinessException {
         IndexedFile file = loader.load();
-        IndexedFile.Row row = file.findRow(r -> r.getIntAt(Schema.PICTURE_ID) == picture.getId());
-        if (row == null) throw new BusinessException("Picture not found");
+        IndexedFile.Row row = new IndexedFile.Row(this.SEPARATOR);
         row.set(Schema.PICTURE_ID, picture.getId());
         this.savePictureToFile(picture);
         file.updateRow(row);
@@ -73,7 +81,7 @@ public class FilePictureServiceImpl implements PictureService {
         return picture;
     }
     private boolean existsPicture(Picture picture){
-        if(picture.getId() == null) return true;
+        if(picture.getId() == null) return false;
         return loader.getRowById(picture.getId() ) != null;
     }
     @Override

@@ -9,7 +9,6 @@ import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcherException;
 import it.univaq.disim.psvmsa.unify.view.components.MusicPlayer;
 import it.univaq.disim.psvmsa.unify.view.components.SingleAlbum;
-import it.univaq.disim.psvmsa.unify.view.components.SongRow;
 import it.univaq.disim.psvmsa.unify.view.components.SongsListView;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,7 +16,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
@@ -77,7 +75,7 @@ public class ArtistDetailsController implements Initializable, DataInitializable
         images = (existingArtist.getPictures());
         songLabel.visibleProperty().set(false);
         setImages(images);
-        setSongsAndAlbums();
+        loadSongsAndAlbums();
         if (existingArtist instanceof GroupArtist) {
             StringBuilder members = new StringBuilder("Members: ");
 
@@ -117,18 +115,15 @@ public class ArtistDetailsController implements Initializable, DataInitializable
         }
     }
 
-    private void setSongsAndAlbums() {
+    private void loadSongsAndAlbums() {
         artistSongs.getChildren().clear();
         artistAlbums.getChildren().clear();
         try{
             List<Song> songs = songService.searchByArtist(existingArtist);
             List<Album> albums = albumService.searchAlbumsByArtist(existingArtist);
-            for (Song song : songs) {
-                songLabel.visibleProperty().set(true);
-            }
+            songLabel.visibleProperty().set(songs.size() > 0);
             SongsListView songsListView = new SongsListView(songs, user, false);
             artistSongs.getChildren().add(songsListView);
-
             songsListView.setOnDetailsClicked(song -> {
                 try {
                     ViewDispatcher.getInstance().navigateTo(Pages.SONGDETAILS, new UserWithData<>(user, song));
@@ -136,11 +131,9 @@ public class ArtistDetailsController implements Initializable, DataInitializable
                     throw new RuntimeException(e);
                 }
             });
-
             songsListView.setOnPlayClicked(song -> {
                 MusicPlayer.getInstance().playOne(song);
             });
-
             for (Album album : albums) {
                 SingleAlbum singleAlbum = new SingleAlbum(album);
                 singleAlbum.setOnAlbumClick(a -> {

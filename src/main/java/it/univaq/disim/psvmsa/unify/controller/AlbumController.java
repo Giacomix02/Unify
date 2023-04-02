@@ -41,7 +41,6 @@ public class AlbumController implements Initializable, DataInitializable<User> {
 
     private AlbumService albumService;
 
-    private ViewAlbum viewAlbum;
 
     private MusicPlayer musicPlayer;
 
@@ -79,7 +78,6 @@ public class AlbumController implements Initializable, DataInitializable<User> {
                             ex.printStackTrace();
                         }
                     });
-
                     viewAlbum.setOnEditClicked(a -> {
                         try{
                             UserWithData<Album> data = new UserWithData<>(user, a);
@@ -88,12 +86,10 @@ public class AlbumController implements Initializable, DataInitializable<User> {
                             ex.printStackTrace();
                         }
                     });
-
                     viewAlbum.setOnPlayClicked(a -> {
                         musicPlayer.setQueue(album.getSongs());
                         musicPlayer.startQueuePlayback();
                     });
-
                     setGraphic(viewAlbum);
                 }
             }

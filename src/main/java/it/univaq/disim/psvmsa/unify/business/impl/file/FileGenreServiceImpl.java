@@ -74,6 +74,12 @@ public class FileGenreServiceImpl implements GenreService {
         return genre;
     }
 
+    @Override
+    public Genre upsert(Genre genre) throws BusinessException {
+        if(existGenreName(genre.getName())) return genre;
+        return add(genre);
+    }
+
     public boolean existGenreName(String name) {
         IndexedFile file = loader.load();
         IndexedFile.Row row = file.findRow(r -> r.getStringAt(Schema.GENRE_NAME).equalsIgnoreCase(name));

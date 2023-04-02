@@ -132,6 +132,15 @@ public class FilePlaylistServiceImpl implements PlaylistService {
         loader.save(file);
     }
 
+    @Override
+    public Playlist upsert(Playlist playlist) throws BusinessException {
+        if(existsPlaylist(playlist)){
+            update(playlist);
+            return playlist;
+        }
+        return add(playlist);
+    }
+
     private void deleteSongRelationsInPlaylist(Playlist playlist) throws BusinessException{
         IndexedFile relationFile = loaderRelation.load();
         List<IndexedFile.Row> songs = relationFile.filterRows(

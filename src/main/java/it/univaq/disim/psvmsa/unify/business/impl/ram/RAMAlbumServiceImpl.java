@@ -4,6 +4,7 @@ import it.univaq.disim.psvmsa.unify.business.AlbumService;
 import it.univaq.disim.psvmsa.unify.business.BusinessException;
 import it.univaq.disim.psvmsa.unify.model.Album;
 import it.univaq.disim.psvmsa.unify.model.Artist;
+import it.univaq.disim.psvmsa.unify.model.Genre;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,8 +49,29 @@ public class RAMAlbumServiceImpl implements AlbumService {
     }
 
     @Override
+    public Album upsert(Album album) throws BusinessException {
+        if(album.getId()==null || getById(album.getId()) == null){
+            return add(album);
+        }else{
+            update(album);
+            return album;
+        }
+    }
+
+    @Override
     public List<Album> searchAlbumsByName(String name) {
         return null;
+    }
+
+    @Override
+    public List<Album> searchAlbumsByGenre(Genre genre) throws BusinessException {
+        List<Album> albums = new ArrayList<>();
+        for (Album album : this.albums.values()) {
+            if(album.getGenre().equals(genre)){
+                albums.add(album);
+            }
+        }
+        return albums;
     }
 
     @Override

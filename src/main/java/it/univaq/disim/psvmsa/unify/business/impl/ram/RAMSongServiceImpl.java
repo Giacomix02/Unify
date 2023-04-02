@@ -3,6 +3,7 @@ package it.univaq.disim.psvmsa.unify.business.impl.ram;
 import it.univaq.disim.psvmsa.unify.business.BusinessException;
 import it.univaq.disim.psvmsa.unify.business.SongService;
 import it.univaq.disim.psvmsa.unify.model.Artist;
+import it.univaq.disim.psvmsa.unify.model.Genre;
 import it.univaq.disim.psvmsa.unify.model.Song;
 
 import java.util.ArrayList;
@@ -25,6 +26,16 @@ public class RAMSongServiceImpl implements SongService {
         song.setId(++id);
         this.songs.put(song.getId(), song);
         return song;
+    }
+
+    @Override
+    public Song upsert(Song song) throws BusinessException {
+        if(song.getId() == null || getById(song.getId()) == null) {
+            return add(song);
+        } else {
+            update(song);
+            return song;
+        }
     }
 
     @Override
@@ -71,4 +82,14 @@ public class RAMSongServiceImpl implements SongService {
 
     }
 
+    @Override
+    public List<Song> searchByGenre(Genre genre) throws BusinessException {
+        ArrayList<Song> songs = new ArrayList<>();
+        for(Song song : this.songs.values()) {
+            if(song.getGenre().equals(genre)) {
+                songs.add(song);
+            }
+        }
+        return songs;
+    }
 }

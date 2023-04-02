@@ -2,6 +2,7 @@ package it.univaq.disim.psvmsa.unify.business.impl.ram;
 
 import it.univaq.disim.psvmsa.unify.business.ArtistService;
 import it.univaq.disim.psvmsa.unify.business.BusinessException;
+import it.univaq.disim.psvmsa.unify.model.Album;
 import it.univaq.disim.psvmsa.unify.model.Artist;
 
 import java.util.ArrayList;
@@ -25,6 +26,16 @@ public class RAMArtistServiceImpl implements ArtistService {
         artist.setId(++id);
         artists.put(artist.getId(),artist);
         return artist;
+    }
+
+    @Override
+    public Artist upsert(Artist artist) throws BusinessException {
+        if(artist.getId()==null || getById(artist.getId()) == null){
+            return add(artist);
+        }else{
+            update(artist);
+            return artist;
+        }
     }
 
     @Override

@@ -43,7 +43,6 @@ public class AlbumDetailsController implements Initializable, DataInitializable<
 
     private Album album;
 
-    private String joinGenre;
 
     private User user;
 
@@ -69,18 +68,8 @@ public class AlbumDetailsController implements Initializable, DataInitializable<
         }
 
         artistLabel.setText("Artist: " + album.getArtist().getName());
-
-        for (Song song : album.getSongs()) {
-            joinGenre = song.getGenres().stream().map(genre->genre.getName()).collect(Collectors.joining(", "));
-        }
-
-        if (joinGenre != null) {
-            genreLabel.setText("Genre: " + joinGenre);
-        } else {
-            genreLabel.setText("Genre: can not find genres");
-        }
-
-        setSongs();
+        genreLabel.setText("Genre: " + album.getGenre().getName());
+        updateSongs(album.getSongs());
     }
 
     @Override
@@ -88,10 +77,9 @@ public class AlbumDetailsController implements Initializable, DataInitializable<
 
     }
 
-    private void setSongs() {
+    private void updateSongs(List<Song> songs) {
         albumSongs.getChildren().clear();
         try{
-            List<Song> songs = new ArrayList<>(album.getSongs());
             SongsListView songsListView = new SongsListView(songs, user, false);
             albumSongs.getChildren().add(songsListView);
 
@@ -106,11 +94,9 @@ public class AlbumDetailsController implements Initializable, DataInitializable<
             songsListView.setOnPlayClicked(song -> {
                 MusicPlayer.getInstance().playOne(song);
             });
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     @FXML

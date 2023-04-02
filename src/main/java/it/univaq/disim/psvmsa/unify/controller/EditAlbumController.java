@@ -4,7 +4,6 @@ import it.univaq.disim.psvmsa.unify.business.*;
 import it.univaq.disim.psvmsa.unify.model.*;
 import it.univaq.disim.psvmsa.unify.view.Pages;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -13,13 +12,11 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
-import org.controlsfx.control.CheckComboBox;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -42,6 +39,8 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
     private ChoiceBox<Artist> artistPicker;
 
     @FXML
+    private ChoiceBox<Genre> genrePicker;
+    @FXML
     private Button removeButton;
 
     @FXML
@@ -62,7 +61,7 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
     @FXML
     private ChoiceBox<Song> currentSongPicker;
     @FXML
-    private CheckComboBox<Genre> songGenrePicker;
+    private ChoiceBox<Genre> songGenrePicker;
 
 
     @FXML
@@ -154,7 +153,7 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
             }
         });
         List<Genre> genres = genreService.getGenres();
-        songGenrePicker.setConverter(new StringConverter<>() {   // Convert Genre to String
+        songGenrePicker.setConverter(new StringConverter<>() {
             @Override
             public String toString(Genre genre) {
                 if (genre == null) return "";
@@ -169,15 +168,34 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
                 return null;
             }
         });
+
+        genrePicker.converterProperty().set(new StringConverter<>() {
+            @Override
+            public String toString(Genre object) {
+                if (object == null) return "";
+                return object.getName();
+            }
+
+            @Override
+            public Genre fromString(String string) {
+                for (Genre g : genres) {
+                    if (g.getName().equals(string)) {
+                        return g;
+                    }
+                }
+                return null;
+            }
+        });
         currentSongPicker.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             loadSong(newValue);
         });
         songGenrePicker.getItems().addAll(genres);
+        genrePicker.getItems().addAll(genres);
         artistPicker.getItems().addAll(artists);
     }
 
     @FXML
-    public void updateAlbum() {
+    public void saveAlbum() {
         try {
             List<Song> songs = currentSongPicker.getItems();
             Artist artist = artistPicker.getValue();
@@ -185,10 +203,9 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
                 for(Song song: songs){
                     song.setArtist(artist);
                 }
-                this.album = new Album(albumInput.getText(),songs, artist);
+                this.album = new Album(albumInput.getText(),songs, artist, genrePicker.getSelectionModel().getSelectedItem());
                 albumService.add(this.album);
                 exceptionLabel.setText("Saved album");
-                albumInput.clear();
             } else {
                 this.album.setName(albumInput.getText());
                 this.album.setSongs(songs);
@@ -199,6 +216,10 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
         } catch (Exception e) {
             e.printStackTrace();
         }
+        albumInput.clear();
+        genrePicker.getSelectionModel().clearSelection();
+        artistPicker.getSelectionModel().clearSelection();
+        clearSong();
     }
 
     private void setCurrentImage(ImageView imageView, Picture picture) {
@@ -226,17 +247,14 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
         if(song == null) return;
         songNameInput.setText(song.getName());
         songLyricsInput.setText(song.getLyrics());
-        songGenrePicker.getCheckModel().clearChecks();
-        for (Genre g : song.getGenres()) {
-            songGenrePicker.getCheckModel().check(g);
-        }
+        songGenrePicker.setValue(song.getGenre());
         setCurrentImage(songImage, song.getPicture());
         currentSong = song;
         saveButton.setText("Update song");
     }
     @FXML
     public void removeCurrentSongFromAlbum() {
-        currentSongPicker.getItems().remove(currentSongPicker.getSelectionModel().getSelectedItem());
+        currentSongPicker.getItems().remove(currentSongPicker.getValue());
         clearSong();
         currentSongPicker.getSelectionModel().clearSelection();
         currentSong = null;
@@ -246,20 +264,19 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
         if(currentSong != null){
             currentSong.setName(songNameInput.getText());
             currentSong.setLyrics(songLyricsInput.getText());
-            currentSong.setGenres(new ArrayList<>(songGenrePicker.getCheckModel().getCheckedItems()));
+            currentSong.setGenre(songGenrePicker.getValue());
             currentSong.setPicture(currentSongPicture);
             currentSong.setContent(currentSongStream);
             clearSong();
             currentSongPicker.getSelectionModel().clearSelection();
             saveButton.setText("Add song to album");
         }else{
-            ArrayList<Genre> genres = new ArrayList<>(songGenrePicker.getCheckModel().getCheckedItems());
                 Song song = new Song(
                         songNameInput.getText(),
-                        artistService.getById(artistPicker.getSelectionModel().getSelectedItem().getId()),
+                        artistService.getById(artistPicker.getValue().getId()),
                         songLyricsInput.getText(),
                         this.currentSongPicture,
-                        genres,
+                        songGenrePicker.getValue(),
                         currentSongStream
                 );
                 currentSongPicker.getItems().add(song);
@@ -305,7 +322,7 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
         songNameInput.clear();
         songLyricsInput.clear();
         setCurrentImage(songImage, null);
-        songGenrePicker.getCheckModel().clearChecks();
+        songGenrePicker.getSelectionModel().clearSelection();
         songFileLabel.setText("");
         saveButton.setText("Add song to album");
     }

@@ -1,6 +1,7 @@
 package it.univaq.disim.psvmsa.unify.controller;
 
 
+import it.univaq.disim.psvmsa.unify.business.BusinessException;
 import it.univaq.disim.psvmsa.unify.business.PlaylistService;
 import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.model.Playlist;
@@ -127,23 +128,23 @@ public class EditPlaylistController implements Initializable, DataInitializable<
     }
 
     public void savePlaylist(){
-        if (playlist == null) {
-            Playlist playlist = new Playlist(playlistInput.getText(),user);
-            playlistService.add(playlist);
-            playlistInput.clear();
-            exceptionLabel.setText("Playlist saved");
-        }else{
-            ArrayList<Song> songs = new ArrayList<>(songChoice.getCheckModel().getCheckedItems());
-            playlist.setName(playlistInput.getText());
-            playlist.setSongs(songs);
-            try {
-            playlistService.update(playlist);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-            exceptionLabel.setText("Playlist edited");
+        try {
+            if (playlist == null) {
+                Playlist playlist = new Playlist(playlistInput.getText(),user);
+                playlistService.add(playlist);
+                playlistInput.clear();
+                exceptionLabel.setText("Playlist saved");
+            }else{
+                ArrayList<Song> songs = new ArrayList<>(songChoice.getCheckModel().getCheckedItems());
+                playlist.setName(playlistInput.getText());
+                playlist.setSongs(songs);
+                playlistService.update(playlist);
+                exceptionLabel.setText("Playlist edited");
+                }
+        }catch (BusinessException e){
+            e.printStackTrace();
+            exceptionLabel.setText("Error saving playlist");
         }
-
     }
 
     public void deletePlaylist(){

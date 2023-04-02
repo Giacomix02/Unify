@@ -22,6 +22,16 @@ public class RAMGenreServiceImpl implements GenreService {
         return genres.get(id);
     }
 
+    @Override
+    public Genre upsert(Genre genre) throws BusinessException {
+        if(genre.getId()==null || getById(genre.getId()) == null) {
+            return add(genre);
+        } else {
+            update(genre);
+            return genre;
+        }
+    }
+
     public Genre add(Genre genre)  {
         List<Genre> g = searchByName(genre.getName());
         if(!g.isEmpty()) return null;

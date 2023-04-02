@@ -37,10 +37,21 @@ public class RAMPictureServiceImpl implements PictureService {
         deleteById(picture.getId());
     }
 
+
     @Override
     public void deleteById(Integer id) throws BusinessException{
         Picture existing = this.pictures.remove(id);
         if(existing == null) throw new BusinessException("Picture not found");
+    }
+
+    @Override
+    public Picture upsert(Picture picture) throws BusinessException {
+        if(picture.getId()==null || getById(picture.getId()) == null){
+            return add(picture);
+        }else{
+            update(picture);
+            return picture;
+        }
     }
 }
 

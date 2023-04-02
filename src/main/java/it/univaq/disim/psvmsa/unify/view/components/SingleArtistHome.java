@@ -38,6 +38,7 @@ public class SingleArtistHome extends VBox {
             button = (Button) root.lookup("#artist");
 
             this.label.setText(artist.getName());
+            if(artist.getPictures().size() == 0)  return;
             Picture pic = artist.getPictures().get(0);
             if(pic == null) return;
             Image image = new Image(pic.toStream());
