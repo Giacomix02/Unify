@@ -21,6 +21,7 @@
                             </VBox.margin>
                         </TextField>
                   <PasswordField fx:id="passwordInput" focusTraversable="false" prefHeight="30.0" prefWidth="244.0" promptText="Write password" style="-fx-background-radius: 7;" />
+                  <CheckBox fx:id="adminCheckBox" mnemonicParsing="false" text="Grant administrator privileges" />
                   <HBox>
                      <children>
                         <Button fx:id="removeButton" minWidth="75.0" mnemonicParsing="false" onAction="#removeUser" prefWidth="75.0" styleClass="custom-button" text="Remove" />

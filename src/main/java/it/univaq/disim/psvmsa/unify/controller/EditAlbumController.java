@@ -127,7 +127,13 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
                         .isEmpty().or(artistPicker.valueProperty().isNull())
                         .or(genrePicker.valueProperty().isNull()));
 
-        this.saveButton.disableProperty().set(true);
+        this.saveButton
+                .disableProperty()
+                .bind(songNameInput.textProperty().isEmpty()
+                .or(songLyricsInput.textProperty().isEmpty())
+                .or(songGenrePicker.valueProperty().isNull())
+                .or(songFileLabel.textProperty().isEmpty()));
+
         List<Artist> artists = artistService.getArtists();
         artistPicker.converterProperty().set(new StringConverter<>() {
             @Override
@@ -314,7 +320,6 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
         File file = fileChooser.showOpenDialog(stage);
         currentSongStream = new FileInputStream(file);
         songFileLabel.setText(file.getName());
-        saveButton.disableProperty().set(false);
     }
 
     @FXML
