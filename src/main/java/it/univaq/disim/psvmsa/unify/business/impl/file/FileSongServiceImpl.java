@@ -81,12 +81,8 @@ public class FileSongServiceImpl implements SongService {
     }
 
     public void update(Song song) throws BusinessException {
-        try {
-            pictureService.add(song.getPicture());
-            artistService.add(song.getArtist());
-        } catch (Exception ignored) {
-        }
-
+        song.setPicture(pictureService.upsert(song.getPicture()));
+        song.setArtist(artistService.upsert(song.getArtist()));
         IndexedFile file = loader.load();
         IndexedFile.Row row = new IndexedFile.Row(SEPARATOR);
         row.set(Schema.SONG_ID, song.getId())
@@ -95,6 +91,7 @@ public class FileSongServiceImpl implements SongService {
                 .set(Schema.LYRICS, song.getLyrics())
                 .set(Schema.PICTURE_ID, song.getPicture().getId())
                 .set(Schema.GENRE_ID, song.getGenre().getId());
+        this.saveSongToFile(song);
         file.updateRow(row);
         loader.save(file);
     }
@@ -105,30 +102,16 @@ public class FileSongServiceImpl implements SongService {
 
     public Song add(Song song) throws BusinessException {
         if (this.existsSong(song)) return null;
-        Picture pic = null;
-
-        if (song.getPicture() != null) {
-            pic = pictureService.upsert(song.getPicture());
-            song.setPicture(pic);
-        } else {
-            try {
-                pic = pictureService.upsert(new Picture(new FileInputStream("src/main/resources/ui/images/music-placeholder.png")));
-                song.setPicture(pic);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        Artist art = artistService.upsert(song.getArtist());
-        song.setArtist(art);
+        song.setPicture(pictureService.upsert(song.getPicture()));
+        song.setArtist(artistService.upsert(song.getArtist()));
         IndexedFile file = loader.load();
         IndexedFile.Row row = new IndexedFile.Row(SEPARATOR);
         song.setId(file.incrementId());
         row.set(Schema.SONG_ID, song.getId())
                 .set(Schema.SONG_NAME, song.getName())
-                .set(Schema.ARTIST_ID, art.getId())
+                .set(Schema.ARTIST_ID, song.getArtist().getId())
                 .set(Schema.LYRICS, song.getLyrics())
-                .set(Schema.PICTURE_ID, pic.getId())
+                .set(Schema.PICTURE_ID, song.getPicture().getId())
                 .set(Schema.GENRE_ID, song.getGenre().getId());
         this.saveSongToFile(song);
         file.appendRow(row);
@@ -166,24 +149,23 @@ public class FileSongServiceImpl implements SongService {
     }
 
 
-    private void saveSongToFile(Song song) {
+    private void saveSongToFile(Song song) throws BusinessException {
         File fileToSave = new File(this.songsFolderPath + song.getId() + ".mp3");
         try (FileOutputStream outputStream = new FileOutputStream(fileToSave)) {
             outputStream.write(song.toStream().readAllBytes());
         } catch (IOException e) {
-            //TODO maybe relaunch error
             e.printStackTrace();
+            throw new BusinessException("Error while saving song");
         }
     }
 
-    private InputStream getSongStream(Integer id) {
+    private InputStream getSongStream(Integer id) throws BusinessException{
         try {
             File file = new File(this.songsFolderPath + id + ".mp3");
             return new FileInputStream(file);
         } catch (Exception e) {
             e.printStackTrace();
-            //TODO maybe relaunch error
-            return null;
+            throw new BusinessException("Error while reading song content");
         }
     }
 

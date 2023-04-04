@@ -4,6 +4,7 @@ import it.univaq.disim.psvmsa.unify.business.*;
 import it.univaq.disim.psvmsa.unify.model.*;
 import it.univaq.disim.psvmsa.unify.view.Pages;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -16,6 +17,7 @@ import javafx.util.StringConverter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -76,10 +78,10 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
 
     private Song currentSong;
 
-    private FileInputStream currentSongStream;
+    private SimpleObjectProperty<InputStream> currentSongStream = new SimpleObjectProperty<>();
 
 
-    private Picture currentSongPicture;
+    private SimpleObjectProperty<Picture> currentSongPicture = new SimpleObjectProperty<>();
 
     @FXML
     private TextField songNameInput;
@@ -129,10 +131,14 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
 
         this.saveButton
                 .disableProperty()
-                .bind(songNameInput.textProperty().isEmpty()
-                .or(songLyricsInput.textProperty().isEmpty())
-                .or(songGenrePicker.valueProperty().isNull())
-                .or(songFileLabel.textProperty().isEmpty()));
+                .bind(
+                        songNameInput.textProperty().isEmpty()
+                    .or(songLyricsInput.textProperty().isEmpty())
+                    .or(songGenrePicker.valueProperty().isNull())
+                    .or(songFileLabel.textProperty().isEmpty())
+                    .or(currentSongPicture.isNull())
+                    .or(currentSongStream.isNull())
+                );
 
         List<Artist> artists = artistService.getArtists();
         artistPicker.converterProperty().set(new StringConverter<>() {
@@ -240,8 +246,8 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
     }
 
     private void setCurrentImage(ImageView imageView, Picture picture) {
-        currentSongPicture = picture;
-        if(currentSongPicture == null) {
+        currentSongPicture.set(picture);
+        if(currentSongPicture.getValue() == null) {
             imageView.setImage(image);
         }else{
             imageView.setImage(new Image(picture.toStream()));
@@ -266,6 +272,9 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
         songLyricsInput.setText(song.getLyrics());
         songGenrePicker.setValue(song.getGenre());
         setCurrentImage(songImage, song.getPicture());
+        currentSongStream.set(song.toStream());
+        System.out.println(song.toStream());
+        songFileLabel.setText("Internal audio file loaded");
         currentSong = song;
         saveButton.setText("Update song");
     }
@@ -282,8 +291,8 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
             currentSong.setName(songNameInput.getText());
             currentSong.setLyrics(songLyricsInput.getText());
             currentSong.setGenre(songGenrePicker.getValue());
-            currentSong.setPicture(currentSongPicture);
-            currentSong.setContent(currentSongStream);
+            currentSong.setPicture(currentSongPicture.getValue());
+            currentSong.setContent(currentSongStream.getValue());
             clearSong();
             currentSongPicker.getSelectionModel().clearSelection();
             saveButton.setText("Add song to album");
@@ -292,9 +301,9 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
                         songNameInput.getText(),
                         artistService.getById(artistPicker.getValue().getId()),
                         songLyricsInput.getText(),
-                        this.currentSongPicture,
+                        currentSongPicture.getValue(),
                         songGenrePicker.getValue(),
-                        currentSongStream
+                        currentSongStream.getValue()
                 );
                 currentSongPicker.getItems().add(song);
                 clearSong();
@@ -318,7 +327,7 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
         );
         Stage stage = new Stage();
         File file = fileChooser.showOpenDialog(stage);
-        currentSongStream = new FileInputStream(file);
+        currentSongStream.setValue(new FileInputStream(file));
         songFileLabel.setText(file.getName());
     }
 
@@ -339,6 +348,7 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
         songNameInput.clear();
         songLyricsInput.clear();
         setCurrentImage(songImage, null);
+        currentSongStream.setValue(null);
         songGenrePicker.getSelectionModel().clearSelection();
         songFileLabel.setText("");
         saveButton.setText("Add song to album");

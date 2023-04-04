@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox stylesheets="@../app.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.psvmsa.unify.controller.PlaylistsController">
+<VBox prefHeight="600.0" prefWidth="900.0" stylesheets="@../app.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.univaq.disim.psvmsa.unify.controller.PlaylistsController">
    <children>
-      <HBox alignment="CENTER">
+      <HBox alignment="CENTER_LEFT">
          <children>
             <HBox fx:id="searchBox" alignment="CENTER_RIGHT" styleClass="searchBox" HBox.hgrow="ALWAYS">
                <HBox.margin>
@@ -18,7 +18,7 @@
                </HBox.margin>
             </HBox>
             <HBox fx:id="addBox" alignment="CENTER_LEFT" />
-            <Button id="button" fx:id="addButton" mnemonicParsing="false" onAction="#addPlaylist" style="-fx-background-color: transparent;" stylesheets="@../components/add.css" text="Add" textAlignment="CENTER">
+            <Button id="button" fx:id="addButton" mnemonicParsing="false" onAction="#addPlaylist" prefWidth="85.0" style="-fx-background-color: transparent;" stylesheets="@../components/add.css" text="Add" textAlignment="CENTER">
                <graphic>
                   <ImageView styleClass="image">
                      <image>
@@ -29,7 +29,13 @@
             </Button>
          </children>
       </HBox>
-      <Label styleClass="title-text" text="Playlists" />
-      <VBox fx:id="playlistsBox" spacing="10.0" VBox.vgrow="ALWAYS" />
+      <Label styleClass="title-text" text="Playlists">
+         <VBox.margin>
+            <Insets top="13.0" />
+         </VBox.margin></Label>
+      <VBox fx:id="playlistsBox" spacing="7.0" VBox.vgrow="ALWAYS">
+         <padding>
+            <Insets bottom="10.0" left="8.0" right="8.0" top="5.0" />
+         </padding></VBox>
    </children>
 </VBox>
