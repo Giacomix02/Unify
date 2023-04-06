@@ -1,0 +1,13 @@
+12
+1|Rock
+2|Pop
+3|Rap
+4|Folk
+5|Hard Rock
+6|Anime
+7|Blues
+8|Jazz
+9|Electronic Pop
+10|Dance
+11|Indie
+12|Vocaloid Utaite
