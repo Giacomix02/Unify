@@ -2,6 +2,7 @@ package it.univaq.disim.psvmsa.unify.business.impl.ram;
 
 import it.univaq.disim.psvmsa.unify.business.ArtistService;
 import it.univaq.disim.psvmsa.unify.business.BusinessException;
+import it.univaq.disim.psvmsa.unify.business.SongService;
 import it.univaq.disim.psvmsa.unify.model.Album;
 import it.univaq.disim.psvmsa.unify.model.Artist;
 
@@ -13,7 +14,6 @@ import java.util.Map;
 public class RAMArtistServiceImpl implements ArtistService {
 
     private Map<Integer,Artist> artists = new HashMap<>();
-
     private Integer id = 0;
 
     @Override

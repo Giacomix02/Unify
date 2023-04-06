@@ -153,9 +153,13 @@ public class FileSongServiceImpl implements SongService {
 
 
     private void saveSongToFile(Song song) throws BusinessException {
-        File fileToSave = new File(this.songsFolderPath + song.getId() + ".mp3");
-        try (FileOutputStream outputStream = new FileOutputStream(fileToSave)) {
-            outputStream.write(song.toStream().readAllBytes());
+
+        try {
+            byte[] bytes = song.toStream().readAllBytes();
+            System.out.println(bytes.length + " bytes" + " song: " + song.getId());
+            File fileToSave = new File(this.songsFolderPath + song.getId() + ".mp3");
+            FileOutputStream outputStream = new FileOutputStream(fileToSave);
+            outputStream.write(bytes);
         } catch (IOException e) {
             e.printStackTrace();
             throw new BusinessException("Error while saving song");

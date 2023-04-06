@@ -23,6 +23,12 @@ public class App extends Application {
 		ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
 		viewDispatcher.setStage(stage);
 		viewDispatcher.showLogin();
+		boolean autoLogin = true;
+		if(autoLogin){
+			//viewDispatcher.showLogin();
+			Admin admin = new Admin("admin", "admin", 2);
+			viewDispatcher.loggedIn(admin);
+		}
 		stage.getIcons().add(new Image(getClass().getResource(UNIFY_ICON).toString()));
 		stage.show();
 	}
