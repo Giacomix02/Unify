@@ -43,7 +43,6 @@ public class AlbumDetailsController implements Initializable, DataInitializable<
 
     private Album album;
 
-
     private User user;
 
 

@@ -23,7 +23,6 @@ public class FileSongServiceImpl implements SongService {
         public static int ARTIST_ID = 2;
         public static int LYRICS = 3;
         public static int PICTURE_ID = 4;
-
         public static int GENRE_ID = 5;
     }
 

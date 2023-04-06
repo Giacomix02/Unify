@@ -39,9 +39,6 @@ public class EditSongController implements Initializable, DataInitializable<User
     private TextArea songLyricsInput;
 
     @FXML
-    private Button exit;
-
-    @FXML
     private Button saveButton;
 
     @FXML
@@ -88,8 +85,6 @@ public class EditSongController implements Initializable, DataInitializable<User
     public void initializeData(UserWithData<Song> data) {
         this.user = data.getUser();
         this.song = data.getData();
-
-        exit.visibleProperty().set(data.getData()!=null);
 
         saveSongLabel.setVisible(false);
 

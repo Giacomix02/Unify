@@ -42,6 +42,7 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
 
     @FXML
     private ChoiceBox<Genre> genrePicker;
+
     @FXML
     private Button removeButton;
 
@@ -226,20 +227,19 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
                 this.album = new Album(albumInput.getText(),songs, artist, genrePicker.getSelectionModel().getSelectedItem());
                 albumService.add(this.album);
                 exceptionLabel.setText("Saved album");
+                albumInput.clear();
+                genrePicker.getSelectionModel().clearSelection();
+                artistPicker.getSelectionModel().clearSelection();
             } else {
                 this.album.setName(albumInput.getText());
                 this.album.setSongs(songs);
                 this.album.setArtist(artist);
-                albumService.update(album);
-
+                albumService.update(this.album);
                 exceptionLabel.setText("Edited album");
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        albumInput.clear();
-        genrePicker.getSelectionModel().clearSelection();
-        artistPicker.getSelectionModel().clearSelection();
         clearSong();
     }
 
