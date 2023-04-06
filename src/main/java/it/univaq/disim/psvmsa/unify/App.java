@@ -22,9 +22,7 @@ public class App extends Application {
 		this.stage = stage;
 		ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
 		viewDispatcher.setStage(stage);
-		//viewDispatcher.showLogin();
-		Admin admin = new Admin("admin", "admin", 2);
-		viewDispatcher.loggedIn(admin);
+		viewDispatcher.showLogin();
 		stage.getIcons().add(new Image(getClass().getResource(UNIFY_ICON).toString()));
 		stage.show();
 	}
