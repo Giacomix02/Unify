@@ -2,20 +2,23 @@ package it.univaq.disim.psvmsa.unify.business.impl.ram;
 
 import it.univaq.disim.psvmsa.unify.business.AlbumService;
 import it.univaq.disim.psvmsa.unify.business.BusinessException;
+import it.univaq.disim.psvmsa.unify.business.SongService;
 import it.univaq.disim.psvmsa.unify.model.Album;
 import it.univaq.disim.psvmsa.unify.model.Artist;
 import it.univaq.disim.psvmsa.unify.model.Genre;
+import it.univaq.disim.psvmsa.unify.model.Song;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class RAMAlbumServiceImpl implements AlbumService {
 
     private Map<Integer,Album> albums = new HashMap<>();
     private Integer id = 0;
+    private SongService songService;
 
+    public RAMAlbumServiceImpl(SongService songService){
+        this.songService = songService;
+    }
 
     @Override
     public Album getById(Integer id){
@@ -24,18 +27,28 @@ public class RAMAlbumServiceImpl implements AlbumService {
 
 
     @Override
-    public Album add(Album album){
+    public Album add(Album album) throws BusinessException {
         album.setId(++id);
         this.albums.put(album.getId(),album);
+        for(Song song : album.getSongs()){
+            songService.upsert(song);
+        }
         return album;
     }
 
     @Override
     public void update(Album album) throws  BusinessException {
         Album existing = getById(album.getId());
+        //find and delete songs that were removed from this album
         if(existing==null) throw new BusinessException("Album not found");
+        for(Song song : existing.getSongs()){
+            if(album.getSongs().stream().noneMatch(s -> Objects.equals(s.getId(), song.getId()))){
+                songService.delete(song);
+            }else{
+                songService.upsert(song);
+            }
+        }
         albums.put(album.getId(),album);
-
     }
 
     @Override
@@ -89,5 +102,8 @@ public class RAMAlbumServiceImpl implements AlbumService {
     public void deleteById(Integer id) throws BusinessException{
         Album existing = this.albums.remove(id);
         if(existing==null) throw new BusinessException("Album not found");
+        for(Song song : existing.getSongs()){
+            songService.delete(song);
+        }
     }
 }

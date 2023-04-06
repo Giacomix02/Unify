@@ -7,6 +7,7 @@ import it.univaq.disim.psvmsa.unify.model.Song;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class FileAlbumServiceImpl implements AlbumService {
 
@@ -88,13 +89,20 @@ public class FileAlbumServiceImpl implements AlbumService {
                 .set(Schema.GENRE_ID, album.getGenre().getId());
         file.appendRow(row);
         loader.save(file);
-        addSongsRelations(id, album.getSongs());
+        addSongsRelations(album, album.getSongs());
         artistService.add(album.getArtist());
         return album;
     }
 
     @Override
     public void update(Album album) throws BusinessException {
+        Album oldAlbum = getById(album.getId());
+        //find and delete songs that were removed from this album
+        for(Song song : oldAlbum.getSongs()){
+            if(album.getSongs().stream().noneMatch(s -> Objects.equals(s.getId(), song.getId()))){
+                songService.delete(song);
+            }
+        }
         IndexedFile file = loader.load();
         IndexedFile.Row row = new IndexedFile.Row(this.SEPARATOR);
         row.set(Schema.ALBUM_ID, album.getId())
@@ -104,7 +112,7 @@ public class FileAlbumServiceImpl implements AlbumService {
         file.updateRow(row);
         loader.save(file);
         deleteSongsRelations(album.getId());
-        addSongsRelations(album.getId(), album.getSongs());
+        addSongsRelations(album, album.getSongs());
     }
 
     public Album upsert(Album album) throws BusinessException {
@@ -119,6 +127,9 @@ public class FileAlbumServiceImpl implements AlbumService {
     public void delete(Album album) throws BusinessException {
         deleteById(album.getId());
         deleteSongsRelations(album.getId());
+        for(Song song : album.getSongs()){
+            songService.delete(song);
+        }
     }
 
     public List<Song> getSongsRelations(Integer albumId) throws BusinessException{
@@ -139,14 +150,15 @@ public class FileAlbumServiceImpl implements AlbumService {
         songsRelationsLoader.save(file);
     }
 
-    public void addSongsRelations(Integer albumId, List<Song> songs) throws BusinessException{
+    public void addSongsRelations(Album album, List<Song> songs) throws BusinessException{
         IndexedFile file = songsRelationsLoader.load();
         for (Song song : songs) {
+            song.setArtist(album.getArtist());
             song = songService.upsert(song);
             IndexedFile.Row row = new IndexedFile.Row(this.SEPARATOR);
             int id = file.incrementId();
             row.set(SongsSchema.RELATION_ID, id)
-                    .set(SongsSchema.ALBUM_ID, albumId)
+                    .set(SongsSchema.ALBUM_ID, album.getId())
                     .set(SongsSchema.SONG_ID, song.getId());
             file.appendRow(row);
         }

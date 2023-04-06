@@ -57,11 +57,17 @@ public class FilePlaylistServiceImpl implements PlaylistService {
             for (IndexedFile.Row relationRow : relationRows) {
                 try {
                     Song song = songService.getById(relationRow.getIntAt(RelationSchema.SONG_ID));
-                    playlist.addSong(song);
+                    if (song != null){
+                        playlist.addSong(song);
+                    }
                 } catch (SongAlreadyExistsException | BusinessException e) {
                     e.printStackTrace();
                     throw new BusinessException("Error while loading playlist");
                 }
+            }
+            if(playlist.getSongs().size() != relationRows.size()) {
+                //if some songs were deleted, update the playlist to remove those too
+                addSongRelationInPlaylist(playlist);
             }
             playlists.add(playlist);
         }
@@ -72,24 +78,33 @@ public class FilePlaylistServiceImpl implements PlaylistService {
     public Playlist getById(Integer id) throws BusinessException {
         List<Song> songs = new ArrayList<>();
         IndexedFile.Row row = loader.getRowById(id);
+        if(row == null) return null;
         List<IndexedFile.Row> relationRows = loaderRelation.loadFiltered(
                 relationRow -> relationRow.getIntAt(RelationSchema.PLAYLIST_ID) == row.getIntAt(Schema.PLAYLIST_ID)
         );
         try{
+
             for(IndexedFile.Row r : relationRows){
-                songs.add(songService.getById(r.getIntAt(RelationSchema.SONG_ID)));
+                Song song = songService.getById(r.getIntAt(RelationSchema.SONG_ID));
+                if(song != null){
+                    songs.add(song);
+                }
             }
+            Playlist p = new Playlist(
+                    row.getStringAt(Schema.PLAYLIST_NAME),
+                    userService.getById(row.getIntAt(Schema.USER_ID)),
+                    id,
+                    songs
+            );
+            if(songs.size() != relationRows.size()) {
+                //if some songs were deleted, update the playlist to remove those too
+                addSongRelationInPlaylist(p);
+            }
+            return p;
         }catch(Exception e){
             e.printStackTrace();
             throw new BusinessException("Error while loading playlist");
         }
-
-        return new Playlist(
-                row.getStringAt(Schema.PLAYLIST_NAME),
-                userService.getById(row.getIntAt(Schema.USER_ID)),
-                id,
-                songs
-        );
     }
 
     @Override
@@ -126,8 +141,6 @@ public class FilePlaylistServiceImpl implements PlaylistService {
                 .set(Schema.USER_ID,playlist.getUser().getId());
         this.deleteSongRelationsInPlaylist(playlist);
         this.addSongRelationInPlaylist(playlist);
-
-
         file.updateRow(row);
         loader.save(file);
     }

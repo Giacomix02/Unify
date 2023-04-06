@@ -57,6 +57,7 @@ public class FileSongServiceImpl implements SongService {
 
     public Song getById(Integer id) throws BusinessException {
         IndexedFile.Row row = loader.getRowById(id);
+        if (row == null) return null;
         try {
             return new Song(
                     row.getStringAt(Schema.SONG_NAME),
@@ -77,6 +78,7 @@ public class FileSongServiceImpl implements SongService {
     public void delete(Song song) throws BusinessException {
         IndexedFile file = loader.load();
         file.deleteRowById(song.getId());
+        deleteSongFile(song.getId());
         loader.save(file);
     }
 
@@ -98,6 +100,7 @@ public class FileSongServiceImpl implements SongService {
 
     public void deleteById(Integer id) throws BusinessException {
         if (loader.deleteRowById(id) == null) throw new BusinessException("Song not found");
+        deleteSongFile(id);
     }
 
     public Song add(Song song) throws BusinessException {
@@ -157,6 +160,10 @@ public class FileSongServiceImpl implements SongService {
             e.printStackTrace();
             throw new BusinessException("Error while saving song");
         }
+    }
+    private void deleteSongFile(Integer id) throws BusinessException {
+        File fileToDelete = new File(this.songsFolderPath + id + ".mp3");
+        if (!fileToDelete.delete()) throw new BusinessException("Error while deleting song with id: " + id);
     }
 
     private InputStream getSongStream(Integer id) throws BusinessException{

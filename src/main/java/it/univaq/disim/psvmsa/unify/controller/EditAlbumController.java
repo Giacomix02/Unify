@@ -223,9 +223,6 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
             List<Song> songs = currentSongPicker.getItems();
             Artist artist = artistPicker.getValue();
             if (this.album == null) {
-                for(Song song: songs){
-                    song.setArtist(artist);
-                }
                 this.album = new Album(albumInput.getText(),songs, artist, genrePicker.getSelectionModel().getSelectedItem());
                 albumService.add(this.album);
                 exceptionLabel.setText("Saved album");
@@ -234,6 +231,7 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
                 this.album.setSongs(songs);
                 this.album.setArtist(artist);
                 albumService.update(album);
+
                 exceptionLabel.setText("Edited album");
             }
         } catch (Exception e) {
@@ -273,7 +271,6 @@ public class EditAlbumController implements Initializable, DataInitializable<Use
         songGenrePicker.setValue(song.getGenre());
         setCurrentImage(songImage, song.getPicture());
         currentSongStream.set(song.toStream());
-        System.out.println(song.toStream());
         songFileLabel.setText("Internal audio file loaded");
         currentSong = song;
         saveButton.setText("Update song");
