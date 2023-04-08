@@ -70,14 +70,4 @@ public class SingleSong extends VBox {
             consumer.accept(song);
         });
     }
-
-    /*
-    public void viewSong() {
-        this.playSong.setOnMouseClicked(event -> {
-            ViewDispatcher.getInstance().navigateTo(Pages.SONGSLIST, new UserWithData<>(use, null));
-        });
-    }
-
-     */
-
 }
