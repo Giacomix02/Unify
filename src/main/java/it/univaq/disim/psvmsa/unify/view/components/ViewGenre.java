@@ -5,14 +5,18 @@ import it.univaq.disim.psvmsa.unify.controller.UserWithData;
 import it.univaq.disim.psvmsa.unify.model.*;
 import it.univaq.disim.psvmsa.unify.view.Pages;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
+import javafx.scene.text.Text;
+
 import java.util.List;
 
 public class ViewGenre extends VBox {
 
+    @FXML
     private Label label;
 
     private boolean editable;
@@ -21,9 +25,14 @@ public class ViewGenre extends VBox {
 
     private Genre genre;
 
+    @FXML
     private Button viewGenreSongsButton;
 
+    @FXML
     private HBox albumBox;
+
+    @FXML
+    private Text albumsLabel;
 
     private AlbumService albumService;
 
@@ -44,6 +53,7 @@ public class ViewGenre extends VBox {
             label = (Label) root.lookup("#label");
             albumBox = (HBox) root.lookup("#albums");
             viewGenreSongsButton = (Button) root.lookup("#viewGenreSongsButton");
+            albumsLabel = (Text) root.lookup("#albumsLabel");
             viewGenreSongsButton.setOnAction(e -> {
                 try {
                     List<Song> songs = UnifyServiceFactory.getInstance().getSongService().searchByGenre(genre);
@@ -55,6 +65,7 @@ public class ViewGenre extends VBox {
             label.setText(genre.getName());
             albumService = UnifyServiceFactory.getInstance().getAlbumService();
             List<Album> albums = albumService.searchAlbumsByGenre(genre);
+            if (albums.isEmpty()) albumsLabel.setText("No albums available!");
             for (Album album : albums) {
                 SingleAlbum singleAlbum = new SingleAlbum(album);
                 singleAlbum.setOnAlbumClick(a -> {

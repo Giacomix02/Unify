@@ -45,6 +45,9 @@ public class ArtistDetailsController implements Initializable, DataInitializable
     private Label membersLabel;
 
     @FXML
+    private Label albumLabel;
+
+    @FXML
     private Label songLabel;
 
     @FXML
@@ -75,6 +78,7 @@ public class ArtistDetailsController implements Initializable, DataInitializable
         artistBiography.setText(existingArtist.getBiography());
         images = (existingArtist.getPictures());
         songLabel.visibleProperty().set(false);
+        albumLabel.visibleProperty().set(false);
         setImages(images);
         loadSongsAndAlbums();
         if (existingArtist instanceof GroupArtist) {
@@ -130,6 +134,7 @@ public class ArtistDetailsController implements Initializable, DataInitializable
             List<Song> songs = songService.searchByArtist(existingArtist);
             List<Album> albums = albumService.searchAlbumsByArtist(existingArtist);
             songLabel.visibleProperty().set(songs.size() > 0);
+            albumLabel.visibleProperty().set(albums.size() > 0);
             SongsListView songsListView = new SongsListView(songs, user, false);
             artistSongs.getChildren().add(songsListView);
             songsListView.setOnDetailsClicked(song -> {
