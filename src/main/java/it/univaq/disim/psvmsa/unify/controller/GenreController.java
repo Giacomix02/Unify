@@ -2,7 +2,6 @@ package it.univaq.disim.psvmsa.unify.controller;
 
 import it.univaq.disim.psvmsa.unify.business.GenreService;
 import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
-import it.univaq.disim.psvmsa.unify.business.UserService;
 import it.univaq.disim.psvmsa.unify.model.Admin;
 import it.univaq.disim.psvmsa.unify.model.Genre;
 import it.univaq.disim.psvmsa.unify.model.User;
@@ -28,13 +27,17 @@ public class GenreController implements Initializable, DataInitializable<User> {
 
     @FXML
     private HBox searchBox;
+
     @FXML
     private HBox addBox;
+
     @FXML
     private ListView<Genre> viewList;
 
     private User user;
+
     private SearchBar searchBar;
+
     private ViewGenre viewGenre;
 
     public GenreController(){

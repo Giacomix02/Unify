@@ -15,7 +15,6 @@ public class FileAlbumServiceImpl implements AlbumService {
         public static int ALBUM_ID = 0;
         public static int ALBUM_NAME = 1;
         public static int ARTIST_ID = 2;
-
         public static int GENRE_ID = 3;
     }
     private static class SongsSchema {

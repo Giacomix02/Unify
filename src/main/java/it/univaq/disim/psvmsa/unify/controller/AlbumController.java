@@ -17,7 +17,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
-
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;

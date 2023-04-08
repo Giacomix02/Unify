@@ -1,12 +1,8 @@
 package it.univaq.disim.psvmsa.unify;
 
-import it.univaq.disim.psvmsa.unify.business.impl.ram.RAMUserServiceImpl;
 import it.univaq.disim.psvmsa.unify.model.Admin;
-import it.univaq.disim.psvmsa.unify.model.User;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
 import javafx.application.Application;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 
@@ -23,7 +19,7 @@ public class App extends Application {
 		ViewDispatcher viewDispatcher = ViewDispatcher.getInstance();
 		viewDispatcher.setStage(stage);
 		viewDispatcher.showLogin();
-		boolean autoLogin = true;
+		boolean autoLogin = false;
 		if(autoLogin){
 			//viewDispatcher.showLogin();
 			Admin admin = new Admin("admin", "admin", 2);

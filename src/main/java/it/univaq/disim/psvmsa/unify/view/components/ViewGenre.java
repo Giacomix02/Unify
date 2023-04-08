@@ -1,25 +1,15 @@
 package it.univaq.disim.psvmsa.unify.view.components;
 import it.univaq.disim.psvmsa.unify.business.AlbumService;
-import it.univaq.disim.psvmsa.unify.business.GenreService;
-import it.univaq.disim.psvmsa.unify.business.SongService;
 import it.univaq.disim.psvmsa.unify.business.UnifyServiceFactory;
 import it.univaq.disim.psvmsa.unify.controller.UserWithData;
 import it.univaq.disim.psvmsa.unify.model.*;
 import it.univaq.disim.psvmsa.unify.view.Pages;
 import it.univaq.disim.psvmsa.unify.view.ViewDispatcher;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class ViewGenre extends VBox {
 
@@ -29,10 +19,7 @@ public class ViewGenre extends VBox {
 
     private User user;
 
-
     private Genre genre;
-
-    private FlowPane songsBox;
 
     private Button viewGenreSongsButton;
 
